@@ -1,0 +1,19 @@
+{
+  "name": "WeLoan365 Prototype",
+  "short_name": "WeLoan365",
+  "description": "WeLoan365 mobile prototype",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F5F8",
+  "theme_color": "#0052CC",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

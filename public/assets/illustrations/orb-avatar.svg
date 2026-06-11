@@ -1,0 +1,21 @@
+<svg width="148" height="148" viewBox="0 0 148 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orb_bg" x1="24" y1="20" x2="126" y2="134" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C6EDF1"/>
+      <stop offset="0.42" stop-color="#7FB6E6"/>
+      <stop offset="1" stop-color="#5750E2"/>
+    </linearGradient>
+    <radialGradient id="orb_hl" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(52 60) rotate(90) scale(64)">
+      <stop offset="0" stop-color="#8FE7F3" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#8FE7F3" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orb_pl" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(116 124) rotate(90) scale(58)">
+      <stop offset="0" stop-color="#4F46E0" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#4F46E0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="148" height="148" fill="url(#orb_bg)"/>
+  <rect width="148" height="148" fill="url(#orb_pl)"/>
+  <rect width="148" height="148" fill="url(#orb_hl)"/>
+  <circle cx="74" cy="74" r="72.5" stroke="#ffffff" stroke-opacity="0.6" stroke-width="3"/>
+</svg>

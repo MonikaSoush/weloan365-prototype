@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- ✅ Mobile viewport: prevent zoom, respect safe areas (iOS notch) -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+
+    <!-- PWA manifest: enables fullscreen (no browser toolbar) when launched from Home Screen -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- iOS: Add to Home Screen / standalone fullscreen -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="WeLoan365" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Android / Chrome: standalone display + theme color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#0052CC" />
+
+    <!-- Prevent flash of wrong background -->
+    <style>
+      html { background: #F2F5F8; }
+      @media (min-width: 768px) { html { background: #12122a; } }
+    </style>
+
+    <title>WeLoan365 Prototype</title>
+
+    <!-- Inter (UI) + Noto Sans Khmer (bilingual support) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Khmer:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

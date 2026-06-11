@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"---EXIT $?---\")",
+      "Bash(echo \"---tsc exit $?---\")",
+      "Bash(pkill -f \"vite\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:5173/assets/icons/__TRACKED_VAR__.svg)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:5173/assets/banners/__TRACKED_VAR__.png)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:5173/assets/illustrations/__TRACKED_VAR__.svg)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173/assets/discover/calculator.png\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(lsof -ti:5173)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(curl -s -o /dev/null http://localhost:5173/)",
+      "Bash(node -e \"try{require.resolve\\('playwright'\\);console.log\\('playwright-ok'\\)}catch\\(e\\){console.log\\('no-playwright'\\)}\")",
+      "Bash(node -e \"try{require.resolve\\('puppeteer'\\);console.log\\('puppeteer-ok'\\)}catch\\(e\\){console.log\\('no-puppeteer'\\)}\")",
+      "Bash(curl -s -o /dev/null -w \"server: %{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash([ -x \"$CHROME\" ])",
+      "Read(//Applications/**)",
+      "Bash(gzip -t /Users/aoskosign/ProjectWorkspace/weloan365-prototype-backups/weloan365-prototype_20260604-145502.tar.gz)",
+      "Bash(tar -tzf /Users/aoskosign/ProjectWorkspace/weloan365-prototype-backups/weloan365-prototype_20260604-145502.tar.gz)",
+      "Bash(curl -s -o /dev/null -w \"ico_home: %{http_code}\\\\n\" \"http://localhost:5173/assets/icons/ico_home.svg?t=$\\(date +%s\\)\")",
+      "Bash(curl -s -o /dev/null -w \"1.png: %{http_code}\\\\n\" \"http://localhost:5173/assets/banners/1.png?t=$\\(date +%s\\)\")",
+      "Bash(xargs kill -9)",
+      "Bash(curl -s -D - -o /dev/null \"http://localhost:5173/assets/icons/ico_home.svg?t=$\\(date +%s\\)\")",
+      "Bash(curl -s \"http://localhost:5173/assets/icons/ico_home.svg\")",
+      "Bash(echo \"tsc exit: $?\")",
+      "Bash(cp __TRACKED_VAR__/micro.png public/assets/banners/micro.png)",
+      "Bash(cp __TRACKED_VAR__/small-business.png public/assets/banners/small-business.png)",
+      "Bash(cp __TRACKED_VAR__/housing.png public/assets/banners/housing.png)",
+      "Bash(cp __TRACKED_VAR__/enterprise-sme.png public/assets/banners/enterprise-sme.png)",
+      "Bash(cp __TRACKED_VAR__/migrant-worker.png public/assets/banners/migrant-worker.png)",
+      "Bash(curl -s -D - -o /dev/null http://localhost:5173/assets/__TRACKED_VAR__)"
+    ]
+  }
+}
