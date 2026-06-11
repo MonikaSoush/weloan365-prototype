@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 const HomeScreen       = lazy(() => import('../screens/HomeScreen'))
 const MyLoanScreen     = lazy(() => import('../screens/MyLoanScreen'))
 const MyLoanDetailScreen = lazy(() => import('../screens/MyLoanDetailScreen'))
+const CompletedLoanDetailScreen = lazy(() => import('../screens/CompletedLoanDetailScreen'))
 const MyLoanReviewDetailScreen = lazy(() => import('../screens/MyLoanReviewDetailScreen'))
 const MwlAboutScreen   = lazy(() => import('../screens/mwl/MwlAboutScreen'))
 const MwlLoanScreen    = lazy(() => import('../screens/mwl/MwlLoanScreen'))
@@ -32,6 +33,12 @@ const RestructureInfoScreen = lazy(() => import('../screens/restructure/Restruct
 const RestructureConditionsScreen = lazy(() => import('../screens/restructure/RestructureConditionsScreen'))
 const RestructureConsentScreen = lazy(() => import('../screens/restructure/RestructureConsentScreen'))
 const RestructureSuccessScreen = lazy(() => import('../screens/restructure/RestructureSuccessScreen'))
+const SettingsScreen   = lazy(() => import('../screens/SettingsScreen'))
+const NotificationsScreen = lazy(() => import('../screens/NotificationsScreen'))
+const EarlyPayoffScreen = lazy(() => import('../screens/EarlyPayoffScreen'))
+const ProfileScreen    = lazy(() => import('../screens/profile/ProfileScreen'))
+const ProfileDocumentsScreen = lazy(() => import('../screens/profile/ProfileDocumentsScreen'))
+const ProfileEditScreen = lazy(() => import('../screens/profile/ProfileEditScreen'))
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ScreenLoader() {
@@ -61,6 +68,7 @@ export default function AppRouter() {
         <Route path="/home-app" element={<HomeScreen loggedIn />} />
         <Route path="/my-loan" element={<MyLoanScreen />} />
         <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
+        <Route path="/my-loan-complete" element={<CompletedLoanDetailScreen />} />
         <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
         <Route path="/mwl-about" element={<MwlAboutScreen />} />
         <Route path="/mwl-loan" element={<MwlLoanScreen />} />
@@ -72,6 +80,12 @@ export default function AppRouter() {
         <Route path="/nonmwl-review" element={<MwlReviewScreen nonMwl />} />
         <Route path="/nonmwl-success" element={<MwlSuccessScreen product="Non-MWL Loan" />} />
         <Route path="/more" element={<MoreScreen />} />
+        <Route path="/settings" element={<SettingsScreen />} />
+        <Route path="/notifications" element={<NotificationsScreen />} />
+        <Route path="/early-payoff" element={<EarlyPayoffScreen />} />
+        <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/profile-documents" element={<ProfileDocumentsScreen />} />
+        <Route path="/profile-edit" element={<ProfileEditScreen />} />
         <Route path="/products" element={<ProductsScreen />} />
         <Route path="/sign-up" element={<SignUpScreen />} />
         <Route path="/qr-signin" element={<QrSignInScreen />} />

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -11,6 +11,8 @@ const MUTED = '#8A94A6'
 
 export default function OtpScreen() {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const nextSuffix = params.get('next') ? '?next=' + encodeURIComponent(params.get('next')!) : ''
   const [code, setCode] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -70,7 +72,7 @@ export default function OtpScreen() {
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => navigate('/create-pin')} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
+        <Button variant="contained" fullWidth onClick={() => navigate('/create-pin' + nextSuffix)} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
           Confirm
         </Button>
       </Box>

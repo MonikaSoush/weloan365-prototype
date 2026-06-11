@@ -60,7 +60,7 @@ export default function RestructureConditionsScreen() {
 
           <Box sx={{ background: 'linear-gradient(160deg, #14438F 0%, #0B2E66 100%)', borderRadius: '14px', p: '16px', color: '#fff' }}>
             <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.5px', color: 'rgba(255,255,255,0.7)' }}>NEW LOAN OUTSTANDING</Typography>
-            <Typography sx={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.5px', mt: 0.25 }}>$2,160.00</Typography>
+            <Typography sx={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.5px', mt: 0.25, color: '#fff' }}>$2,160.00</Typography>
             <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', mt: 0.25 }}>Final amount will be determined at the approval date.</Typography>
           </Box>
 

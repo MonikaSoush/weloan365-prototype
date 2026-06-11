@@ -41,6 +41,7 @@ export function SectionLabel({ label, action }: { label: string; action?: string
 // Top bar — avatar + "Welcome back, Krong Kampuchea" + chat & bell
 // ─────────────────────────────────────────────────────────────────────────────
 export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = {}) {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -56,26 +57,34 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
         bgcolor: '#F5F5F5',
       }}
     >
-      <Box sx={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-        <AssetImg
-          src={ILLUS.avatar}
-          alt="avatar"
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          fallback={<AvatarArt />}
-        />
-      </Box>
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography sx={{ fontSize: 12, color: '#8A94A6', lineHeight: 1.2 }}>Good morning!</Typography>
-        <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }} noWrap>
-          Krong Kampuchea
-        </Typography>
+      {/* Tap the profile (avatar + name) to open Settings. */}
+      <Box
+        onClick={() => navigate('/settings')}
+        role="button"
+        aria-label="Open settings"
+        sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+      >
+        <Box sx={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+          <AssetImg
+            src={ILLUS.avatar01}
+            alt="avatar"
+            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            fallback={<AvatarArt />}
+          />
+        </Box>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography sx={{ fontSize: 12, color: '#8A94A6', lineHeight: 1.2 }}>Good morning!</Typography>
+          <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }} noWrap>
+            Krong Kampuchea
+          </Typography>
+        </Box>
       </Box>
       <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
         <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
           <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
         </Badge>
       </IconButton>
-      <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
+      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
         <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
       </IconButton>
     </Box>
@@ -112,31 +121,45 @@ const MENU_SECTIONS: { heading: string; items: { label: string; sub?: string; ic
 ]
 
 // Shared "More" menu body — rendered full-page by the More screen.
-export function MoreMenuBody({ onBack, onItemClick }: { onBack: () => void; onItemClick?: () => void }) {
+// `greeting` swaps the back-chevron/profile header for the personalized
+// HomeTopBar (used when More is a logged-in bottom-nav tab).
+export function MoreMenuBody({
+  onBack,
+  onItemClick,
+  greeting = false,
+}: {
+  onBack?: () => void
+  onItemClick?: () => void
+  greeting?: boolean
+}) {
   return (
     <Box className="scroll-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#F5F5F5' }}>
-      {/* Header — back chevron + profile */}
-      <Box sx={{ px: 3, pt: 4, pb: 1 }}>
-        <IconButton size="small" onClick={onBack} sx={{ ml: -1, mb: 2, color: '#3A4256' }} aria-label="Back">
-          <Icon name="chevronLeft" />
-        </IconButton>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-            <AssetImg
-              src={ILLUS.orb}
-              alt="avatar"
-              sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              fallback={<AvatarArt />}
-            />
-          </Box>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
-              Krong Kampuchea
-            </Typography>
-            <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>ID: 00239913</Typography>
+      {greeting ? (
+        <HomeTopBar />
+      ) : (
+        /* Header — back chevron + profile */
+        <Box sx={{ px: 3, pt: 4, pb: 1 }}>
+          <IconButton size="small" onClick={onBack} sx={{ ml: -1, mb: 2, color: '#3A4256' }} aria-label="Back">
+            <Icon name="chevronLeft" />
+          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+              <AssetImg
+                src={ILLUS.orb}
+                alt="avatar"
+                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fallback={<AvatarArt />}
+              />
+            </Box>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
+                Krong Kampuchea
+              </Typography>
+              <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>ID: 00239913</Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      )}
 
       {/* Grouped sections */}
       <Box sx={{ flex: 1, px: 3, pt: 1 }}>
@@ -554,8 +577,8 @@ export function ApplyLoanCards({ variant = 'color', loggedIn = false }: { varian
   const isVisitor = flow === 'Visitor' && !loggedIn
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-      <ApplyCard title="Apply Loan Non-MWL" subtitle={'Domestic\nborrowers'} img={ILLUS.briefcase} iconName="briefcase" color="#45A89C" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up' : '/nonmwl-about')} />
-      <ApplyCard title="Apply Loan MWL" subtitle={'Migrant\nworkers'} img={ILLUS.mwl} iconName="plane" color="#1FA84F" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up' : '/mwl-about')} />
+      <ApplyCard title="Apply Loan Non-MWL" subtitle={'Domestic\nborrowers'} img={ILLUS.briefcase} iconName="briefcase" color="#45A89C" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/nonmwl-about') : '/nonmwl-about')} />
+      <ApplyCard title="Apply Loan MWL" subtitle={'Migrant\nworkers'} img={ILLUS.mwl} iconName="plane" color="#1FA84F" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/mwl-about') : '/mwl-about')} />
     </Box>
   )
 }

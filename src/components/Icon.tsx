@@ -37,6 +37,16 @@ import {
   Lock,
   Flashlight,
   Delete,
+  BellOff,
+  Globe,
+  Contrast,
+  LogOut,
+  X,
+  Share,
+  Download,
+  Calendar,
+  Trash2,
+  ChevronUp,
   type LucideProps,
 } from 'lucide-react'
 
@@ -91,6 +101,16 @@ export type IconName =
   | 'flashlight'
   | 'backspace'
   | 'info'
+  | 'bellOff'
+  | 'globe'
+  | 'theme'
+  | 'signOut'
+  | 'close'
+  | 'share'
+  | 'download'
+  | 'calendar'
+  | 'trash'
+  | 'chevronUp'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -154,6 +174,16 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   flashlight:      { sf: 'flashlight.off.fill',     cmp: Flashlight },
   backspace:       { sf: 'delete.left',             cmp: Delete },
   info:            { sf: 'info.circle',             cmp: Info },
+  bellOff:         { sf: 'bell.slash',              cmp: BellOff },
+  globe:           { sf: 'globe',                   cmp: Globe },
+  theme:           { sf: 'circle.lefthalf.filled',  cmp: Contrast },
+  signOut:         { sf: 'rectangle.portrait.and.arrow.right', cmp: LogOut },
+  close:           { sf: 'xmark',                   cmp: X },
+  share:           { sf: 'square.and.arrow.up',     cmp: Share },
+  download:        { sf: 'arrow.down.circle',       cmp: Download },
+  calendar:        { sf: 'calendar',                cmp: Calendar },
+  trash:           { sf: 'trash',                   cmp: Trash2 },
+  chevronUp:       { sf: 'chevron.up',              cmp: ChevronUp },
 }
 
 export interface IconProps {

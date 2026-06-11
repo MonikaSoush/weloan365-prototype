@@ -37,7 +37,6 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {loggedIn || flow !== 'Visitor' ? <HomeTopBar /> : <VisitorTopBar />}
         <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: 4, mt: 1 }}>
-          {!loggedIn && flow === 'Visitor' && <VisitorWelcome />}
           {!loggedIn && flow === 'Applicant' && <ApplicationProgress />}
           {!loggedIn && flow === 'Borrower' && (
             <>
@@ -105,29 +104,6 @@ function VisitorTopBar() {
 }
 
 // ─── Visitor — no loans yet; sign-up prompt ──────────────────────────────────
-function VisitorWelcome() {
-  const navigate = useNavigate()
-  return (
-    <Card sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.5 }}>
-      <Box sx={{ width: 40, height: 40, borderRadius: '10px', bgcolor: '#EEF3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <Icon name="idCard" size={20} color={BLUE} />
-      </Box>
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>Welcome!</Typography>
-        <Typography sx={{ fontSize: 11.5, color: '#8A94A6', mt: 0.25, lineHeight: 1.3 }}>Sign up to apply loan faster</Typography>
-      </Box>
-      <Button
-        variant="contained"
-        onClick={() => navigate('/sign-up')}
-        endIcon={<Icon name="arrowRight" size={14} />}
-        sx={{ height: 36, borderRadius: '10px', px: 1.75, fontSize: 12.5, fontWeight: 700, flexShrink: 0 }}
-      >
-        Get Started
-      </Button>
-    </Card>
-  )
-}
-
 // ─── Applicant — application submitted; tracking its progress ────────────────
 const APP_STEPS = ['Submitted', 'Under review', 'Approved']
 const APP_CURRENT = 1 // index of the in-progress step

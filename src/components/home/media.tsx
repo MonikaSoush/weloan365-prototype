@@ -51,10 +51,20 @@ export const ILLUS = mapAssets({
   mwl: 'illustrations/mwl.svg',
   orb: 'illustrations/orb.png',
   avatar: 'illustrations/orb-avatar.svg',
+  avatar01: 'illustrations/Avatar_01.png',
 })
 
 export const DISCOVER = mapAssets({
   calculator: 'discover/calculator.png',
+})
+
+export const BANKS = mapAssets({
+  khqr: 'banks/ico_khqr.png',
+  khqrCard: 'banks/KHQR.svg',
+  aba: 'banks/ABA.png',
+  acleda: 'banks/Aceleda.png',
+  ppcb: 'banks/PPCB.png',
+  wing: 'banks/Wing.png',
 })
 
 // ─────────────────────────────────────────────────────────────────────────────

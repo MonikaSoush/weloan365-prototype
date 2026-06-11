@@ -2,16 +2,22 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
+import { useFlow } from '../workspace/FlowContext'
+import { useSample } from '../workspace/SampleContext'
 
 // ─── Splash screen — brand blue, centered logo, loading spinner ──────────────
 export default function SplashScreen() {
   const navigate = useNavigate()
+  const { flow } = useFlow()
+  const { sample } = useSample()
 
-  // Auto-advance to Home after a 3s brand hold.
+  // Auto-advance after a 1.5s brand hold. Sample 2 keeps the nav-less Home;
+  // Sample 1 opens on the flow's default tab (Visitor → Products, others → My Loan).
   useEffect(() => {
-    const t = setTimeout(() => navigate('/home?v=1'), 1500)
+    const dest = sample === '2' ? '/home' : flow === 'Visitor' ? '/products' : '/my-loan'
+    const t = setTimeout(() => navigate(dest), 1500)
     return () => clearTimeout(t)
-  }, [navigate])
+  }, [navigate, flow, sample])
 
   return (
     <Box

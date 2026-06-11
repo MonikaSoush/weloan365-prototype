@@ -147,9 +147,10 @@ function Sidebar() {
   const [params] = useSearchParams()
   const activeId = useActiveScreenId()
   const { flow } = useFlow()
+  const { sample } = useSample()
 
-  // Screens for the active user flow, grouped by section in registry order.
-  const screens = screensForFlow(flow)
+  // Screens for the active user flow + sample, grouped by section in registry order.
+  const screens = screensForFlow(flow, sample)
   const sections: string[] = []
   for (const s of screens) if (!sections.includes(s.section)) sections.push(s.section)
 

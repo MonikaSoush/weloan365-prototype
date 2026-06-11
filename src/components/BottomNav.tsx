@@ -2,13 +2,11 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon, type IconName } from './Icon'
-import { useFlow } from '../workspace/FlowContext'
 
 const BLUE = '#0052CC'
 const MUTED = '#8A94A6'
 
 const TABS: { id: string; label: string; icon: IconName; path: string }[] = [
-  { id: 'home', label: 'Home', icon: 'home', path: '/home' },
   { id: 'products', label: 'Products', icon: 'products', path: '/products' },
   { id: 'loan', label: 'My Loan', icon: 'myLoan', path: '/my-loan' },
   { id: 'more', label: 'More', icon: 'more', path: '/more' },
@@ -18,10 +16,10 @@ const TABS: { id: string; label: string; icon: IconName; path: string }[] = [
 export default function BottomNav() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { flow } = useFlow()
 
-  // Visitors have no loans, so hide the My Loan tab for that flow.
-  const tabs = flow === 'Visitor' ? TABS.filter((t) => t.id !== 'loan') : TABS
+  // All flows show the same tabs; the My Loan screen renders an empty state
+  // for flows (e.g. Visitor) that have no loans yet.
+  const tabs = TABS
 
   return (
     <Box

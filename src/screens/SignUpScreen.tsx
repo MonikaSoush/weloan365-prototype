@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -8,9 +8,16 @@ import { Icon } from '../components/Icon'
 const BLUE = '#0052CC'
 const MUTED = '#8A94A6'
 
+// Carry an optional post-signup destination (e.g. an apply-loan screen) forward.
+function nextSuffix(next: string | null) {
+  return next ? '?next=' + encodeURIComponent(next) : ''
+}
+
 // ─── Enter Phone Number — Visitor sign-up entry point ────────────────────────
 export default function SignUpScreen() {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const next = params.get('next')
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -96,7 +103,7 @@ export default function SignUpScreen() {
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => navigate('/otp')} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
+        <Button variant="contained" fullWidth onClick={() => navigate('/otp' + nextSuffix(next))} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
           Send code
         </Button>
       </Box>

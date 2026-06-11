@@ -27,7 +27,7 @@ export default function RestructureInfoScreen() {
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: 'rgba(255,255,255,0.75)' }}>
               YOUR ACTIVE LOAN
             </Typography>
-            <Typography sx={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.5px', mt: 0.25 }}>$2,000.00</Typography>
+            <Typography sx={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.5px', mt: 0.25, color: '#fff' }}>$2,000.00</Typography>
             <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', mt: 0.25 }}>
               NH-2025-03114 · Migrant Worker Loan
             </Typography>
@@ -35,11 +35,11 @@ export default function RestructureInfoScreen() {
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ flex: 1 }}>
                 <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>Next payment</Typography>
-                <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.25 }}>$215 · 12 Jun</Typography>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.25, color: '#fff' }}>$215 · 12 Jun</Typography>
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>Status</Typography>
-                <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.25 }}>2 missed</Typography>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 0.25, color: '#fff' }}>2 missed</Typography>
               </Box>
             </Box>
           </Box>

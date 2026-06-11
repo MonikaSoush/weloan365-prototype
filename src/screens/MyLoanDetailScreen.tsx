@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
+import PayLoanSheet from '../components/PayLoanSheet'
 import { MwlHeader } from './mwl/MwlParts'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -25,9 +26,10 @@ export default function MyLoanDetailScreen() {
   // Sample 2 (?v=2) drops the segmented tabs and stacks every section in one scroll.
   const combined = (params.get('v') ?? '1') === '2'
   const [tab, setTab] = useState<Tab>('details')
+  const [payOpen, setPayOpen] = useState(false)
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         <MwlHeader onBack={() => navigate('/my-loan')} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 1 }}>
@@ -36,16 +38,18 @@ export default function MyLoanDetailScreen() {
 
         {combined ? (
           <Box sx={{ px: 3, pt: 2.5, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-            <DetailsTab />
+            <DetailsTab onPay={() => setPayOpen(true)} />
             <OthersTab />
           </Box>
         ) : (
           <Box sx={{ px: 3, pt: 2.5, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
             <SegmentedTabs value={tab} onChange={setTab} />
-            {tab === 'details' ? <DetailsTab /> : <OthersTab />}
+            {tab === 'details' ? <DetailsTab onPay={() => setPayOpen(true)} /> : <OthersTab />}
           </Box>
         )}
       </Box>
+
+      <PayLoanSheet open={payOpen} onClose={() => setPayOpen(false)} />
     </Box>
   )
 }
@@ -87,7 +91,7 @@ function SegmentedTabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => 
 }
 
 // ─── DETAILS tab ─────────────────────────────────────────────────────────────
-function DetailsTab() {
+function DetailsTab({ onPay }: { onPay: () => void }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
       {/* Status row */}
@@ -141,6 +145,7 @@ function DetailsTab() {
           </Box>
           <Button
             variant="contained"
+            onClick={onPay}
             startIcon={<Icon name="pay" size={16} />}
             sx={{ height: 38, borderRadius: '9px', px: 1.5, fontSize: 13, fontWeight: 500, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
           >
@@ -302,7 +307,7 @@ function OthersTab() {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
         <SectionLabel>Loan Service Requests</SectionLabel>
         <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
-          <ServiceRow icon="pay" title="Payoff Request" subtitle="Notify NHFC of intent to fully settle" divider />
+          <ServiceRow icon="pay" title="Payoff Request" subtitle="Notify NHFC of intent to fully settle" divider onClick={() => navigate('/early-payoff')} />
           <ServiceRow
             icon="arrowRight"
             title="Request Restructure"

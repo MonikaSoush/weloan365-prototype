@@ -4,9 +4,11 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import BottomNav from '../components/BottomNav'
+import PayLoanSheet from '../components/PayLoanSheet'
 import { Icon } from '../components/Icon'
 import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel } from '../components/home/HomeParts'
 import { useFlow } from '../workspace/FlowContext'
+import { useSample } from '../workspace/SampleContext'
 
 const BLUE = '#0052CC'
 
@@ -21,12 +23,16 @@ const TABS: { id: Tab; label: string }[] = [
 // My Loans — segmented control switches between Active / In Review / Complete.
 export default function MyLoanScreen() {
   const { flow } = useFlow()
+  const { sample } = useSample()
   // Applicants have only an in-review application: no summary card, no active/complete loans.
   const isApplicant = flow === 'Applicant'
+  // Visitors have no loans or applications at all — show a fully empty state.
+  const isVisitor = flow === 'Visitor'
   const [tab, setTab] = useState<Tab>(isApplicant ? 'review' : 'active')
+  const [payOpen, setPayOpen] = useState(false)
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         <HomeTopBar secondIcon="phone" />
         <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: 3, mt: 1 }}>
@@ -34,17 +40,28 @@ export default function MyLoanScreen() {
             My Loans
           </Typography>
 
-          {!isApplicant && <SummaryCard loanCount={3} defaultExpanded />}
+          {isVisitor ? (
+            <EmptyState
+              label="No loans yet"
+              hint="Apply for a loan from the Products tab and it will appear here."
+            />
+          ) : (
+            <>
+              {!isApplicant && <SummaryCard loanCount={3} defaultExpanded />}
 
-          <SegmentedTabs value={tab} onChange={setTab} />
+              <SegmentedTabs value={tab} onChange={setTab} />
 
-          {tab === 'active' && (isApplicant ? <EmptyState label="No active loans yet" hint="Your loan appears here once your application is approved." /> : <ActiveTab />)}
-          {tab === 'review' && <ReviewTab />}
-          {tab === 'complete' && (isApplicant ? <EmptyState label="No completed loans" hint="Loans you've fully paid off will show up here." /> : <CompleteTab />)}
+              {tab === 'active' && (isApplicant ? <EmptyState label="No active loans yet" hint="Your loan appears here once your application is approved." /> : <ActiveTab onPay={() => setPayOpen(true)} />)}
+              {tab === 'review' && <ReviewTab />}
+              {tab === 'complete' && (isApplicant ? <EmptyState label="No completed loans" hint="Loans you've fully paid off will show up here." /> : <CompleteTab />)}
+            </>
+          )}
         </Box>
       </Box>
 
-      <BottomNav />
+      {sample === '1' && <BottomNav />}
+
+      <PayLoanSheet open={payOpen} onClose={() => setPayOpen(false)} />
     </Box>
   )
 }
@@ -95,14 +112,14 @@ function SegmentedTabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => 
 }
 
 // ─── Active tab ──────────────────────────────────────────────────────────────
-function ActiveTab() {
+function ActiveTab({ onPay }: { onPay: () => void }) {
   return (
     <Box>
       <SectionLabel label="ACTIVE LOANS (3)" />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <ActiveLoanCard />
-        <ActiveLoanCard banner={{ tone: 'neutral', text: 'This loan is under review for restructuring' }} />
-        <ActiveLoanCard banner={{ tone: 'warning', text: 'This loan is overdue, penalty may charge' }} />
+        <ActiveLoanCard onPay={onPay} />
+        <ActiveLoanCard onPay={onPay} banner={{ tone: 'neutral', text: 'This loan is under review for restructuring' }} />
+        <ActiveLoanCard onPay={onPay} banner={{ tone: 'warning', text: 'This loan is overdue, penalty may charge' }} />
       </Box>
     </Box>
   )
@@ -117,7 +134,7 @@ function StatBox({ label, value }: { label: string; value: string }) {
   )
 }
 
-function ActiveLoanCard({ banner }: { banner?: { tone: 'neutral' | 'warning'; text: string } }) {
+function ActiveLoanCard({ banner, onPay }: { banner?: { tone: 'neutral' | 'warning'; text: string }; onPay: () => void }) {
   const navigate = useNavigate()
   return (
     <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer' }}>
@@ -167,7 +184,7 @@ function ActiveLoanCard({ banner }: { banner?: { tone: 'neutral' | 'warning'; te
           <Icon name="clock" size={14} color="#8A94A6" />
           <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Due Date 20 May</Typography>
         </Box>
-        <Button variant="contained" onClick={(e) => e.stopPropagation()} startIcon={<Icon name="pay" size={18} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
+        <Button variant="contained" onClick={(e) => { e.stopPropagation(); onPay() }} startIcon={<Icon name="pay" size={18} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
           Pay $320.00
         </Button>
       </Box>
@@ -218,10 +235,11 @@ function ReviewTab() {
 
 // ─── Complete tab ────────────────────────────────────────────────────────────
 function CompleteTab() {
+  const navigate = useNavigate()
   return (
     <Box>
       <SectionLabel label="COMPLETED (1)" />
-      <Card>
+      <Card onClick={() => navigate('/my-loan-complete')} sx={{ cursor: 'pointer' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>Small Business Loan</Typography>
           <StatusChip label="Paid Off" color="#1FA85C" bg="#DCF5E6" />
@@ -242,7 +260,7 @@ function CompleteTab() {
             <Icon name="clock" size={14} color="#8A94A6" />
             <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Last Paid on 20 May</Typography>
           </Box>
-          <Button variant="outlined" endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
+          <Button variant="outlined" onClick={(e) => { e.stopPropagation(); navigate('/my-loan-complete') }} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
             View Details
           </Button>
         </Box>

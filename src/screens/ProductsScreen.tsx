@@ -1,11 +1,16 @@
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import BottomNav from '../components/BottomNav'
-import { AssetImg, BANNERS } from '../components/home/media'
+import { Icon } from '../components/Icon'
+import { HomeTopBar, NewsBanner } from '../components/home/HomeParts'
+import { AssetImg, BANNERS, DISCOVER } from '../components/home/media'
+import { useSample } from '../workspace/SampleContext'
+import { useFlow } from '../workspace/FlowContext'
 
 const HEADING = '#0B0F1A'
+const MUTED = '#8A94A6'
 
 type Product = { name: string; amount: string; rate: string; img?: string }
 
@@ -47,7 +52,122 @@ function ProductCard({ p, height }: { p: Product; height: number }) {
   )
 }
 
+// ─── Discover — horizontal carousel of shortcuts + news under "All Loan" ─────
+type NewsItem = { tag: string; title: string; body: string; img?: string }
+
+const DISCOVER_NEWS: NewsItem[] = [
+  { tag: 'NEWS', title: 'Khmer New Year promotion', body: 'Lower micro-loan rates this season — apply by mid-April.', img: BANNERS.micro },
+  { tag: 'NEWS', title: 'Migrant worker support', body: 'Special rates for overseas workers and their families.', img: BANNERS.migrant },
+  { tag: 'TIPS', title: 'Build your credit score', body: 'Simple habits that help you qualify for a bigger loan.', img: BANNERS.housing },
+]
+
+const DISCOVER_CARD_W = 152
+const DISCOVER_CARD_H = 190
+
+function CalculatorCard() {
+  const navigate = useNavigate()
+  return (
+    <Box
+      onClick={() => navigate('/calculator')}
+      role="button"
+      aria-label="Loan calculator"
+      sx={{
+        flexShrink: 0,
+        position: 'relative',
+        width: DISCOVER_CARD_W,
+        height: DISCOVER_CARD_H,
+        borderRadius: '14px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        bgcolor: '#0B1A14',
+        '&:active': { opacity: 0.85 },
+      }}
+    >
+      <AssetImg
+        src={DISCOVER.calculator}
+        alt=""
+        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#0B1A14' }} />}
+      />
+      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', p: 1.5 }}>
+        <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.2px' }}>Calculator</Typography>
+        <Icon name="arrowRight" size={18} color="#fff" />
+      </Box>
+    </Box>
+  )
+}
+
+function NewsCard({ n }: { n: NewsItem }) {
+  return (
+    <Box
+      role="button"
+      sx={{
+        flexShrink: 0,
+        width: DISCOVER_CARD_W,
+        height: DISCOVER_CARD_H,
+        borderRadius: '14px',
+        overflow: 'hidden',
+        bgcolor: '#fff',
+        border: '1px solid #ECEFF3',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        '&:active': { opacity: 0.85 },
+      }}
+    >
+      <Box sx={{ height: 90, flexShrink: 0 }}>
+        <AssetImg
+          src={n.img}
+          alt={n.title}
+          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />}
+        />
+      </Box>
+      <Box sx={{ p: 1.25, display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
+        <Box sx={{ alignSelf: 'flex-start', bgcolor: '#F5C518', borderRadius: '6px', px: 0.75, py: '2px' }}>
+          <Typography sx={{ fontSize: 9, fontWeight: 800, color: HEADING, letterSpacing: '0.5px' }}>{n.tag}</Typography>
+        </Box>
+        <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING, lineHeight: 1.2 }}>{n.title}</Typography>
+        <Typography
+          sx={{ fontSize: 11, color: MUTED, lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
+        >
+          {n.body}
+        </Typography>
+      </Box>
+    </Box>
+  )
+}
+
+function DiscoverSection() {
+  return (
+    <Box>
+      <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px', mb: 1.5 }}>
+        DISCOVER
+      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1.5,
+          overflowX: 'auto',
+          // Bleed the scroll row to the screen edges, keep first/last card inset.
+          mx: -4,
+          px: 4,
+          pb: 0.5,
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+        }}
+      >
+        <CalculatorCard />
+        {DISCOVER_NEWS.map((n) => (
+          <NewsCard key={n.title} n={n} />
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
 function ProductsTopBar() {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -72,7 +192,7 @@ function ProductsTopBar() {
       <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
         <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
       </IconButton>
-      <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
+      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
         <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
       </IconButton>
     </Box>
@@ -80,14 +200,28 @@ function ProductsTopBar() {
 }
 
 export default function ProductsScreen() {
-  const [params] = useSearchParams()
-  const showNav = (params.get('v') ?? '1') === '1'
+  const { sample } = useSample()
+  const { flow } = useFlow()
+  const showNav = sample === '1'
+
+  // Logged-in flows (Applicant / Borrower) in Sample 1 see the personalized
+  // greeting header; visitors and Sample 2 keep the brand logo bar.
+  const greeting = sample === '1' && (flow === 'Applicant' || flow === 'Borrower')
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
-        <ProductsTopBar />
+        {greeting ? <HomeTopBar /> : <ProductsTopBar />}
         <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+          {sample === '1' && (
+            <Box>
+              <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px', mb: 1.5 }}>
+                NEWS &amp; PROMOTIONS
+              </Typography>
+              <NewsBanner />
+            </Box>
+          )}
+
           <Typography sx={{ fontSize: 30, fontWeight: 800, color: HEADING, letterSpacing: '-0.5px' }}>
             All Loan
           </Typography>
@@ -99,6 +233,8 @@ export default function ProductsScreen() {
           </Box>
 
           <ProductCard p={MIGRATION} height={140} />
+
+          {sample === '1' && <DiscoverSection />}
         </Box>
       </Box>
 

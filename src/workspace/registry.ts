@@ -31,6 +31,8 @@ export interface FlowScreen {
   flows?: UserFlow[]
   /** Per-flow sidebar name override (falls back to `name`) */
   flowNames?: Partial<Record<UserFlow, string>>
+  /** Global samples this screen appears in (omit = visible in every sample) */
+  inSamples?: ('1' | '2')[]
 }
 
 export const SCREENS: FlowScreen[] = [
@@ -53,6 +55,8 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
     // Visitor sees the "not yet login" home; signed-in flows see a single "Home".
     flowNames: { Applicant: 'Home', Borrower: 'Home' },
+    // The nav-less Home is the Sample 2 experience only.
+    inSamples: ['2'],
   },
   {
     id: 'home-app',
@@ -60,6 +64,7 @@ export const SCREENS: FlowScreen[] = [
     section: 'HOME',
     samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Visitor'],
+    inSamples: ['2'],
   },
   {
     id: 'products',
@@ -244,7 +249,12 @@ export function findScreen(id: string | undefined): FlowScreen | undefined {
   return SCREENS.find((s) => s.id === id)
 }
 
-// Screens visible for a given user flow (no `flows` field = visible in all).
-export function screensForFlow(flow: UserFlow): FlowScreen[] {
-  return SCREENS.filter((s) => !s.flows || s.flows.includes(flow))
+// Screens visible for a given user flow + global sample.
+// (no `flows` field = visible in all flows; no `inSamples` = visible in all samples)
+export function screensForFlow(flow: UserFlow, sample?: '1' | '2'): FlowScreen[] {
+  return SCREENS.filter(
+    (s) =>
+      (!s.flows || s.flows.includes(flow)) &&
+      (!sample || !s.inSamples || s.inSamples.includes(sample)),
+  )
 }
