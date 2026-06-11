@@ -60,6 +60,10 @@ import {
   Mic,
   Play,
   Plus,
+  ScanFace,
+  Fingerprint,
+  Smartphone,
+  Mail,
   type LucideProps,
 } from 'lucide-react'
 
@@ -137,6 +141,12 @@ export type IconName =
   | 'mic'
   | 'play'
   | 'plus'
+  | 'faceId'
+  | 'fingerprint'
+  | 'device'
+  | 'email'
+  | 'website'
+  | 'pin'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -223,6 +233,36 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   mic:             { sf: 'mic.fill',                 cmp: Mic },
   play:            { sf: 'play.fill',                cmp: Play },
   plus:            { sf: 'plus',                     cmp: Plus },
+  faceId:          { sf: 'faceid',                   cmp: ScanFace },
+  fingerprint:     { sf: 'touchid',                  cmp: Fingerprint },
+  device:          { sf: 'iphone',                   cmp: Smartphone },
+  email:           { sf: 'envelope.fill',            cmp: Mail },
+  website:         { sf: 'globe',                     cmp: Globe },
+  pin:             { sf: 'asterisk',                  cmp: Lock },
+}
+
+// ─── Brand glyph overrides ───────────────────────────────────────────────────
+// Monochrome SF-Symbol-style exports in /assets/brand. Rendered via CSS mask so
+// the `color` prop still recolors them; falls back to the Lucide cmp above if
+// the file fails to load. (Full-color logos like socials are NOT listed here —
+// render those as a plain <img>.)
+const BRAND_DIR = '/assets/brand/'
+const BRAND: Partial<Record<IconName, string>> = {
+  accountSecurity: 'Security.svg',
+  appPolicy:       'AppPolicy.svg',
+  faq:             'FAQ.svg',
+  feedback:        'Feedback.svg',
+  theme:           'Theme.svg',
+  bell:            'Notification.svg',
+  bellOff:         'Mute.svg',
+  globe:           'Language.svg',
+  phone:           'Call.svg',
+  faceId:          'FaceID.svg',
+  fingerprint:     'FingerPrint.svg',
+  device:          'Device.svg',
+  email:           'Email.svg',
+  website:         'Website.svg',
+  pin:             'PIN.svg',
 }
 
 export interface IconProps {
@@ -233,6 +273,30 @@ export interface IconProps {
 }
 
 export function Icon({ name, size = 24, color = 'currentColor', strokeWidth = 2 }: IconProps) {
+  const brand = BRAND[name]
+  if (brand) {
+    const url = `url(${BRAND_DIR}${encodeURI(brand)})`
+    return (
+      <span
+        aria-hidden
+        style={{
+          display: 'inline-block',
+          width: size,
+          height: size,
+          flexShrink: 0,
+          backgroundColor: color,
+          WebkitMaskImage: url,
+          maskImage: url,
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center',
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+        }}
+      />
+    )
+  }
   const C = REGISTRY[name].cmp
   return <C size={size} color={color} strokeWidth={strokeWidth} absoluteStrokeWidth />
 }

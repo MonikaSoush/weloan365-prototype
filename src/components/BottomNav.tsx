@@ -7,8 +7,8 @@ const BLUE = '#0052CC'
 const MUTED = '#8A94A6'
 
 const TABS: { id: string; label: string; icon: IconName; path: string }[] = [
-  { id: 'products', label: 'Products', icon: 'products', path: '/products' },
   { id: 'loan', label: 'My Loan', icon: 'myLoan', path: '/my-loan' },
+  { id: 'products', label: 'Products', icon: 'products', path: '/products' },
   { id: 'more', label: 'More', icon: 'more', path: '/more' },
 ]
 

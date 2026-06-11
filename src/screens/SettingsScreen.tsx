@@ -180,22 +180,29 @@ export default function SettingsScreen() {
               Krong Kampuchea
             </Typography>
           </Box>
-          <Icon name="appSettings" size={24} color="#1A1A1A" />
+          <IconButton
+            onClick={(e) => { e.stopPropagation(); navigate('/app-settings') }}
+            size="small"
+            aria-label="App settings"
+            sx={{ color: '#1A1A1A' }}
+          >
+            <Icon name="appSettings" size={24} color="#1A1A1A" />
+          </IconButton>
         </Box>
 
         {/* Sections */}
         <Box sx={{ px: 3, pb: 2 }}>
           <SectionLabel>ACCOUNT</SectionLabel>
           <Card>
-            <NavRow icon="accountSecurity" label="Account Security" sub="Biometric, Face ID, PIN" onClick={() => {}} />
+            <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
           </Card>
 
           <Box sx={{ mt: 2 }}>
             <SectionLabel>NOTIFICATION SETTINGS</SectionLabel>
             <Card>
-              <ToggleRow icon="bellOff" label="Payment reminders" sub="3 days before payment due" divider checked={paymentReminders} onToggle={setPaymentReminders} />
-              <ToggleRow icon="bell" label="Promotions & news" sub="Offers and updates" divider checked={promotions} onToggle={setPromotions} />
-              <ToggleRow icon="bellOff" label="Chat notifications" sub="New messages from support" checked={chatNotifs} onToggle={setChatNotifs} />
+              <ToggleRow icon="bellOff" label="Payment reminders" divider checked={paymentReminders} onToggle={setPaymentReminders} />
+              <ToggleRow icon="bell" label="Promotions & news" divider checked={promotions} onToggle={setPromotions} />
+              <ToggleRow icon="bellOff" label="Chat notifications" checked={chatNotifs} onToggle={setChatNotifs} />
             </Card>
           </Box>
 
@@ -203,23 +210,25 @@ export default function SettingsScreen() {
             <SectionLabel>APPEARANCE</SectionLabel>
             <Card>
               <SelectRow icon="globe" label="Language" value="English" flag="🇬🇧" divider />
-              <SelectRow icon="theme" label="Theme" sub="Change mode" value="System" />
+              <SelectRow icon="theme" label="Theme" value="System" />
             </Card>
           </Box>
 
           <Box sx={{ mt: 2 }}>
             <SectionLabel>SUPPORT</SectionLabel>
             <Card>
-              <NavRow icon="feedback" label="Feedback" sub="Share your experience" divider onClick={() => {}} />
-              <NavRow icon="faq" label="FAQ" sub="Common questions & answers" onClick={() => {}} />
+              <NavRow icon="findBranch" label="Find a branch" divider onClick={() => navigate('/branch-locator')} />
+              <NavRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
+              <NavRow icon="feedback" label="Feedback" divider onClick={() => navigate('/send-feedback')} />
+              <NavRow icon="faq" label="FAQ" onClick={() => navigate('/faq')} />
             </Card>
           </Box>
 
           <Box sx={{ mt: 2 }}>
             <SectionLabel>ABOUT</SectionLabel>
             <Card>
-              <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => {}} />
-              <NavRow icon="aboutNhfc" label="About NHFC" sub="Our vision & mission" onClick={() => {}} />
+              <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
+              <NavRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
             </Card>
           </Box>
         </Box>
@@ -228,7 +237,7 @@ export default function SettingsScreen() {
         <Box
           role="button"
           onClick={() => navigate('/flow-select')}
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, py: 3, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, pt: '44px', pb: '44px', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
         >
           <Icon name="signOut" size={20} color={DANGER} />
           <Typography sx={{ fontSize: 16, fontWeight: 800, color: DANGER }}>Sign out</Typography>

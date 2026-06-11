@@ -72,6 +72,7 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
 
 // ─── Visitor top bar — brand logo with chat & bell ───────────────────────────
 function VisitorTopBar() {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -93,10 +94,11 @@ function VisitorTopBar() {
         alt="NongHyup Finance (Cambodia) Plc"
         sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left' }}
       />
-      <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
+      {/* Visitors must sign up before chatting; carry /chat as the post-sign-up destination. */}
+      <IconButton onClick={() => navigate('/sign-up?next=' + encodeURIComponent('/chat'))} size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
         <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
       </IconButton>
-      <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
+      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
         <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
       </IconButton>
     </Box>

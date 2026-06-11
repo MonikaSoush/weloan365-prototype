@@ -284,6 +284,60 @@ export const SCREENS: FlowScreen[] = [
     section: 'NOTIFICATIONS',
     samples: [{ v: '1', label: 'Sample 1' }],
   },
+  {
+    id: 'account-security',
+    name: 'Account security',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'app-settings',
+    name: 'App settings',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'branch-locator',
+    name: 'Find a branch',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'blogs',
+    name: 'Blogs & Education',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'send-feedback',
+    name: 'Send feedback',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'feedback-history',
+    name: 'Feedback history',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'about',
+    name: 'About NHFC',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'terms-privacy',
+    name: 'Terms & Privacy',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'faq',
+    name: 'FAQ',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
 ]
 
 export const DEFAULT_SCREEN = SCREENS[0]

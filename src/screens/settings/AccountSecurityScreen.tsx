@@ -1,0 +1,185 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import Switch from '@mui/material/Switch'
+import { Icon, type IconName } from '../../components/Icon'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Account Security — sign-in methods + active sessions (opened from Settings).
+// ─────────────────────────────────────────────────────────────────────────────
+const HEADING = '#0B0F1A'
+const MUTED = '#8A94A6'
+const BLUE = '#0052CC'
+const DANGER = '#E11D48'
+const GREEN = '#1FA85C'
+
+function ScreenHeader({ title, onBack }: { title: string; onBack: () => void }) {
+  return (
+    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+      <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
+        <Icon name="chevronLeft" size={26} color={HEADING} />
+      </IconButton>
+      <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>{title}</Typography>
+    </Box>
+  )
+}
+
+function SectionLabel({ children }: { children: string }) {
+  return (
+    <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1 }}>
+      {children}
+    </Typography>
+  )
+}
+
+function Card({ children }: { children: React.ReactNode }) {
+  return <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>{children}</Box>
+}
+
+function Row({
+  icon,
+  label,
+  sub,
+  divider,
+  onClick,
+  right,
+  disabled,
+}: {
+  icon: IconName
+  label: string
+  sub?: string
+  divider?: boolean
+  onClick?: () => void
+  right: React.ReactNode
+  disabled?: boolean
+}) {
+  return (
+    <Box
+      onClick={disabled ? undefined : onClick}
+      role={onClick && !disabled ? 'button' : undefined}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        px: '14px',
+        py: '12px',
+        opacity: disabled ? 0.5 : 1,
+        cursor: onClick && !disabled ? 'pointer' : 'default',
+        borderBottom: divider ? '1px solid #F1F4F8' : 'none',
+        ...(onClick && !disabled && { '&:active': { bgcolor: '#EAF1FB' } }),
+      }}
+    >
+      <Icon name={icon} size={24} color="#1A1A1A" />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>{label}</Typography>
+        {sub && <Typography sx={{ fontSize: 12, color: MUTED, mt: 0.25 }}>{sub}</Typography>}
+      </Box>
+      {right}
+    </Box>
+  )
+}
+
+const blueSwitch = {
+  '& .MuiSwitch-switchBase.Mui-checked': { color: '#fff' },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1 },
+}
+
+type Session = { id: string; device: string; place: string; current?: boolean }
+const SESSIONS: Session[] = [
+  { id: 's1', device: 'iPhone 14 · Now', place: 'Phnom Penh', current: true },
+  { id: 's2', device: 'iPhone 16 Pro Max', place: 'Kampong Cham' },
+]
+
+export default function AccountSecurityScreen() {
+  const navigate = useNavigate()
+  const [faceId, setFaceId] = useState(true)
+
+  return (
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+      <Box className="scroll-content" sx={{ flex: 1 }}>
+        <ScreenHeader title="Account security" onBack={() => navigate(-1)} />
+
+        <Box sx={{ px: 3, pb: 4 }}>
+          {/* Sign-in methods */}
+          <SectionLabel>SIGN IN METHODS</SectionLabel>
+          <Card>
+            <Row
+              icon="faceId"
+              label="Face ID"
+              sub="Use Face ID to sign in"
+              divider
+              right={<Switch checked={faceId} onChange={(e) => setFaceId(e.target.checked)} sx={blueSwitch} />}
+            />
+            <Row
+              icon="fingerprint"
+              label="Touch ID"
+              sub="Not available on this device"
+              divider
+              disabled
+              right={<Switch checked={false} disabled />}
+            />
+            <Row
+              icon="pin"
+              label="Change PIN"
+              sub="Last changed 23 Apr 2026"
+              divider
+              onClick={() => {}}
+              right={<Icon name="chevronRight" size={20} color="#C2C9D4" />}
+            />
+            <Row
+              icon="device"
+              label="Change Phone Number"
+              sub="Current Number 093 333 333"
+              onClick={() => {}}
+              right={<Icon name="chevronRight" size={20} color="#C2C9D4" />}
+            />
+          </Card>
+
+          {/* Active sessions */}
+          <Box sx={{ mt: 2 }}>
+            <SectionLabel>ACTIVE SESSIONS</SectionLabel>
+            <Card>
+              {SESSIONS.map((s, i) => (
+                <Box
+                  key={s.id}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 2, px: '14px', py: '12px', borderBottom: i < SESSIONS.length - 1 ? '1px solid #F1F4F8' : 'none' }}
+                >
+                  <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon name="device" size={20} color="#5B6473" />
+                  </Box>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING }}>{s.device}</Typography>
+                    <Typography sx={{ fontSize: 12, color: MUTED, mt: 0.25 }}>{s.place}</Typography>
+                  </Box>
+                  {s.current ? (
+                    <Box sx={{ fontSize: 11, fontWeight: 700, px: 1.25, py: 0.5, borderRadius: 1.5, color: GREEN, bgcolor: '#E6F7EE' }}>Current</Box>
+                  ) : (
+                    <Typography
+                      role="button"
+                      onClick={() => {}}
+                      sx={{ fontSize: 12.5, fontWeight: 700, color: BLUE, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+                    >
+                      Logged Out
+                    </Typography>
+                  )}
+                </Box>
+              ))}
+            </Card>
+          </Box>
+
+          {/* Delete account */}
+          <Box
+            role="button"
+            onClick={() => {}}
+            sx={{ mt: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, py: 1.75, borderRadius: '12px', border: `1.5px solid ${DANGER}33`, bgcolor: '#FFF1F4', cursor: 'pointer', '&:active': { opacity: 0.7 } }}
+          >
+            <Icon name="trash" size={20} color={DANGER} />
+            <Typography sx={{ fontSize: 15, fontWeight: 800, color: DANGER }}>Delete Account</Typography>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  )
+}

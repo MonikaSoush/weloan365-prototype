@@ -45,7 +45,7 @@ function ProductCard({ p, height, showRate = false }: { p: Product; height: numb
           </Box>
         )}
       </Box>
-      <Box sx={{ px: 1.25, py: 1.25 }}>
+      <Box sx={{ p: '12px' }}>
         <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING }} noWrap>{p.name}</Typography>
         <Box sx={{ display: 'inline-flex', mt: 0.75, px: 1.25, py: '4px', bgcolor: '#ECECEC', borderRadius: '8px' }}>
           <Typography sx={{ fontSize: 11, color: '#000' }}>{p.amount}</Typography>
@@ -90,7 +90,7 @@ const DISCOVER_NEWS: NewsItem[] = [
 ]
 
 const DISCOVER_CARD_W = 152
-const DISCOVER_CARD_H = 190
+const DISCOVER_CARD_H = 202
 
 function CalculatorCard() {
   const navigate = useNavigate()
@@ -152,11 +152,15 @@ function NewsCard({ n, onClick }: { n: NewsItem; onClick?: () => void }) {
           fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />}
         />
       </Box>
-      <Box sx={{ p: 1.25, display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
-        <Box sx={{ alignSelf: 'flex-start', bgcolor: '#F5C518', borderRadius: '6px', px: 0.75, py: '2px' }}>
-          <Typography sx={{ fontSize: 9, fontWeight: 800, color: HEADING, letterSpacing: '0.5px' }}>{n.tag}</Typography>
+      <Box sx={{ p: '12px', display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
+        <Box sx={{ alignSelf: 'flex-start', bgcolor: '#FBF0CE', borderRadius: '6px', px: 0.75, py: '2px' }}>
+          <Typography sx={{ fontSize: 9, fontWeight: 800, color: '#C79200', letterSpacing: '0.5px' }}>{n.tag}</Typography>
         </Box>
-        <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING, lineHeight: 1.2 }}>{n.title}</Typography>
+        <Typography
+          sx={{ fontSize: 13, fontWeight: 700, color: HEADING, lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
+        >
+          {n.title}
+        </Typography>
         <Typography
           sx={{ fontSize: 11, color: MUTED, lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
         >
@@ -339,7 +343,7 @@ export default function ProductsScreen() {
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {greeting ? <HomeTopBar /> : <ProductsTopBar />}
-        <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+        <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: '24px', mt: 1 }}>
           {sample === '1' && (
             <Box>
               <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px', mb: 1.5 }}>
@@ -349,23 +353,25 @@ export default function ProductsScreen() {
             </Box>
           )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px' }}>
-              POPULAR PRODUCTS
-            </Typography>
-            <Box
-              onClick={() => navigate('/all-loan')}
-              role="button"
-              sx={{ cursor: 'pointer', '&:active': { opacity: 0.6 } }}
-            >
-              <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0052CC' }}>See all</Typography>
+          <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+              <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px' }}>
+                POPULAR PRODUCTS
+              </Typography>
+              <Box
+                onClick={() => navigate('/all-loan')}
+                role="button"
+                sx={{ cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+              >
+                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0052CC' }}>See all</Typography>
+              </Box>
             </Box>
-          </Box>
 
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-            {PRODUCTS.map((p) => (
-              <ProductCard key={p.name} p={p} height={152} />
-            ))}
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
+              {PRODUCTS.map((p) => (
+                <ProductCard key={p.name} p={p} height={152} />
+              ))}
+            </Box>
           </Box>
 
           {sample === '1' && <DiscoverSection />}

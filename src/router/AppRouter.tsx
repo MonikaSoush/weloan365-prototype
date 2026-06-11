@@ -47,6 +47,15 @@ const RequestConsultScreen = lazy(() => import('../screens/consult/RequestConsul
 const ConsultSuccessScreen = lazy(() => import('../screens/consult/ConsultSuccessScreen'))
 const DocumentViewerScreen = lazy(() => import('../screens/DocumentViewerScreen'))
 const AnnouncementDetailScreen = lazy(() => import('../screens/AnnouncementDetailScreen'))
+const AccountSecurityScreen = lazy(() => import('../screens/settings/AccountSecurityScreen'))
+const AppSettingsScreen = lazy(() => import('../screens/settings/AppSettingsScreen'))
+const AboutScreen      = lazy(() => import('../screens/settings/AboutScreen'))
+const TermsPrivacyScreen = lazy(() => import('../screens/settings/TermsPrivacyScreen'))
+const BranchLocatorScreen = lazy(() => import('../screens/settings/BranchLocatorScreen'))
+const BlogsScreen      = lazy(() => import('../screens/settings/BlogsScreen'))
+const SendFeedbackScreen = lazy(() => import('../screens/settings/SendFeedbackScreen'))
+const FeedbackHistoryScreen = lazy(() => import('../screens/settings/FeedbackHistoryScreen'))
+const FaqScreen        = lazy(() => import('../screens/settings/FaqScreen'))
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ScreenLoader() {
@@ -115,6 +124,15 @@ export default function AppRouter() {
         <Route path="/consult-success" element={<ConsultSuccessScreen />} />
         <Route path="/document-view" element={<DocumentViewerScreen />} />
         <Route path="/announcement" element={<AnnouncementDetailScreen />} />
+        <Route path="/account-security" element={<AccountSecurityScreen />} />
+        <Route path="/app-settings" element={<AppSettingsScreen />} />
+        <Route path="/about" element={<AboutScreen />} />
+        <Route path="/terms-privacy" element={<TermsPrivacyScreen />} />
+        <Route path="/branch-locator" element={<BranchLocatorScreen />} />
+        <Route path="/blogs" element={<BlogsScreen />} />
+        <Route path="/send-feedback" element={<SendFeedbackScreen />} />
+        <Route path="/feedback-history" element={<FeedbackHistoryScreen />} />
+        <Route path="/faq" element={<FaqScreen />} />
 
         {/* Catch-all: redirect unknown paths to home */}
         <Route path="*" element={<Navigate to="/home?v=1" replace />} />
