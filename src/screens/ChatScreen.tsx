@@ -121,6 +121,7 @@ export default function ChatScreen() {
       {/* Compose FAB */}
       <IconButton
         aria-label="New message"
+        onClick={() => navigate('/chat-new')}
         sx={{
           position: 'absolute',
           right: 24,

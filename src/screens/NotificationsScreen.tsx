@@ -32,6 +32,8 @@ export default function NotificationsScreen() {
 
   // Visitors and applicants have no loan yet → no transaction history.
   const hasTransactions = flow === 'Borrower'
+  // Visitors have no loan → no payment reminders.
+  const hasReminders = flow !== 'Visitor'
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -65,7 +67,7 @@ export default function NotificationsScreen() {
         </Box>
 
         <Box sx={{ px: 3, pt: 1, pb: 5 }}>
-          {filter === 'reminder' && <ReminderFeed />}
+          {filter === 'reminder' && (hasReminders ? <ReminderFeed /> : <EmptyReminders />)}
           {filter === 'transaction' && (hasTransactions ? <TransactionFeed /> : <EmptyTransactions />)}
           {filter === 'announcements' && <AnnouncementsFeed />}
         </Box>
@@ -322,6 +324,20 @@ function ReceiptRow({ label, value, bold, labelBold, last, align }: { label: str
 }
 
 // ─── Empty transactions (Visitor / Applicant — no loan yet) ──────────────────
+function EmptyReminders() {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 4 }}>
+      <Box sx={{ width: 76, height: 76, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
+        <Icon name="clock" size={34} color={MUTED} />
+      </Box>
+      <Typography sx={{ fontSize: 17, fontWeight: 800, color: HEADING }}>No reminders yet</Typography>
+      <Typography sx={{ fontSize: 14, color: MUTED, lineHeight: 1.5, mt: 0.75, maxWidth: 260 }}>
+        Once you have an active loan, payment due dates and reminders will show up here.
+      </Typography>
+    </Box>
+  )
+}
+
 function EmptyTransactions() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 4 }}>

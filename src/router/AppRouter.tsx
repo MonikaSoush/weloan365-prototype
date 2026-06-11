@@ -42,6 +42,7 @@ const ProfileEditScreen = lazy(() => import('../screens/profile/ProfileEditScree
 const AllLoanScreen    = lazy(() => import('../screens/AllLoanScreen'))
 const ChatScreen       = lazy(() => import('../screens/ChatScreen'))
 const ChatThreadScreen = lazy(() => import('../screens/ChatThreadScreen'))
+const NewMessageScreen = lazy(() => import('../screens/NewMessageScreen'))
 const RequestConsultScreen = lazy(() => import('../screens/consult/RequestConsultScreen'))
 const ConsultSuccessScreen = lazy(() => import('../screens/consult/ConsultSuccessScreen'))
 const DocumentViewerScreen = lazy(() => import('../screens/DocumentViewerScreen'))
@@ -109,6 +110,7 @@ export default function AppRouter() {
         <Route path="/restructure-success" element={<RestructureSuccessScreen />} />
         <Route path="/chat" element={<ChatScreen />} />
         <Route path="/chat-thread" element={<ChatThreadScreen />} />
+        <Route path="/chat-new" element={<NewMessageScreen />} />
         <Route path="/request-consult" element={<RequestConsultScreen />} />
         <Route path="/consult-success" element={<ConsultSuccessScreen />} />
         <Route path="/document-view" element={<DocumentViewerScreen />} />

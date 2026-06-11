@@ -140,7 +140,7 @@ export default function CalculatorScreen() {
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {/* Header */}
         <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
-          <IconButton onClick={() => navigate('/home?v=1')} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
+          <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
             <Icon name="chevronLeft" size={26} color="#0B0F1A" />
           </IconButton>
         </Box>

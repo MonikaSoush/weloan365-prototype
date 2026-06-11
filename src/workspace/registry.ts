@@ -254,6 +254,12 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {
+    id: 'chat-new',
+    name: 'New message',
+    section: 'SUPPORT',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
     id: 'request-consult',
     name: 'Request consultation',
     section: 'SUPPORT',

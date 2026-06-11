@@ -364,7 +364,7 @@ export default function ProductsScreen() {
 
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
             {PRODUCTS.map((p) => (
-              <ProductCard key={p.name} p={p} height={130} />
+              <ProductCard key={p.name} p={p} height={152} />
             ))}
           </Box>
 
