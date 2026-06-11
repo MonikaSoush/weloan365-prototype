@@ -35,12 +35,12 @@ export default function MwlSuccessScreen({ product = 'Migration Worker Loan' }: 
           fullWidth
           onClick={() => {
             setFlow('Applicant')
-            navigate('/home?v=1')
+            navigate('/my-loan?v=1')
           }}
-          startIcon={<Icon name="home" size={20} />}
+          startIcon={<Icon name="myLoan" size={20} />}
           sx={{ height: 56, borderRadius: '14px', fontSize: 17, fontWeight: 700 }}
         >
-          Back to Home
+          View My Loans
         </Button>
       </Box>
     </Box>

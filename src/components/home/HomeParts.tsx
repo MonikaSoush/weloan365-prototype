@@ -94,42 +94,14 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
 // ─────────────────────────────────────────────────────────────────────────────
 // Side menu — "More" drawer opened by the hamburger (Samples 4 & 5)
 // ─────────────────────────────────────────────────────────────────────────────
-const MENU_SECTIONS: { heading: string; items: { label: string; sub?: string; icon: IconName }[] }[] = [
-  {
-    heading: 'ACCOUNT',
-    items: [
-      { label: 'App Settings', sub: 'Personalize your app', icon: 'appSettings' },
-      { label: 'Account Security', sub: 'Biometric, Face ID, PIN', icon: 'accountSecurity' },
-    ],
-  },
-  {
-    heading: 'SUPPORT',
-    items: [
-      { label: 'FAQ', sub: 'Common questions & answers', icon: 'faq' },
-      { label: 'Find a branch', sub: 'Find nearest branch', icon: 'findBranch' },
-      { label: 'Blogs', sub: 'Tips, guides, news', icon: 'blogs' },
-      { label: 'Feedback', sub: 'Share your experience', icon: 'feedback' },
-    ],
-  },
-  {
-    heading: 'ABOUT',
-    items: [
-      { label: 'App policy & terms', icon: 'appPolicy' },
-      { label: 'About NHFC', sub: 'Our vision & mission', icon: 'aboutNhfc' },
-    ],
-  },
-]
-
 // Shared "More" menu body — rendered full-page by the More screen.
 // `greeting` swaps the back-chevron/profile header for the personalized
 // HomeTopBar (used when More is a logged-in bottom-nav tab).
 export function MoreMenuBody({
   onBack,
-  onItemClick,
   greeting = false,
 }: {
   onBack?: () => void
-  onItemClick?: () => void
   greeting?: boolean
 }) {
   return (
@@ -161,60 +133,44 @@ export function MoreMenuBody({
         </Box>
       )}
 
-      {/* Grouped sections */}
-      <Box sx={{ flex: 1, px: 3, pt: 1 }}>
-        {MENU_SECTIONS.map((section) => (
-          <Box key={section.heading} sx={{ mb: 2 }}>
-            <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1 }}>
-              {section.heading}
-            </Typography>
-            <Box sx={{ bgcolor: '#fff', borderRadius: 3, border: '1px solid #ECEFF3', overflow: 'hidden' }}>
-              {section.items.map((item, i) => (
-                <MenuRow
-                  key={item.label}
-                  icon={item.icon}
-                  label={item.label}
-                  sub={item.sub}
-                  divider={i < section.items.length - 1}
-                  onClick={onItemClick ?? (() => {})}
-                />
-              ))}
-            </Box>
-          </Box>
-        ))}
+      {/* Empty state */}
+      <Box
+        sx={{
+          flex: 1,
+          px: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            width: 96,
+            height: 96,
+            borderRadius: '50%',
+            bgcolor: '#EAF1FB',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 2.5,
+          }}
+        >
+          <Icon name="more" size={40} color="#5B86D6" />
+        </Box>
+        <Typography sx={{ fontSize: 18, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.3 }}>
+          Nothing here yet
+        </Typography>
+        <Typography sx={{ fontSize: 13.5, color: '#8A94A6', mt: 1, maxWidth: 260, lineHeight: 1.5 }}>
+          Your menu options will appear here once they're available.
+        </Typography>
       </Box>
 
       {/* Footer */}
       <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', py: 3 }}>
         NongHyup v1.0.0 · build 2026
       </Typography>
-    </Box>
-  )
-}
-
-function MenuRow({ icon, label, sub, divider = false, onClick }: { icon: IconName; label: string; sub?: string; divider?: boolean; onClick: () => void }) {
-  return (
-    <Box
-      onClick={onClick}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        px: 2.25,
-        py: 2,
-        cursor: 'pointer',
-        borderBottom: divider ? '1px solid #F1F4F8' : 'none',
-        transition: 'background 0.12s',
-        '&:hover': { bgcolor: '#F8FAFC' },
-        '&:active': { bgcolor: '#EAF1FB' },
-      }}
-    >
-      <Icon name={icon} size={24} color="#1A1A1A" />
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }}>{label}</Typography>
-        {sub && <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 0.25 }} noWrap>{sub}</Typography>}
-      </Box>
-      <Icon name="chevronRight" size={20} color="#C2C9D4" />
     </Box>
   )
 }

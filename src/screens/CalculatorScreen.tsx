@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import Slider from '@mui/material/Slider'
 import { Icon, type IconName } from '../components/Icon'
 import { FieldCard, BLUE } from './mwl/MwlParts'
+import { useFlow } from '../workspace/FlowContext'
 
 type IconOption = { name: string; icon: IconName }
 
@@ -117,6 +118,7 @@ function buildSchedule(amount: number, months: number, monthlyRatePct: number, m
 
 export default function CalculatorScreen() {
   const navigate = useNavigate()
+  const { flow } = useFlow()
   const [amount, setAmount] = useState(1000)
   const [term, setTerm] = useState(12)
   const [repaymentMethod, setRepaymentMethod] = useState(REPAYMENT_METHODS[0].name)
@@ -334,7 +336,7 @@ export default function CalculatorScreen() {
         <Button
           variant="contained"
           fullWidth
-          onClick={() => navigate('/mwl-about')}
+          onClick={() => navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/mwl-about') : '/mwl-about')}
           sx={{ minHeight: 48, borderRadius: '8px', fontSize: 16, fontWeight: 600, bgcolor: '#275CB2', '&:hover': { bgcolor: '#1f4f9e' } }}
         >
           Apply this loan

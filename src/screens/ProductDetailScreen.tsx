@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
 import { AssetImg, BANNERS } from '../components/home/media'
+import { useFlow } from '../workspace/FlowContext'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Product (loan) detail — opened by tapping a loan card on the Products screen.
@@ -54,12 +55,17 @@ const DOCUMENTS = [
 export default function ProductDetailScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
+  const { flow } = useFlow()
   const name = params.get('p') ?? 'SME Loan'
   const hero = HERO_BY_NAME[name] ?? BANNERS.enterprise
   // Only the Migration Worker Loan uses the MWL apply flow; the other four
   // products (Micro / Small Biz / Housing / SME) apply via the Non-MWL flow.
   const isMwl = name === 'Migration Worker Loan'
   const applyPath = isMwl ? '/mwl-about' : '/nonmwl-about'
+  // Visitors must sign up first; the apply destination is carried via `?next=`
+  // so they land on the application after completing sign-up.
+  const onApply = () =>
+    navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -180,7 +186,7 @@ export default function ProductDetailScreen() {
           variant="contained"
           fullWidth
           endIcon={<Icon name="arrowRight" size={18} color="#fff" />}
-          onClick={() => navigate(applyPath)}
+          onClick={onApply}
           sx={{ minHeight: 48, borderRadius: '8px', fontSize: 16, fontWeight: 600, bgcolor: BRAND, '&:hover': { bgcolor: '#1F4F9E' } }}
         >
           Apply this loan
