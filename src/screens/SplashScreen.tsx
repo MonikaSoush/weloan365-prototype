@@ -9,7 +9,7 @@ export default function SplashScreen() {
 
   // Auto-advance to Home after a 3s brand hold.
   useEffect(() => {
-    const t = setTimeout(() => navigate('/home?v=1'), 3000)
+    const t = setTimeout(() => navigate('/home?v=1'), 1500)
     return () => clearTimeout(t)
   }, [navigate])
 
