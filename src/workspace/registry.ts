@@ -50,10 +50,7 @@ export const SCREENS: FlowScreen[] = [
     id: 'home',
     name: 'Home (not yet login)',
     section: 'HOME',
-    samples: [
-      { v: '1', label: 'Sample 1' },
-      { v: '2', label: 'Sample 2' },
-    ],
+    samples: [{ v: '1', label: 'Sample 1' }],
     // Visitor sees the "not yet login" home; signed-in flows see a single "Home".
     flowNames: { Applicant: 'Home', Borrower: 'Home' },
   },
@@ -61,10 +58,7 @@ export const SCREENS: FlowScreen[] = [
     id: 'home-app',
     name: 'Home (logged in)',
     section: 'HOME',
-    samples: [
-      { v: '1', label: 'Sample 1' },
-      { v: '2', label: 'Sample 2' },
-    ],
+    samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Visitor'],
   },
   {

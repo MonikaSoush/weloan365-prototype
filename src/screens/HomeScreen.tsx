@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import BottomNav from '../components/BottomNav'
 import { Icon } from '../components/Icon'
 import { useFlow } from '../workspace/FlowContext'
+import { useSample } from '../workspace/SampleContext'
 import {
   HomeTopBar,
   SummaryCard,
@@ -25,10 +26,10 @@ const BLUE = '#0052CC'
 //   • Visitor   → welcome + explore prompt (no loans)
 //   • Applicant → application-in-progress tracker
 //   • Borrower  → outstanding summary + active loans
-// Sample 1 (?v=1) shows the bottom nav, Sample 2 (?v=2) hides it.
+// Sample 1 shows the bottom nav, Sample 2 hides it (global SampleContext).
 export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } = {}) {
-  const [params] = useSearchParams()
-  const showNav = (params.get('v') ?? '1') === '1'
+  const { sample } = useSample()
+  const showNav = sample === '1'
   const { flow } = useFlow()
 
   return (

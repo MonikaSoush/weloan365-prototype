@@ -6,8 +6,48 @@ import PhoneCanvas from './PhoneCanvas'
 import AppRouter from '../router/AppRouter'
 import { findScreen, DEFAULT_SCREEN, screensForFlow } from './registry'
 import { FlowProvider, useFlow, USER_FLOWS } from './FlowContext'
+import { SampleProvider, useSample, SAMPLES } from './SampleContext'
 
 const SIDEBAR_W = 272
+
+// ─── Sample selector — global Sample 1 / Sample 2 segmented control ──────────
+function SampleSelect() {
+  const { sample, setSample } = useSample()
+  return (
+    <Box sx={{ mb: 4 }}>
+      <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#9AA3B2', mb: 1 }}>
+        SAMPLE
+      </Typography>
+      <Box sx={{ display: 'flex', bgcolor: '#EEF1F5', borderRadius: 2, p: 0.5, gap: 0.5 }}>
+        {SAMPLES.map((s) => {
+          const active = s.id === sample
+          return (
+            <Box
+              key={s.id}
+              onClick={() => setSample(s.id)}
+              role="button"
+              sx={{
+                flex: 1,
+                textAlign: 'center',
+                py: 1,
+                borderRadius: 1.5,
+                cursor: 'pointer',
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: active ? '#0B0F1A' : '#8A94A6',
+                bgcolor: active ? '#fff' : 'transparent',
+                boxShadow: active ? '0 1px 3px rgba(16,24,40,0.08)' : 'none',
+                transition: 'all 0.12s',
+              }}
+            >
+              {s.label}
+            </Box>
+          )
+        })}
+      </Box>
+    </Box>
+  )
+}
 
 // ─── User-flow selector — defines which user context the prototype represents ─
 function UserFlowSelect() {
@@ -136,6 +176,7 @@ function Sidebar() {
         NongHyup Mobile App
       </Typography>
 
+      <SampleSelect />
       <UserFlowSelect />
 
       {sections.map((section) => (
@@ -225,6 +266,7 @@ function SampleSwitcher() {
 export default function Workspace() {
   return (
     <FlowProvider>
+      <SampleProvider>
       <Box sx={{ display: 'flex', minHeight: { xs: 'auto', md: '100vh' }, bgcolor: { xs: 'transparent', md: '#DDE0E5' } }}>
         <Sidebar />
 
@@ -246,6 +288,7 @@ export default function Workspace() {
           </PhoneCanvas>
         </Box>
       </Box>
+      </SampleProvider>
     </FlowProvider>
   )
 }
