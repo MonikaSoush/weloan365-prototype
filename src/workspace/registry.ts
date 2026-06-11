@@ -35,6 +35,12 @@ export interface FlowScreen {
 
 export const SCREENS: FlowScreen[] = [
   {
+    id: 'flow-select',
+    name: 'Select User Flow',
+    section: 'LAUNCH',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
     id: 'splash',
     name: 'Splash',
     section: 'LAUNCH',
@@ -62,12 +68,6 @@ export const SCREENS: FlowScreen[] = [
     flows: ['Visitor'],
   },
   {
-    id: 'untitled',
-    name: 'Untitled',
-    section: 'HOME',
-    samples: [{ v: '1', label: 'Sample 1' }],
-  },
-  {
     id: 'products',
     name: 'All Loan',
     section: 'PRODUCTS',
@@ -93,13 +93,55 @@ export const SCREENS: FlowScreen[] = [
     flows: ['Applicant', 'Borrower'],
   },
   {
+    id: 'my-loan-detail',
+    name: 'Loan Detail',
+    section: 'MY LOAN',
+    samples: [
+      { v: '1', label: '2 Segments' },
+      { v: '2', label: 'One Page' },
+    ],
+    flows: ['Applicant', 'Borrower'],
+  },
+  {
+    id: 'my-loan-review',
+    name: 'In Review Detail',
+    section: 'MY LOAN',
+    samples: [{ v: '1', label: 'Sample 1' }],
+    flows: ['Applicant', 'Borrower'],
+  },
+  {
     id: 'advance',
     name: 'Advance Account',
     section: 'MY LOAN',
-    samples: [
-      { v: '1', label: 'Account' },
-      { v: '2', label: 'Top-up' },
-    ],
+    samples: [{ v: '1', label: 'Sample 1' }],
+    flows: ['Borrower'],
+  },
+  {
+    id: 'restructure-info',
+    name: '1 · Your information',
+    section: 'REQUEST RESTRUCTURE',
+    samples: [{ v: '1', label: 'Sample 1' }],
+    flows: ['Borrower'],
+  },
+  {
+    id: 'restructure-conditions',
+    name: '2 · Your current loan',
+    section: 'REQUEST RESTRUCTURE',
+    samples: [{ v: '1', label: 'Sample 1' }],
+    flows: ['Borrower'],
+  },
+  {
+    id: 'restructure-consent',
+    name: '3 · Credit bureau consent',
+    section: 'REQUEST RESTRUCTURE',
+    samples: [{ v: '1', label: 'Sample 1' }],
+    flows: ['Borrower'],
+  },
+  {
+    id: 'restructure-success',
+    name: 'Request submitted',
+    section: 'REQUEST RESTRUCTURE',
+    samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Borrower'],
   },
   {

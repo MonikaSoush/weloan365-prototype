@@ -46,7 +46,10 @@ export default function AdvanceAccountScreen() {
         <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Balance + Top-up */}
           <Box sx={{ bgcolor: '#fff', borderRadius: '16px', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', px: 2.5, py: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5 }}>
-            <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px' }}>$120.00</Typography>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Balance</Typography>
+              <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.25 }}>$120.00</Typography>
+            </Box>
             <Button
               variant="contained"
               onClick={() => setTopUpOpen(true)}
@@ -60,10 +63,10 @@ export default function AdvanceAccountScreen() {
           {/* Advances payment table */}
           <Box>
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1 }}>
-              ADVANCES PAYMENT
+              HISTORY
             </Typography>
             <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
-              <AdvancesTable />
+              <AdvancesTable onRowClick={() => navigate('/my-loan-detail')} />
             </Box>
             <Typography sx={{ fontSize: 12, color: '#8A94A6', textAlign: 'center', mt: 1.5 }}>
               Showing 5 of 16 · <Box component="span" sx={{ color: BLUE, fontWeight: 700 }}>Preview</Box> for full view
@@ -123,7 +126,7 @@ export default function AdvanceAccountScreen() {
   )
 }
 
-function AdvancesTable() {
+function AdvancesTable({ onRowClick }: { onRowClick?: () => void }) {
   return (
     <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
       <Box component="thead">
@@ -137,7 +140,12 @@ function AdvancesTable() {
       </Box>
       <Box component="tbody">
         {TABLE_ROWS.map((row, ri) => (
-          <Box component="tr" key={ri} sx={{ borderTop: '1px solid #F1F4F8' }}>
+          <Box
+            component="tr"
+            key={ri}
+            onClick={onRowClick}
+            sx={{ borderTop: '1px solid #F1F4F8', cursor: onRowClick ? 'pointer' : 'default', '&:active': { bgcolor: '#F7F9FC' } }}
+          >
             <Cell>{row.date}</Cell>
             <Cell strong={row.deposit !== '$0.00'}>{row.deposit}</Cell>
             <Cell strong={row.pay !== '$0.00'}>{row.pay}</Cell>

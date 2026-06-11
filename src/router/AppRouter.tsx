@@ -9,16 +9,18 @@ import CircularProgress from '@mui/material/CircularProgress'
 // ─────────────────────────────────────────────────────────────────────────────
 const HomeScreen       = lazy(() => import('../screens/HomeScreen'))
 const MyLoanScreen     = lazy(() => import('../screens/MyLoanScreen'))
+const MyLoanDetailScreen = lazy(() => import('../screens/MyLoanDetailScreen'))
+const MyLoanReviewDetailScreen = lazy(() => import('../screens/MyLoanReviewDetailScreen'))
 const MwlAboutScreen   = lazy(() => import('../screens/mwl/MwlAboutScreen'))
 const MwlLoanScreen    = lazy(() => import('../screens/mwl/MwlLoanScreen'))
 const MwlGuarantorScreen = lazy(() => import('../screens/mwl/MwlGuarantorScreen'))
 const MwlReviewScreen  = lazy(() => import('../screens/mwl/MwlReviewScreen'))
 const MwlSuccessScreen = lazy(() => import('../screens/mwl/MwlSuccessScreen'))
 const MoreScreen       = lazy(() => import('../screens/samples/MoreScreen'))
-const UntitledScreen   = lazy(() => import('../screens/UntitledScreen'))
 const SignUpScreen     = lazy(() => import('../screens/SignUpScreen'))
 const ProductsScreen   = lazy(() => import('../screens/ProductsScreen'))
 const SplashScreen     = lazy(() => import('../screens/SplashScreen'))
+const FlowSelectScreen = lazy(() => import('../screens/FlowSelectScreen'))
 const QrSignInScreen   = lazy(() => import('../screens/visitor/QrSignInScreen'))
 const OtpScreen        = lazy(() => import('../screens/visitor/OtpScreen'))
 const CreatePinScreen  = lazy(() => import('../screens/visitor/CreatePinScreen'))
@@ -26,6 +28,10 @@ const ConfirmPinScreen = lazy(() => import('../screens/visitor/ConfirmPinScreen'
 const AdvanceAccountScreen = lazy(() => import('../screens/AdvanceAccountScreen'))
 const CalculatorScreen  = lazy(() => import('../screens/CalculatorScreen'))
 const ProductDetailScreen = lazy(() => import('../screens/ProductDetailScreen'))
+const RestructureInfoScreen = lazy(() => import('../screens/restructure/RestructureInfoScreen'))
+const RestructureConditionsScreen = lazy(() => import('../screens/restructure/RestructureConditionsScreen'))
+const RestructureConsentScreen = lazy(() => import('../screens/restructure/RestructureConsentScreen'))
+const RestructureSuccessScreen = lazy(() => import('../screens/restructure/RestructureSuccessScreen'))
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ScreenLoader() {
@@ -48,11 +54,14 @@ export default function AppRouter() {
   return (
     <Suspense fallback={<ScreenLoader />}>
       <Routes>
-        <Route path="/" element={<Navigate to="/splash" replace />} />
+        <Route path="/" element={<Navigate to="/flow-select" replace />} />
+        <Route path="/flow-select" element={<FlowSelectScreen />} />
         <Route path="/splash" element={<SplashScreen />} />
         <Route path="/home" element={<HomeScreen />} />
         <Route path="/home-app" element={<HomeScreen loggedIn />} />
         <Route path="/my-loan" element={<MyLoanScreen />} />
+        <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
+        <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
         <Route path="/mwl-about" element={<MwlAboutScreen />} />
         <Route path="/mwl-loan" element={<MwlLoanScreen />} />
         <Route path="/mwl-guarantor" element={<MwlGuarantorScreen />} />
@@ -63,7 +72,6 @@ export default function AppRouter() {
         <Route path="/nonmwl-review" element={<MwlReviewScreen nonMwl />} />
         <Route path="/nonmwl-success" element={<MwlSuccessScreen product="Non-MWL Loan" />} />
         <Route path="/more" element={<MoreScreen />} />
-        <Route path="/untitled" element={<UntitledScreen />} />
         <Route path="/products" element={<ProductsScreen />} />
         <Route path="/sign-up" element={<SignUpScreen />} />
         <Route path="/qr-signin" element={<QrSignInScreen />} />
@@ -73,6 +81,10 @@ export default function AppRouter() {
         <Route path="/advance" element={<AdvanceAccountScreen />} />
         <Route path="/calculator" element={<CalculatorScreen />} />
         <Route path="/product-detail" element={<ProductDetailScreen />} />
+        <Route path="/restructure-info" element={<RestructureInfoScreen />} />
+        <Route path="/restructure-conditions" element={<RestructureConditionsScreen />} />
+        <Route path="/restructure-consent" element={<RestructureConsentScreen />} />
+        <Route path="/restructure-success" element={<RestructureSuccessScreen />} />
 
         {/* Catch-all: redirect unknown paths to home */}
         <Route path="*" element={<Navigate to="/home?v=1" replace />} />

@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import BottomNav from '../components/BottomNav'
 import { Icon } from '../components/Icon'
 import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel } from '../components/home/HomeParts'
+import { useFlow } from '../workspace/FlowContext'
 
 const BLUE = '#0052CC'
 
@@ -18,7 +20,10 @@ const TABS: { id: Tab; label: string }[] = [
 
 // My Loans — segmented control switches between Active / In Review / Complete.
 export default function MyLoanScreen() {
-  const [tab, setTab] = useState<Tab>('active')
+  const { flow } = useFlow()
+  // Applicants have only an in-review application: no summary card, no active/complete loans.
+  const isApplicant = flow === 'Applicant'
+  const [tab, setTab] = useState<Tab>(isApplicant ? 'review' : 'active')
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -29,17 +34,30 @@ export default function MyLoanScreen() {
             My Loans
           </Typography>
 
-          <SummaryCard loanCount={3} defaultExpanded />
+          {!isApplicant && <SummaryCard loanCount={3} defaultExpanded />}
 
           <SegmentedTabs value={tab} onChange={setTab} />
 
-          {tab === 'active' && <ActiveTab />}
+          {tab === 'active' && (isApplicant ? <EmptyState label="No active loans yet" hint="Your loan appears here once your application is approved." /> : <ActiveTab />)}
           {tab === 'review' && <ReviewTab />}
-          {tab === 'complete' && <CompleteTab />}
+          {tab === 'complete' && (isApplicant ? <EmptyState label="No completed loans" hint="Loans you've fully paid off will show up here." /> : <CompleteTab />)}
         </Box>
       </Box>
 
       <BottomNav />
+    </Box>
+  )
+}
+
+// ─── Empty state — shown for Applicants on the Active / Complete tabs ─────────
+function EmptyState({ label, hint }: { label: string; hint: string }) {
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', py: 6, px: 2 }}>
+      <Box sx={{ width: 64, height: 64, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+        <Icon name="myLoan" size={30} color="#B4BCC9" />
+      </Box>
+      <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
+      <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.75, maxWidth: 240, lineHeight: 1.5 }}>{hint}</Typography>
     </Box>
   )
 }
@@ -100,8 +118,9 @@ function StatBox({ label, value }: { label: string; value: string }) {
 }
 
 function ActiveLoanCard({ banner }: { banner?: { tone: 'neutral' | 'warning'; text: string } }) {
+  const navigate = useNavigate()
   return (
-    <Card>
+    <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>Small Business Loan</Typography>
         <StatusChip label="Active" color="#275CB2" bg="#D8E9FF" />
@@ -148,7 +167,7 @@ function ActiveLoanCard({ banner }: { banner?: { tone: 'neutral' | 'warning'; te
           <Icon name="clock" size={14} color="#8A94A6" />
           <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Due Date 20 May</Typography>
         </Box>
-        <Button variant="contained" startIcon={<Icon name="pay" size={18} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
+        <Button variant="contained" onClick={(e) => e.stopPropagation()} startIcon={<Icon name="pay" size={18} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
           Pay $320.00
         </Button>
       </Box>
@@ -158,10 +177,11 @@ function ActiveLoanCard({ banner }: { banner?: { tone: 'neutral' | 'warning'; te
 
 // ─── In Review tab ───────────────────────────────────────────────────────────
 function ReviewTab() {
+  const navigate = useNavigate()
   return (
     <Box>
       <SectionLabel label="IN REVIEW (1)" />
-      <Card>
+      <Card onClick={() => navigate('/my-loan-review')} sx={{ cursor: 'pointer' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>Small Business Loan</Typography>
           <StatusChip label="In review" color="#B7791F" bg="#FBEBC6" />
@@ -184,6 +204,7 @@ function ReviewTab() {
 
         <Button
           variant="outlined"
+          onClick={(e) => { e.stopPropagation(); navigate('/my-loan-review') }}
           endIcon={<Icon name="arrowRight" size={16} />}
           fullWidth
           sx={{ mt: 2.5, height: 44, borderRadius: '10px', fontSize: 14 }}
