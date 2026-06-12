@@ -154,6 +154,10 @@ function Sidebar() {
   const sections: string[] = []
   for (const s of screens) if (!sections.includes(s.section)) sections.push(s.section)
 
+  // The section that contains the currently-active screen — so we can
+  // highlight its header in step with the active screen row.
+  const activeSection = screens.find((s) => s.id === activeId)?.section
+
   return (
     <Box
       component="aside"
@@ -165,7 +169,7 @@ function Sidebar() {
         borderRight: '1px solid #ECEFF3',
         display: { xs: 'none', md: 'flex' },
         flexDirection: 'column',
-        px: 3,
+        px: 2,
         py: 4,
         overflowY: 'auto',
       }}
@@ -180,9 +184,11 @@ function Sidebar() {
       <SampleSelect />
       <UserFlowSelect />
 
-      {sections.map((section) => (
+      {sections.map((section) => {
+        const sectionActive = section === activeSection
+        return (
         <Box key={section} sx={{ mb: 3 }}>
-          <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#9AA3B2', mb: 1 }}>
+          <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: sectionActive ? '#0052CC' : '#9AA3B2', mb: 1, transition: 'color 0.12s' }}>
             {section}
           </Typography>
           {screens.filter((s) => s.section === section).map((s) => {
@@ -210,7 +216,8 @@ function Sidebar() {
             )
           })}
         </Box>
-      ))}
+        )
+      })}
     </Box>
   )
 }
@@ -245,7 +252,7 @@ function SampleSwitcher() {
             onClick={() => setParams({ v: s.v })}
             role="button"
             sx={{
-              px: 3,
+              px: 2,
               py: 1,
               borderRadius: 999,
               cursor: 'pointer',

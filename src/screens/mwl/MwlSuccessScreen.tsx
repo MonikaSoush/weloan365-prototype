@@ -13,7 +13,7 @@ export default function MwlSuccessScreen({ product = 'Migration Worker Loan' }: 
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', px: 4, textAlign: 'center' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', px: 3, textAlign: 'center' }}>
         <Box sx={{ width: 120, height: 120, borderRadius: '50%', bgcolor: '#E6F4EA', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
           <Icon name="checkCircle" size={64} color={GREEN} strokeWidth={2} />
         </Box>

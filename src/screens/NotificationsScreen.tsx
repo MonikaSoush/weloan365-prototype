@@ -326,7 +326,7 @@ function ReceiptRow({ label, value, bold, labelBold, last, align }: { label: str
 // ─── Empty transactions (Visitor / Applicant — no loan yet) ──────────────────
 function EmptyReminders() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 3 }}>
       <Box sx={{ width: 76, height: 76, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
         <Icon name="clock" size={34} color={MUTED} />
       </Box>
@@ -340,7 +340,7 @@ function EmptyReminders() {
 
 function EmptyTransactions() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 8, px: 3 }}>
       <Box sx={{ width: 76, height: 76, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
         <Icon name="pay" size={34} color={MUTED} />
       </Box>

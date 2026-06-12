@@ -33,7 +33,7 @@ export default function ChatThreadScreen() {
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       {/* Header */}
-      <Box sx={{ flexShrink: 0, bgcolor: '#F5F5F5', px: 2, pt: 3, pb: 1.5, borderBottom: '1px solid #ECEEF1' }}>
+      <Box sx={{ flexShrink: 0, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1.5, borderBottom: '1px solid #ECEEF1' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton onClick={() => navigate('/chat')} aria-label="Back" sx={{ color: HEADING }}>
             <Icon name="chevronLeft" size={26} color={HEADING} />
@@ -56,7 +56,7 @@ export default function ChatThreadScreen() {
       </Box>
 
       {/* Messages */}
-      <Box className="scroll-content" sx={{ flex: 1, px: 2, py: 2, display: 'flex', flexDirection: 'column', gap: 1.75 }}>
+      <Box className="scroll-content" sx={{ flex: 1, px: 3, py: 2, display: 'flex', flexDirection: 'column', gap: 1.75 }}>
         {/* Day divider */}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 0.5 }}>
           <Box sx={{ bgcolor: '#fff', borderRadius: '999px', px: 1.75, py: 0.5, boxShadow: '0 1px 2px rgba(16,24,40,0.06)' }}>
@@ -70,7 +70,7 @@ export default function ChatThreadScreen() {
       </Box>
 
       {/* Composer */}
-      <Box sx={{ flexShrink: 0, bgcolor: '#F5F5F5', px: 2, pt: 1.5, pb: '34px' }}>
+      <Box sx={{ flexShrink: 0, bgcolor: '#F5F5F5', px: 3, pt: 1.5, pb: '34px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton aria-label="Attach file" sx={{ color: MUTED, p: 0.5 }}>
             <Icon name="paperclip" size={24} color={MUTED} />

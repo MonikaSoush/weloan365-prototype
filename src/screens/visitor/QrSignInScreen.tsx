@@ -17,7 +17,7 @@ export default function QrSignInScreen() {
       <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(120% 80% at 50% 40%, #3A3022 0%, #1B1A18 60%, #0E0F12 100%)' }} />
 
       {/* Header */}
-      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, pt: 2.5, zIndex: 2 }}>
+      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 3, pt: 2.5, zIndex: 2 }}>
         <Box component="button" type="button" onClick={() => navigate('/sign-up')} aria-label="Back"
           sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, borderRadius: '50%', bgcolor: 'rgba(0,0,0,0.4)', border: 'none', color: '#fff', cursor: 'pointer' }}>
           <Icon name="chevronLeft" size={24} color="#fff" />

@@ -184,8 +184,8 @@ function DiscoverSection() {
           gap: 1.5,
           overflowX: 'auto',
           // Bleed the scroll row to the screen edges, keep first/last card inset.
-          mx: -4,
-          px: 4,
+          mx: -3,
+          px: 3,
           pb: 0.5,
           scrollbarWidth: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
@@ -304,7 +304,7 @@ function ProductsTopBar() {
         display: 'flex',
         alignItems: 'center',
         gap: 1.25,
-        px: 4,
+        px: 3,
         pt: 4,
         pb: 2,
         position: 'sticky',
@@ -322,12 +322,14 @@ function ProductsTopBar() {
         onClick={() => navigate('/settings')}
         sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
       />
-      <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
-        <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
-      </IconButton>
-      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
-        <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
-      </IconButton>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <IconButton size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
+          <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+        </IconButton>
+        <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Notifications">
+          <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+        </IconButton>
+      </Box>
     </Box>
   )
 }
@@ -346,7 +348,7 @@ export default function ProductsScreen() {
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {greeting ? <HomeTopBar /> : <ProductsTopBar />}
-        <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: '24px', mt: 1 }}>
+        <Box sx={{ px: 3, pb: 5, display: 'flex', flexDirection: 'column', gap: '24px', mt: 1 }}>
           {sample === '1' && (
             <Box>
               <Typography sx={{ fontSize: 13, fontWeight: 800, color: MUTED, letterSpacing: '0.6px', mb: 1.5 }}>

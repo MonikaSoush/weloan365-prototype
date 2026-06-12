@@ -27,14 +27,14 @@ export default function AllLoanScreen() {
           </Box>
         </Box>
 
-        <Box sx={{ px: 3, pb: 5 }}>
+        <Box sx={{ px: 3, pb: '44px' }}>
           <Typography sx={{ fontSize: 30, fontWeight: 800, color: HEADING, letterSpacing: '-0.5px', mt: 0.5, mb: 2 }}>
             All Loan
           </Typography>
 
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
             {PRODUCTS.map((p) => (
-              <ProductCard key={p.name} p={p} height={130} />
+              <ProductCard key={p.name} p={p} height={152} />
             ))}
           </Box>
 

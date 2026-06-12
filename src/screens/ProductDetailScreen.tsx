@@ -120,7 +120,7 @@ export default function ProductDetailScreen() {
         </Box>
 
         {/* ── Body ────────────────────────────────────────────────────── */}
-        <Box sx={{ px: 2, pt: 2, pb: 2, display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        <Box sx={{ px: 3, py: '16px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
           {/* What it's for */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
             <SectionLabel>What it's for</SectionLabel>
@@ -181,7 +181,7 @@ export default function ProductDetailScreen() {
       </Box>
 
       {/* ── Footer CTA ─────────────────────────────────────────────────── */}
-      <Box sx={{ flexShrink: 0, px: 2, pt: 1, pb: '44px', bgcolor: '#F5F5F5' }}>
+      <Box sx={{ flexShrink: 0, px: 3, pt: 1, pb: '44px', bgcolor: '#F5F5F5' }}>
         <Button
           variant="contained"
           fullWidth

@@ -82,7 +82,7 @@ export default function ProfileEditScreen() {
         <Button
           variant="outlined"
           onClick={() => navigate(-1)}
-          sx={{ height: 48, borderRadius: '12px', px: 3, fontSize: 14, fontWeight: 700, color: '#0B0F1A', borderColor: '#E2E6EC', bgcolor: '#fff' }}
+          sx={{ height: 48, borderRadius: '12px', px: 2, fontSize: 14, fontWeight: 700, color: '#0B0F1A', borderColor: '#E2E6EC', bgcolor: '#fff' }}
         >
           Cancel
         </Button>

@@ -35,7 +35,7 @@ export default function FlowSelectScreen() {
         flexDirection: 'column',
         justifyContent: 'center',
         background: 'linear-gradient(165deg, #1C4DB8 0%, #0A3A9E 100%)',
-        px: 4,
+        px: 3,
       }}
     >
       <Box

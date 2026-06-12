@@ -42,13 +42,18 @@ export function SectionLabel({ label, action }: { label: string; action?: string
 // ─────────────────────────────────────────────────────────────────────────────
 export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = {}) {
   const navigate = useNavigate()
+  const { flow } = useFlow()
+  // Visitors aren't signed in, so there's no profile to show — display the
+  // NongHyup brand logo instead (matching the visitor Home tab). Chat is
+  // gated behind sign-up for visitors.
+  const isVisitor = flow === 'Visitor'
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
         gap: 1.5,
-        px: 4,
+        px: 3,
         pt: 2,
         pb: 2,
         position: 'sticky',
@@ -57,42 +62,118 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
         bgcolor: '#F5F5F5',
       }}
     >
-      {/* Tap the profile (avatar + name) to open Settings. */}
-      <Box
-        onClick={() => navigate('/settings')}
-        role="button"
-        aria-label="Open settings"
-        sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
-      >
-        <Box sx={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-          <AssetImg
-            src={ILLUS.avatar01}
-            alt="avatar"
-            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            fallback={<AvatarArt />}
-          />
+      {isVisitor ? (
+        <Box
+          component="img"
+          src="/assets/brand/header_logo.svg"
+          alt="NongHyup Finance (Cambodia) Plc"
+          role="button"
+          aria-label="Settings"
+          onClick={() => navigate('/settings')}
+          sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+        />
+      ) : (
+        /* Tap the profile (avatar + name) to open Settings. */
+        <Box
+          onClick={() => navigate('/settings')}
+          role="button"
+          aria-label="Open settings"
+          sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+        >
+          <Box sx={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+            <AssetImg
+              src={ILLUS.avatar01}
+              alt="avatar"
+              sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              fallback={<AvatarArt />}
+            />
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography sx={{ fontSize: 12, color: '#8A94A6', lineHeight: 1.2 }}>Good morning!</Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }} noWrap>
+              Krong Kampuchea
+            </Typography>
+          </Box>
         </Box>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography sx={{ fontSize: 12, color: '#8A94A6', lineHeight: 1.2 }}>Good morning!</Typography>
-          <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }} noWrap>
-            Krong Kampuchea
-          </Typography>
-        </Box>
+      )}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <IconButton onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
+          <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
+            <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+          </Badge>
+        </IconButton>
+        <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Notifications">
+          <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+        </IconButton>
       </Box>
-      <IconButton onClick={() => navigate('/chat')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
-        <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
-          <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
-        </Badge>
-      </IconButton>
-      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
-        <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
-      </IconButton>
     </Box>
   )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Side menu — "More" drawer opened by the hamburger (Samples 4 & 5)
+// "More" menu atoms — section label, quick-action tile, and nav row
+// ─────────────────────────────────────────────────────────────────────────────
+function MoreSectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', mb: 1 }}>
+      {children}
+    </Typography>
+  )
+}
+
+function MoreTile({ icon, label, tint, onClick }: { icon: IconName; label: string; tint: string; onClick?: () => void }) {
+  return (
+    <Box
+      onClick={onClick}
+      role="button"
+      aria-label={label}
+      sx={{
+        bgcolor: '#fff',
+        border: '1px solid #ECEFF3',
+        borderRadius: '14px',
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1.25,
+        cursor: 'pointer',
+        transition: 'transform 0.12s, background 0.12s',
+        '&:active': { transform: 'scale(0.98)', bgcolor: '#F8FAFC' },
+      }}
+    >
+      <Box sx={{ width: 40, height: 40, borderRadius: '11px', bgcolor: `${tint}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name={icon} size={22} color={tint} />
+      </Box>
+      <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
+    </Box>
+  )
+}
+
+function MoreRow({ icon, label, onClick, divider }: { icon: IconName; label: string; onClick?: () => void; divider?: boolean }) {
+  return (
+    <Box
+      onClick={onClick}
+      role="button"
+      aria-label={label}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        px: '14px',
+        py: '12px',
+        cursor: 'pointer',
+        borderBottom: divider ? '1px solid #F1F4F8' : 'none',
+        transition: 'background 0.12s',
+        '&:hover': { bgcolor: '#F8FAFC' },
+        '&:active': { bgcolor: '#EAF1FB' },
+      }}
+    >
+      <Icon name={icon} size={24} color="#1A1A1A" />
+      <Typography sx={{ flex: 1, fontSize: 14.5, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
+      <Icon name="chevronRight" size={20} color="#C2C9D4" />
+    </Box>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared "More" menu body — rendered full-page by the More screen.
 // `greeting` swaps the back-chevron/profile header for the personalized
@@ -104,73 +185,121 @@ export function MoreMenuBody({
   onBack?: () => void
   greeting?: boolean
 }) {
+  const navigate = useNavigate()
+  const { flow } = useFlow()
+  const isVisitor = flow === 'Visitor'
   return (
     <Box className="scroll-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#F5F5F5' }}>
       {greeting ? (
         <HomeTopBar />
       ) : (
-        /* Header — back chevron + profile */
+        /* Header — back chevron + profile (brand logo for visitors) */
         <Box sx={{ px: 3, pt: 4, pb: 1 }}>
           <IconButton size="small" onClick={onBack} sx={{ ml: -1, mb: 2, color: '#3A4256' }} aria-label="Back">
             <Icon name="chevronLeft" />
           </IconButton>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-              <AssetImg
-                src={ILLUS.orb}
-                alt="avatar"
-                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                fallback={<AvatarArt />}
-              />
+          {isVisitor ? (
+            <Box
+              component="img"
+              src="/assets/brand/header_logo.svg"
+              alt="NongHyup Finance (Cambodia) Plc"
+              role="button"
+              aria-label="Settings"
+              onClick={() => navigate('/settings')}
+              sx={{ height: 26, width: 'auto', display: 'block', objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+            />
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                <AssetImg
+                  src={ILLUS.orb}
+                  alt="avatar"
+                  sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  fallback={<AvatarArt />}
+                />
+              </Box>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
+                  Krong Kampuchea
+                </Typography>
+                <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>ID: 00239913</Typography>
+              </Box>
             </Box>
-            <Box sx={{ minWidth: 0 }}>
-              <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
-                Krong Kampuchea
-              </Typography>
-              <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>ID: 00239913</Typography>
-            </Box>
-          </Box>
+          )}
         </Box>
       )}
 
-      {/* Empty state */}
-      <Box
-        sx={{
-          flex: 1,
-          px: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            width: 96,
-            height: 96,
-            borderRadius: '50%',
-            bgcolor: '#EAF1FB',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mb: 2.5,
-          }}
-        >
-          <Icon name="more" size={40} color="#5B86D6" />
+      {/* Menu */}
+      <Box sx={{ flex: 1, px: 3, pt: 2, pb: 4, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        {/* Account entry — sign-up prompt for visitors, profile for members */}
+        {isVisitor ? (
+          <Box
+            role="button"
+            onClick={() => navigate('/sign-up')}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '16px', borderRadius: '14px', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+          >
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>Welcome!</Typography>
+              <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>Sign up to apply for a loan faster</Typography>
+            </Box>
+            <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.5, bgcolor: BLUE, borderRadius: '10px', px: 1.5, py: 1 }}>
+              <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>Get Started</Typography>
+              <Icon name="arrowRight" size={16} color="#fff" />
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            role="button"
+            onClick={() => navigate('/profile')}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '14px', borderRadius: '14px', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+          >
+            <Box sx={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+              <AssetImg src={ILLUS.avatar01} alt="avatar" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<AvatarArt />} />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>Krong Kampuchea</Typography>
+              <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: 0.25 }}>View profile & documents</Typography>
+            </Box>
+            <Icon name="chevronRight" size={20} color="#C2C9D4" />
+          </Box>
+        )}
+
+        {/* Quick actions */}
+        <Box>
+          <MoreSectionLabel>QUICK ACTIONS</MoreSectionLabel>
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
+            <MoreTile icon="calculator" label="Calculator" tint="#0052CC" onClick={() => navigate('/calculator')} />
+            <MoreTile icon="findBranch" label="Find a Branch" tint="#1FA85C" onClick={() => navigate('/branch-locator')} />
+            <MoreTile icon="message" label="Live Chat" tint="#7A5AF8" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} />
+            <MoreTile icon="bell" label="Notifications" tint="#E8770B" onClick={() => navigate('/notifications')} />
+          </Box>
         </Box>
-        <Typography sx={{ fontSize: 18, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.3 }}>
-          Nothing here yet
-        </Typography>
-        <Typography sx={{ fontSize: 13.5, color: '#8A94A6', mt: 1, maxWidth: 260, lineHeight: 1.5 }}>
-          Your menu options will appear here once they're available.
+
+        {/* Services */}
+        <Box>
+          <MoreSectionLabel>SERVICES</MoreSectionLabel>
+          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', border: '1px solid #ECEFF3', overflow: 'hidden' }}>
+            <MoreRow icon="phone" label="Request a consultation" divider onClick={() => navigate('/request-consult')} />
+            <MoreRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
+            <MoreRow icon="faq" label="FAQ" onClick={() => navigate('/faq')} />
+          </Box>
+        </Box>
+
+        {/* General */}
+        <Box>
+          <MoreSectionLabel>GENERAL</MoreSectionLabel>
+          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', border: '1px solid #ECEFF3', overflow: 'hidden' }}>
+            <MoreRow icon="appSettings" label="Settings" divider onClick={() => navigate('/settings')} />
+            <MoreRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
+            <MoreRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
+          </Box>
+        </Box>
+
+        {/* Footer */}
+        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: 1, pb: 1 }}>
+          NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>
-
-      {/* Footer */}
-      <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', py: 3 }}>
-        NongHyup v1.0.0 · build 2026
-      </Typography>
     </Box>
   )
 }

@@ -144,11 +144,11 @@ export default function CalculatorScreen() {
             <Icon name="chevronLeft" size={26} color="#0B0F1A" />
           </IconButton>
         </Box>
-        <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#000', letterSpacing: '-1px', px: 3, mt: 0.5, mb: 2 }}>
+        <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#000', letterSpacing: '-1px', px: 3, mt: 0.5, mb: 3 }}>
           Loan calculator
         </Typography>
 
-        <Box sx={{ px: 3, pb: '34px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Box sx={{ px: 3, pb: '34px', display: 'flex', flexDirection: 'column', gap: 5 }}>
           {/* ─── Inputs ───────────────────────────────────────────────────── */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <IconSelect label="Loan product" options={LOAN_PRODUCTS} value={loanProduct} onChange={setLoanProduct} />
@@ -197,7 +197,7 @@ export default function CalculatorScreen() {
             </Box>
 
             {/* Payment estimate (term slider) */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <SectionLabel>Payment estimate</SectionLabel>
               <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -297,7 +297,7 @@ export default function CalculatorScreen() {
             />
 
             {/* Monthly payment summary */}
-            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2 }}>
+            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5 }}>
               <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: LABEL, textTransform: 'uppercase' }}>
                 Monthly payment
               </Typography>
@@ -307,14 +307,14 @@ export default function CalculatorScreen() {
                 </Typography>
                 <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#000', mb: '2px' }}>/ month</Typography>
               </Box>
-              <Box sx={{ display: 'flex', gap: 2, mt: 1.5, pt: 1.5, borderTop: '1px solid rgba(0,0,0,0.18)' }}>
+              <Box sx={{ display: 'flex', gap: 2, mt: 2, pt: 2, borderTop: '1px solid rgba(0,0,0,0.18)' }}>
                 <SummaryStat label="Total interest" value={money(totalInterest, currency)} />
                 <SummaryStat label="Total payable" value={money(totalPayable, currency)} />
               </Box>
             </Box>
 
             {/* Repayment preview */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <SectionLabel>Repayment preview</SectionLabel>
               <Box sx={{ bgcolor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
                 <RepaymentTable

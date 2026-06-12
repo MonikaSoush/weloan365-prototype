@@ -39,7 +39,7 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
           Review your application
         </Typography>
 
-        <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Loan request hero */}
           <Box sx={{ background: `linear-gradient(135deg, ${BLUE} 0%, #003C99 100%)`, borderRadius: '14px', px: 2.5, py: 2, color: '#fff' }}>
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: 'rgba(255,255,255,0.85)' }}>LOAN REQUEST</Typography>
@@ -125,7 +125,7 @@ function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onE
 
 function Row({ label, value, divider }: { label: string; value: ReactNode; divider: boolean }) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, px: 2, py: 1.25, borderBottom: divider ? '1px solid #F1F4F8' : 'none' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, px: '14px', py: '12px', borderBottom: divider ? '1px solid #F1F4F8' : 'none' }}>
       <Typography sx={{ fontSize: 13, color: '#6B7280' }}>{label}</Typography>
       <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A', textAlign: 'right' }}>{value}</Typography>
     </Box>

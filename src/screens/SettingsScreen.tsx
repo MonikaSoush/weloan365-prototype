@@ -156,14 +156,14 @@ export default function SettingsScreen() {
           <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
             <Icon name="chevronLeft" size={26} color="#0B0F1A" />
           </IconButton>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <IconButton size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
               <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
-                <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
+                <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
               </Badge>
             </IconButton>
-            <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
-              <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
+            <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Notifications">
+              <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
             </IconButton>
           </Box>
         </Box>
@@ -174,17 +174,14 @@ export default function SettingsScreen() {
             <Box
               role="button"
               onClick={() => navigate('/sign-up')}
-              sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 2, borderRadius: '14px', bgcolor: '#fff', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '16px', borderRadius: '14px', bgcolor: '#fff', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
             >
-              <Box sx={{ width: 48, height: 48, borderRadius: '12px', bgcolor: '#EAF1FB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Icon name="idCard" size={24} color={BLUE} />
-              </Box>
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography sx={{ fontSize: 18, fontWeight: 800, color: HEADING, lineHeight: 1.2 }}>Welcome!</Typography>
                 <Typography sx={{ fontSize: 13, color: MUTED, mt: 0.25 }}>Sign up to apply loan faster</Typography>
               </Box>
               <Box
-                sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.75, bgcolor: BLUE, color: '#fff', borderRadius: '10px', px: 1.75, py: 1.25 }}
+                sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.75, bgcolor: BLUE, color: '#fff', borderRadius: '10px', p: '8px' }}
               >
                 <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: '#fff' }}>Get Started</Typography>
                 <Icon name="arrowRight" size={18} color="#fff" />
@@ -250,7 +247,7 @@ export default function SettingsScreen() {
             <Card>
               <NavRow icon="findBranch" label="Find a branch" divider onClick={() => navigate('/branch-locator')} />
               <NavRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
-              <NavRow icon="feedback" label="Feedback" divider onClick={() => navigate('/send-feedback')} />
+              <NavRow icon="feedback" label="Feedback" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback')} />
               <NavRow icon="faq" label="FAQ" onClick={() => navigate('/faq')} />
             </Card>
           </Box>
@@ -276,7 +273,7 @@ export default function SettingsScreen() {
           </Box>
         )}
 
-        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: isVisitor ? '44px' : 0, pb: 3 }}>
+        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: isVisitor ? '44px' : 0, pb: '44px' }}>
           NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>

@@ -45,7 +45,7 @@ export default function PinView({
       </Box>
 
       {/* Lock badge + title */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 4, mt: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 3, mt: 1 }}>
         <Icon name="lock" size={34} color="#0B0F1A" />
         <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', letterSpacing: 2, mt: 0.5, mb: 1.5 }}>***</Typography>
         <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', textAlign: 'center' }}>{title}</Typography>
@@ -61,7 +61,7 @@ export default function PinView({
 
       {/* Keypad */}
       <Box sx={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
-        <Box sx={{ width: '100%', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', rowGap: 1, px: 4, pb: '40px' }}>
+        <Box sx={{ width: '100%', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', rowGap: 1, px: 3, pb: '40px' }}>
           {KEYS.map((k) => (
             <Box key={k} component="button" type="button" onClick={() => press(k)} aria-label={k === 'back' ? 'Delete' : k}
               sx={{ height: 64, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', border: 'none', fontFamily: 'inherit', fontSize: 30, fontWeight: 500, color: '#0B0F1A', cursor: 'pointer', borderRadius: '50%', '&:active': { bgcolor: 'rgba(11,15,26,0.06)' } }}>

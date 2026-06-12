@@ -19,7 +19,7 @@ export default function RequestConsultScreen() {
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, pt: 3, pb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 3, pt: 3, pb: 1 }}>
           <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: HEADING }}>
             <Icon name="chevronLeft" size={26} color={HEADING} />
           </IconButton>

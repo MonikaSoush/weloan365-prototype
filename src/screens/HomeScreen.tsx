@@ -36,7 +36,7 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {loggedIn || flow !== 'Visitor' ? <HomeTopBar /> : <VisitorTopBar />}
-        <Box sx={{ px: 4, pb: 5, display: 'flex', flexDirection: 'column', gap: 4, mt: 1 }}>
+        <Box sx={{ px: 3, pb: 5, display: 'flex', flexDirection: 'column', gap: 4, mt: 1 }}>
           {!loggedIn && flow === 'Applicant' && <ApplicationProgress />}
           {!loggedIn && flow === 'Borrower' && (
             <>
@@ -79,7 +79,7 @@ function VisitorTopBar() {
         display: 'flex',
         alignItems: 'center',
         gap: 1.25,
-        px: 4,
+        px: 3,
         pt: 4,
         pb: 2,
         position: 'sticky',
@@ -95,12 +95,14 @@ function VisitorTopBar() {
         sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left' }}
       />
       {/* Visitors must sign up before chatting; carry /chat as the post-sign-up destination. */}
-      <IconButton onClick={() => navigate('/sign-up?next=' + encodeURIComponent('/chat'))} size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
-        <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />
-      </IconButton>
-      <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A' }} aria-label="Notifications">
-        <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 20, height: 20, display: 'block' }} />
-      </IconButton>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <IconButton onClick={() => navigate('/sign-up?next=' + encodeURIComponent('/chat'))} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
+          <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+        </IconButton>
+        <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Notifications">
+          <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+        </IconButton>
+      </Box>
     </Box>
   )
 }
