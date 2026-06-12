@@ -34,6 +34,7 @@ import {
   Contact,
   QrCode,
   CircleCheck,
+  Check,
   Lock,
   Flashlight,
   Delete,
@@ -118,6 +119,7 @@ export type IconName =
   | 'qrCode'
   | 'products'
   | 'checkCircle'
+  | 'check'
   | 'lock'
   | 'flashlight'
   | 'backspace'
@@ -216,6 +218,7 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   idCard:          { sf: 'person.text.rectangle',  cmp: Contact },
   qrCode:          { sf: 'qrcode',                  cmp: QrCode },
   checkCircle:     { sf: 'checkmark.circle',        cmp: CircleCheck },
+  check:           { sf: 'checkmark',               cmp: Check },
   lock:            { sf: 'lock.fill',               cmp: Lock },
   flashlight:      { sf: 'flashlight.off.fill',     cmp: Flashlight },
   backspace:       { sf: 'delete.left',             cmp: Delete },

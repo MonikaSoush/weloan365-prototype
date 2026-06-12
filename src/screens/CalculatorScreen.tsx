@@ -410,7 +410,7 @@ function IconSelect({
                 <Typography sx={{ flex: 1, minWidth: 0, fontSize: 16, fontWeight: active ? 700 : 500, color: active ? BLUE : '#0B0F1A' }}>
                   {p.name}
                 </Typography>
-                {active && <Box component="span" sx={{ color: BLUE, fontSize: 16, fontWeight: 800, lineHeight: 1 }}>✓</Box>}
+                {active && <Icon name="check" size={18} color={BLUE} />}
               </Box>
             )
           })}

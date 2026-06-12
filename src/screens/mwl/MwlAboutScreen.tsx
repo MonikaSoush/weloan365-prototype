@@ -67,7 +67,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
                   >
                     {active && (
                       <Box sx={{ position: 'absolute', top: 8, right: 8, width: 20, height: 20, borderRadius: '50%', bgcolor: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Box component="span" sx={{ color: '#fff', fontSize: 12, fontWeight: 800, lineHeight: 1 }}>✓</Box>
+                        <Icon name="check" size={13} color="#fff" />
                       </Box>
                     )}
                     <Typography sx={{ fontSize: 22, lineHeight: 1 }}>{d.flag}</Typography>

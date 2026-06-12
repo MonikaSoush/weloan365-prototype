@@ -88,7 +88,7 @@ export default function AdvanceAccountScreen() {
             aria-label="Close"
             sx={{ bgcolor: '#fff', border: '1px solid #ECEFF3', width: 40, height: 40, color: '#0B0F1A', boxShadow: '0 1px 2px rgba(16,24,40,0.05)', '&:hover': { bgcolor: '#F4F6F9' } }}
           >
-            <Box component="span" sx={{ fontSize: 20, fontWeight: 600, lineHeight: 1 }}>✕</Box>
+            <Icon name="close" size={20} color="#0B0F1A" />
           </IconButton>
         </Box>
 

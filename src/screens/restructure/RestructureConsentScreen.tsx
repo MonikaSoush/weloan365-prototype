@@ -58,7 +58,7 @@ export default function RestructureConsentScreen() {
                   justifyContent: 'center',
                 }}
               >
-                {agreed && <Box component="span" sx={{ color: '#fff', fontSize: 14, fontWeight: 800, lineHeight: 1 }}>✓</Box>}
+                {agreed && <Icon name="check" size={15} color="#fff" />}
               </Box>
               <Box sx={{ minWidth: 0 }}>
                 <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>I agree (Consent Status: Agreed)</Typography>

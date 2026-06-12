@@ -17,8 +17,8 @@ const KH = `'Noto Sans Khmer', sans-serif`
 
 type Step = { title: string; sub: string; state: 'done' | 'current' | 'pending' }
 const TIMELINE: Step[] = [
-  { title: 'Submitted', sub: '19 May, 14:22 · ✓', state: 'done' },
-  { title: 'Documents reviewed', sub: '20 May, 09:14 · ✓', state: 'done' },
+  { title: 'Submitted', sub: '19 May, 14:22', state: 'done' },
+  { title: 'Documents reviewed', sub: '20 May, 09:14', state: 'done' },
   { title: 'Credit assessment', sub: 'In progress · CBC + LOS check', state: 'current' },
   { title: 'Final approval decision', sub: 'Pending', state: 'pending' },
   { title: 'Disbursement', sub: 'Pending', state: 'pending' },

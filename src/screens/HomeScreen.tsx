@@ -155,7 +155,7 @@ function ApplicationProgress() {
                     color: '#fff',
                   }}
                 >
-                  {done ? <Box component="span" sx={{ fontSize: 11, fontWeight: 800, lineHeight: 1 }}>✓</Box> : <Box sx={{ width: 7, height: 7, borderRadius: '50%', bgcolor: '#fff' }} />}
+                  {done ? <Icon name="check" size={12} color="#fff" /> : <Box sx={{ width: 7, height: 7, borderRadius: '50%', bgcolor: '#fff' }} />}
                 </Box>
                 <Typography sx={{ fontSize: 11, fontWeight: active ? 700 : 600, color: reached ? '#0B0F1A' : '#8A94A6', mt: 0.75, textAlign: 'center' }}>
                   {label}
