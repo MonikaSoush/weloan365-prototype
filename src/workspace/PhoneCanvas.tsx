@@ -25,6 +25,9 @@ export default function PhoneCanvas({ children }: PhoneCanvasProps) {
         flexDirection: 'column',
         flexShrink: 0,
 
+        // ── Uniform 16px top inset for every screen ─────────────────────────
+        pt: '16px',
+
         // ── Workspace: light, rounded prototype frame (desktop only) ────────
         borderRadius: { xs: 0, md: '40px' },
         boxShadow: {
