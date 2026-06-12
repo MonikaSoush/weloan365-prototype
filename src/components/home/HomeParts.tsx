@@ -950,8 +950,8 @@ export function Card({ children, sx, onClick }: { children: ReactNode; sx?: obje
       sx={{
         bgcolor: '#fff',
         borderRadius: '16px',
-        border: '1px solid #ECEFF3',
-        boxShadow: '0 1px 3px rgba(16,24,40,0.04)',
+        border: 'none',
+        boxShadow: 'none',
         p: 2.5,
         ...sx,
       }}
