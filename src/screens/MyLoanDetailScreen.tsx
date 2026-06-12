@@ -149,7 +149,7 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
             variant="contained"
             onClick={onPay}
             startIcon={<Icon name="cash" size={16} />}
-            sx={{ height: 38, minWidth: 0, borderRadius: '9px', px: '10px', py: '10px', fontSize: 13, fontWeight: 500, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
+            sx={{ height: 38, minWidth: 0, borderRadius: '9px', px: '12px', py: '10px', fontSize: 13, fontWeight: 500, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
           >
             Pay Now
           </Button>
