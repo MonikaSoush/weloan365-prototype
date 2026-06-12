@@ -117,7 +117,9 @@ function CalculatorCard() {
         sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#0B1A14' }} />}
       />
-      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', p: 1.5 }}>
+      {/* Bottom scrim so the white title + arrow stay legible over the photo. */}
+      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)' }} />
+      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: '12px' }}>
         <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.2px' }}>Calculator</Typography>
         <Icon name="arrowRight" size={18} color="#fff" />
       </Box>

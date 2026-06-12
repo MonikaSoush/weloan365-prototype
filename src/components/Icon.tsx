@@ -161,6 +161,7 @@ export type IconName =
   | 'moon'
   | 'monitor'
   | 'smartphone'
+  | 'redo'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -196,6 +197,7 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   chevronRight:    { sf: 'chevron.right',          cmp: ChevronRight },
   arrowRight:      { sf: 'arrow.right',            cmp: ArrowRight },
   restructure:     { sf: 'arrow.trianglehead.2.clockwise', cmp: RefreshCw },
+  redo:            { sf: 'arrow.clockwise',         cmp: RefreshCw },
   calculator:      { sf: 'function',               cmp: Calculator },
   pay:             { sf: 'creditcard',             cmp: CreditCard },
   briefcase:       { sf: 'briefcase.fill',         cmp: Briefcase },
