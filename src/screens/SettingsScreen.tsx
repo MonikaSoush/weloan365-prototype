@@ -184,7 +184,10 @@ function SelectRow({
   )
 }
 
-export default function SettingsScreen() {
+// ─── Settings sections — shared by the Settings screen and the More tab ──────
+// Renders ACCOUNT / NOTIFICATION SETTINGS / APPEARANCE / ABOUT + Sign out, plus
+// the language/theme bottom-sheet pickers. The host supplies horizontal padding.
+export function SettingsSections() {
   const navigate = useNavigate()
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
@@ -195,6 +198,96 @@ export default function SettingsScreen() {
   const [theme, setTheme] = useState<ThemeId>('System')
   const [picker, setPicker] = useState<'language' | 'theme' | null>(null)
   const activeLang = LANGUAGES.find((l) => l.id === language) ?? LANGUAGES[0]
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {!isVisitor && (
+          <Box>
+            <SectionLabel>ACCOUNT</SectionLabel>
+            <Card>
+              <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
+            </Card>
+          </Box>
+        )}
+
+        <Box>
+          <SectionLabel>NOTIFICATION SETTINGS</SectionLabel>
+          <Card>
+            <ToggleRow icon="bellOff" label="Payment reminders" divider checked={paymentReminders} onToggle={setPaymentReminders} />
+            <ToggleRow icon="bell" label="Promotions & news" divider checked={promotions} onToggle={setPromotions} />
+            <ToggleRow icon="bellOff" label="Chat notifications" checked={chatNotifs} onToggle={setChatNotifs} />
+          </Card>
+        </Box>
+
+        <Box>
+          <SectionLabel>APPEARANCE</SectionLabel>
+          <Card>
+            <SelectRow
+              icon="globe"
+              label="Language"
+              value={activeLang.label}
+              flag={activeLang.flag}
+              onClick={() => setPicker('language')}
+              divider
+            />
+            <SelectRow
+              icon="theme"
+              label="Theme"
+              value={theme}
+              onClick={() => setPicker('theme')}
+            />
+          </Card>
+        </Box>
+
+        <Box>
+          <SectionLabel>ABOUT</SectionLabel>
+          <Card>
+            <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
+            <NavRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
+          </Card>
+        </Box>
+
+        {/* Sign out — visitors aren't signed in, so it's hidden for them */}
+        {!isVisitor && (
+          <Box
+            role="button"
+            onClick={() => navigate('/flow-select')}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, pt: '28px', pb: '8px', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+          >
+            <Icon name="signOut" size={20} color={DANGER} />
+            <Typography sx={{ fontSize: 16, fontWeight: 800, color: DANGER }}>Sign out</Typography>
+          </Box>
+        )}
+      </Box>
+
+      {/* Language picker */}
+      <PickerSheet
+        open={picker === 'language'}
+        title="Language"
+        options={LANGUAGES.map((l) => ({ value: l.id, label: l.label, flag: l.flag }))}
+        selected={language}
+        onSelect={(v) => setLanguage(v as LangId)}
+        onClose={() => setPicker(null)}
+      />
+
+      {/* Theme picker */}
+      <PickerSheet
+        open={picker === 'theme'}
+        title="Theme"
+        options={THEMES.map((t) => ({ value: t.id, label: t.id, icon: t.icon }))}
+        selected={theme}
+        onSelect={(v) => setTheme(v as ThemeId)}
+        onClose={() => setPicker(null)}
+      />
+    </>
+  )
+}
+
+export default function SettingsScreen() {
+  const navigate = useNavigate()
+  const { flow } = useFlow()
+  const isVisitor = flow === 'Visitor'
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -264,89 +357,13 @@ export default function SettingsScreen() {
 
         {/* Sections */}
         <Box sx={{ px: 3, pb: 2 }}>
-          {!isVisitor && (
-            <>
-              <SectionLabel>ACCOUNT</SectionLabel>
-              <Card>
-                <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
-              </Card>
-            </>
-          )}
-
-          <Box sx={{ mt: isVisitor ? 0 : 2 }}>
-            <SectionLabel>NOTIFICATION SETTINGS</SectionLabel>
-            <Card>
-              <ToggleRow icon="bellOff" label="Payment reminders" divider checked={paymentReminders} onToggle={setPaymentReminders} />
-              <ToggleRow icon="bell" label="Promotions & news" divider checked={promotions} onToggle={setPromotions} />
-              <ToggleRow icon="bellOff" label="Chat notifications" checked={chatNotifs} onToggle={setChatNotifs} />
-            </Card>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <SectionLabel>APPEARANCE</SectionLabel>
-            <Card>
-              <SelectRow
-                icon="globe"
-                label="Language"
-                value={activeLang.label}
-                flag={activeLang.flag}
-                onClick={() => setPicker('language')}
-                divider
-              />
-              <SelectRow
-                icon="theme"
-                label="Theme"
-                value={theme}
-                onClick={() => setPicker('theme')}
-              />
-            </Card>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <SectionLabel>ABOUT</SectionLabel>
-            <Card>
-              <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
-              <NavRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
-            </Card>
-          </Box>
+          <SettingsSections />
         </Box>
 
-        {/* Sign out — visitors aren't signed in, so it's hidden for them */}
-        {!isVisitor && (
-          <Box
-            role="button"
-            onClick={() => navigate('/flow-select')}
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, pt: '44px', pb: '44px', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
-          >
-            <Icon name="signOut" size={20} color={DANGER} />
-            <Typography sx={{ fontSize: 16, fontWeight: 800, color: DANGER }}>Sign out</Typography>
-          </Box>
-        )}
-
-        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: isVisitor ? '44px' : 0, pb: '44px' }}>
+        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: 1, pb: '44px' }}>
           NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>
-
-      {/* Language picker */}
-      <PickerSheet
-        open={picker === 'language'}
-        title="Language"
-        options={LANGUAGES.map((l) => ({ value: l.id, label: l.label, flag: l.flag }))}
-        selected={language}
-        onSelect={(v) => setLanguage(v as LangId)}
-        onClose={() => setPicker(null)}
-      />
-
-      {/* Theme picker */}
-      <PickerSheet
-        open={picker === 'theme'}
-        title="Theme"
-        options={THEMES.map((t) => ({ value: t.id, label: t.id, icon: t.icon }))}
-        selected={theme}
-        onSelect={(v) => setTheme(v as ThemeId)}
-        onClose={() => setPicker(null)}
-      />
     </Box>
   )
 }

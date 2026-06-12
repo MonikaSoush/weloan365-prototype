@@ -17,6 +17,7 @@ import { AssetImg, BANNERS, ILLUS, DISCOVER } from './media'
 import { Icon, type IconName } from '../Icon'
 import { ProductScene, AvatarArt, PromoScene } from './illustrations'
 import { useFlow } from '../../workspace/FlowContext'
+import { SettingsSections } from '../../screens/SettingsScreen'
 
 const BLUE = '#0052CC'
 const GREEN = '#8CC919'
@@ -269,6 +270,9 @@ export function MoreMenuBody({
             <MoreRow icon="faq" label="FAQ" onClick={() => navigate('/faq')} />
           </Box>
         </Box>
+
+        {/* Settings — Account / Notifications / Appearance / About + Sign out */}
+        <SettingsSections />
 
         {/* Footer */}
         <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: 1, pb: 1 }}>
