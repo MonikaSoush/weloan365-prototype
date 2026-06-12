@@ -217,7 +217,9 @@ function Gauge({ score, color, label }: { score: number; color: string; label: s
   const end = point(1)
   const cur = point(frac)
   const bg = `M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y}`
-  const fg = `M ${start.x} ${start.y} A ${r} ${r} 0 ${frac > 0.5 ? 1 : 0} 1 ${cur.x} ${cur.y}`
+  // The progress arc spans frac·180° — always ≤ 180°, so the large-arc flag is
+  // always 0 (the minor arc over the top). A 1 here would draw the long way round.
+  const fg = `M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${cur.x} ${cur.y}`
 
   return (
     <Box sx={{ position: 'relative', width: W, height: H }}>
