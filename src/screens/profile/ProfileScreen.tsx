@@ -35,9 +35,9 @@ function IdentityCard() {
 
   return (
     <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <Box sx={{ position: 'relative', flexShrink: 0 }}>
-          <Box sx={{ width: 76, height: 76, borderRadius: '14px', overflow: 'hidden', bgcolor: '#EDF1F6' }}>
+          <Box sx={{ width: 126, height: 126, borderRadius: '14px', overflow: 'hidden', bgcolor: '#EDF1F6' }}>
             {photo ? (
               <Box component="img" src={photo} alt="profile photo" sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             ) : (
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
           </Typography>
         </Box>
 
-        <Box sx={{ px: 3, pt: 1.5, pb: 5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ px: 3, pt: 1.5, pb: '44px', display: 'flex', flexDirection: 'column', gap: 2 }}>
           <IdentityCard />
 
           {/* Employment details — collapsible */}
