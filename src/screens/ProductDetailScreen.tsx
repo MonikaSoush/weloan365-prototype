@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
 import { AssetImg, BANNERS } from '../components/home/media'
 import { useFlow } from '../workspace/FlowContext'
@@ -67,9 +68,52 @@ export default function ProductDetailScreen() {
   const onApply = () =>
     navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
 
+  // Compact header fades in once the hero image has scrolled mostly out of view.
+  const [scrolled, setScrolled] = useState(false)
+
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
-      <Box className="scroll-content" sx={{ flex: 1 }}>
+    <Box className="screen-enter" sx={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+      {/* ── Compact sticky header (appears on scroll) ─────────────────── */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 20,
+          height: 60,
+          px: 1,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.5,
+          bgcolor: 'rgba(255,255,255,0.9)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid #ECECEC',
+          opacity: scrolled ? 1 : 0,
+          transform: scrolled ? 'translateY(0)' : 'translateY(-6px)',
+          transition: 'opacity 0.22s ease, transform 0.22s ease',
+          pointerEvents: scrolled ? 'auto' : 'none',
+        }}
+      >
+        <IconButton onClick={() => navigate('/products?v=1')} aria-label="Back" sx={{ color: '#171717' }}>
+          <Icon name="chevronLeft" size={24} color="#171717" />
+        </IconButton>
+        <Typography sx={{ flex: 1, fontSize: 18, fontWeight: 800, color: '#171717', letterSpacing: '-0.3px' }} noWrap>
+          {name}
+        </Typography>
+        <IconButton aria-label="Chat" sx={{ color: '#171717' }}>
+          <Icon name="message" size={22} color="#171717" />
+        </IconButton>
+        <IconButton aria-label="Call" sx={{ color: '#171717' }}>
+          <Icon name="phone" size={22} color="#171717" />
+        </IconButton>
+      </Box>
+
+      <Box
+        className="scroll-content"
+        sx={{ flex: 1 }}
+        onScroll={(e) => setScrolled((e.target as HTMLDivElement).scrollTop > 220)}
+      >
         {/* ── Hero header ─────────────────────────────────────────────── */}
         <Box sx={{ position: 'relative', height: 300, overflow: 'hidden' }}>
           <AssetImg
@@ -202,7 +246,7 @@ function HeroPill({ icon, label }: { icon: 'message' | 'phone'; label: string })
       role="button"
       sx={{
         height: 52,
-        px: 2,
+        px: '16px',
         borderRadius: '8px',
         bgcolor: 'rgba(0,0,0,0.4)',
         display: 'flex',

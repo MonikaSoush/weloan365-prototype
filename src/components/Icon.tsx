@@ -260,7 +260,7 @@ const BRAND: Partial<Record<IconName, string>> = {
   bell:            'Notification.svg',
   bellOff:         'Mute.svg',
   globe:           'Language.svg',
-  phone:           'Call.svg',
+  phone:           'ico_call.svg',
   faceId:          'FaceID.svg',
   fingerprint:     'FingerPrint.svg',
   device:          'Device.svg',
