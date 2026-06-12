@@ -317,7 +317,10 @@ function ProductsTopBar() {
         component="img"
         src="/assets/brand/header_logo.svg"
         alt="NongHyup Finance (Cambodia) Plc"
-        sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left' }}
+        role="button"
+        aria-label="Settings"
+        onClick={() => navigate('/settings')}
+        sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
       />
       <IconButton size="small" sx={{ color: '#1A1A1A' }} aria-label="Messages">
         <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 22, height: 22, display: 'block' }} />

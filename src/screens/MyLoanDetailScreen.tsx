@@ -228,6 +228,9 @@ const PAY_ROWS: PayRow[] = [
   { no: '4', date: '5/08/26', principal: '$39.93', other: '$5.53', total: '$44.99', tone: 'normal' },
 ]
 const PAY_HEAD = ['រ.ល', 'កាលបរិច្ឆេទ', 'ប្រាក់ដើម', 'ផ្សេងៗ', 'ប្រាក់សរុប']
+// Fixed column widths — keep numeric columns tight so the last column has
+// room for the amount + status badge (otherwise the badge gets clipped).
+const PAY_W: (number | undefined)[] = [28, 66, 62, 46, undefined]
 
 function PaymentTable() {
   return (
@@ -245,10 +248,11 @@ function PaymentTable() {
                   fontWeight: 600,
                   color: LABEL,
                   textAlign: i === 0 ? 'center' : 'left',
-                  px: i === 0 ? 0.5 : '10px',
+                  px: i === 0 ? 0.5 : '8px',
                   py: '12px',
                   borderBottom: '1px solid #F0F0F0',
-                  width: i === 0 ? 32 : undefined,
+                  width: PAY_W[i],
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {h}
@@ -265,17 +269,17 @@ function PaymentTable() {
                 <Box component="td" sx={{ textAlign: 'center', px: 0.5, py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL }}>
                   {row.no}
                 </Box>
-                <Box component="td" sx={{ px: '10px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>
+                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : '#000', whiteSpace: 'nowrap' }}>
                   {row.date}
                 </Box>
-                <Box component="td" sx={{ px: '10px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL }}>
+                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
                   {row.principal}
                 </Box>
-                <Box component="td" sx={{ px: '10px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL }}>
+                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
                   {row.other}
                 </Box>
-                <Box component="td" sx={{ px: '10px', py: '8px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0.5 }}>
+                <Box component="td" sx={{ px: '8px', py: '8px' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                     <Typography sx={{ fontSize: 12, fontWeight: 600, color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>{row.total}</Typography>
                     {row.badge && <StatusBadge text={row.badge.text} tone={row.badge.tone} />}
                   </Box>

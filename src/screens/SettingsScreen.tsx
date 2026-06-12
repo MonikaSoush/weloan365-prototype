@@ -8,6 +8,7 @@ import Badge from '@mui/material/Badge'
 import { Icon, type IconName } from '../components/Icon'
 import { AssetImg, ILLUS } from '../components/home/media'
 import { AvatarArt } from '../components/home/illustrations'
+import { useFlow } from '../workspace/FlowContext'
 
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
@@ -141,6 +142,8 @@ function SelectRow({
 
 export default function SettingsScreen() {
   const navigate = useNavigate()
+  const { flow } = useFlow()
+  const isVisitor = flow === 'Visitor'
   const [paymentReminders, setPaymentReminders] = useState(false)
   const [promotions, setPromotions] = useState(true)
   const [chatNotifs, setChatNotifs] = useState(false)
@@ -165,39 +168,67 @@ export default function SettingsScreen() {
           </Box>
         </Box>
 
-        {/* Profile row */}
-        <Box
-          role="button"
-          onClick={() => navigate('/profile')}
-          sx={{ px: 3, pt: 1, pb: 2, display: 'flex', alignItems: 'center', gap: 2, cursor: 'pointer', '&:active': { opacity: 0.7 } }}
-        >
-          <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-            <AssetImg src={ILLUS.avatar01} alt="avatar" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<AvatarArt />} />
+        {/* Profile row (signed-in) — or a sign-up prompt for visitors */}
+        {isVisitor ? (
+          <Box sx={{ px: 3, pt: 1, pb: 2 }}>
+            <Box
+              role="button"
+              onClick={() => navigate('/sign-up')}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 2, borderRadius: '14px', bgcolor: '#fff', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+            >
+              <Box sx={{ width: 48, height: 48, borderRadius: '12px', bgcolor: '#EAF1FB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon name="idCard" size={24} color={BLUE} />
+              </Box>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography sx={{ fontSize: 18, fontWeight: 800, color: HEADING, lineHeight: 1.2 }}>Welcome!</Typography>
+                <Typography sx={{ fontSize: 13, color: MUTED, mt: 0.25 }}>Sign up to apply loan faster</Typography>
+              </Box>
+              <Box
+                sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.75, bgcolor: BLUE, color: '#fff', borderRadius: '10px', px: 1.75, py: 1.25 }}
+              >
+                <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: '#fff' }}>Get Started</Typography>
+                <Icon name="arrowRight" size={18} color="#fff" />
+              </Box>
+            </Box>
           </Box>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ fontSize: 13, color: MUTED, lineHeight: 1.2 }}>Good morning!</Typography>
-            <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING, lineHeight: 1.2 }} noWrap>
-              Krong Kampuchea
-            </Typography>
-          </Box>
-          <IconButton
-            onClick={(e) => { e.stopPropagation(); navigate('/app-settings') }}
-            size="small"
-            aria-label="App settings"
-            sx={{ color: '#1A1A1A' }}
+        ) : (
+          <Box
+            role="button"
+            onClick={() => navigate('/profile')}
+            sx={{ px: 3, pt: 1, pb: 2, display: 'flex', alignItems: 'center', gap: 2, cursor: 'pointer', '&:active': { opacity: 0.7 } }}
           >
-            <Icon name="appSettings" size={24} color="#1A1A1A" />
-          </IconButton>
-        </Box>
+            <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+              <AssetImg src={ILLUS.avatar01} alt="avatar" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<AvatarArt />} />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography sx={{ fontSize: 13, color: MUTED, lineHeight: 1.2 }}>Good morning!</Typography>
+              <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING, lineHeight: 1.2 }} noWrap>
+                Krong Kampuchea
+              </Typography>
+            </Box>
+            <IconButton
+              onClick={(e) => { e.stopPropagation(); navigate('/app-settings') }}
+              size="small"
+              aria-label="App settings"
+              sx={{ color: '#1A1A1A' }}
+            >
+              <Icon name="appSettings" size={24} color="#1A1A1A" />
+            </IconButton>
+          </Box>
+        )}
 
         {/* Sections */}
         <Box sx={{ px: 3, pb: 2 }}>
-          <SectionLabel>ACCOUNT</SectionLabel>
-          <Card>
-            <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
-          </Card>
+          {!isVisitor && (
+            <>
+              <SectionLabel>ACCOUNT</SectionLabel>
+              <Card>
+                <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
+              </Card>
+            </>
+          )}
 
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: isVisitor ? 0 : 2 }}>
             <SectionLabel>NOTIFICATION SETTINGS</SectionLabel>
             <Card>
               <ToggleRow icon="bellOff" label="Payment reminders" divider checked={paymentReminders} onToggle={setPaymentReminders} />
@@ -233,17 +264,19 @@ export default function SettingsScreen() {
           </Box>
         </Box>
 
-        {/* Sign out */}
-        <Box
-          role="button"
-          onClick={() => navigate('/flow-select')}
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, pt: '44px', pb: '44px', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
-        >
-          <Icon name="signOut" size={20} color={DANGER} />
-          <Typography sx={{ fontSize: 16, fontWeight: 800, color: DANGER }}>Sign out</Typography>
-        </Box>
+        {/* Sign out — visitors aren't signed in, so it's hidden for them */}
+        {!isVisitor && (
+          <Box
+            role="button"
+            onClick={() => navigate('/flow-select')}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, pt: '44px', pb: '44px', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+          >
+            <Icon name="signOut" size={20} color={DANGER} />
+            <Typography sx={{ fontSize: 16, fontWeight: 800, color: DANGER }}>Sign out</Typography>
+          </Box>
+        )}
 
-        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pb: 3 }}>
+        <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: isVisitor ? '44px' : 0, pb: 3 }}>
           NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>

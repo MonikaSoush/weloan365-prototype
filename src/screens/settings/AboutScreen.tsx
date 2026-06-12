@@ -64,8 +64,8 @@ export default function AboutScreen() {
           <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
             {CONTACTS.map((c, i) => (
               <Box key={c.value} sx={{ display: 'flex', alignItems: 'center', gap: 2, px: '14px', py: '12px', borderBottom: i < CONTACTS.length - 1 ? '1px solid #F1F4F8' : 'none' }}>
-                <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#EAF1FB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Icon name={c.icon} size={20} color={BLUE} />
+                <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#F1F4F8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon name={c.icon} size={20} color="#1A1A1A" />
                 </Box>
                 <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING }}>{c.value}</Typography>
