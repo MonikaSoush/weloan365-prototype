@@ -9,6 +9,10 @@ import { buildSchedule, money, type Currency, type ScheduleRow } from '../loanCa
 
 const TABLE_HEAD = ['ចំនួនខែ', 'ប្រាក់ដើម', 'ការប្រាក់', 'ប្រាក់សរុបត្រូវបង់', 'សមតុល្យប្រាក់ដើម']
 
+// Shared muted greys (match the Loan calculator).
+const MUTED = '#8A94A6'
+const LABEL = '#737373'
+
 // Migration / Non-MWL loan request limits and fixed rate.
 const MIN_AMOUNT = 100
 const MAX_AMOUNT = 15000
@@ -66,17 +70,17 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
         <MwlHeader onBack={() => navigate(`${prefix}-about`)} step={2} totalSteps={nonMwl ? 2 : 3} />
         <MwlTitle>Loan request</MwlTitle>
 
-        <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Amount */}
-          <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             <GroupLabel>
               REQUEST AMOUNT ${MIN_AMOUNT.toLocaleString('en-US')} – ${MAX_AMOUNT.toLocaleString('en-US')}
             </GroupLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.25 }}>
-              <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Amount</Typography>
+            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Amount</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1, minWidth: 0 }}>
-                  <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>{currency === 'USD' ? '$' : '៛'}</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{currency === 'USD' ? '$' : '៛'}</Typography>
                   <Box
                     component="input"
                     type="text"
@@ -95,9 +99,9 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                       outline: 'none',
                       bgcolor: 'transparent',
                       p: 0,
-                      fontSize: 17,
-                      fontWeight: 700,
-                      color: '#0B0F1A',
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#000',
                       fontFamily: 'inherit',
                     }}
                   />
@@ -108,14 +112,14 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                   onClick={() => setCurrency((c) => (c === 'USD' ? 'KHR' : 'USD'))}
                   sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
                 >
-                  <Typography sx={{ fontSize: 15, fontWeight: 700, color: '#0B0F1A' }}>{currency}</Typography>
-                  <Icon name="chevronsUpDown" size={16} color="#8A94A6" />
+                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{currency}</Typography>
+                  <Icon name="chevronsUpDown" size={18} color={MUTED} />
                 </Box>
               </Box>
             </Box>
             <Box
               onClick={() => setShowTable((v) => !v)}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, mt: 1.25, cursor: 'pointer' }}
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, cursor: 'pointer' }}
             >
               <Icon name={showTable ? 'eyeOff' : 'eye'} size={17} color={BLUE} />
               <Typography sx={{ fontSize: 13, fontWeight: 700, color: BLUE }}>
@@ -127,12 +131,12 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
           {showTable && (
           <>
           {/* Payment estimate (term slider) */}
-          <Box>
-            <GroupLabel>PAYMENT ESTIMATE</GroupLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 2, py: 1.5 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>{MIN_MONTHS} months</Typography>
-                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>{MAX_MONTHS} months</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <SectionLabel>Payment estimate</SectionLabel>
+            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{MIN_MONTHS} months</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{MAX_MONTHS} months</Typography>
               </Box>
               <Slider
                 value={months}
@@ -145,10 +149,10 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                 valueLabelFormat={(v) => `${v}`}
                 aria-label="Loan term in months"
                 sx={{
+                  py: 1.5,
                   color: BLUE,
-                  mt: 0.5,
-                  height: 6,
-                  '& .MuiSlider-rail': { bgcolor: '#E2E6EC', opacity: 1, borderRadius: '999px' },
+                  height: 20,
+                  '& .MuiSlider-rail': { bgcolor: '#E5E5E5', opacity: 1, borderRadius: '999px' },
                   '& .MuiSlider-track': { border: 'none', borderRadius: '999px' },
                   '& .MuiSlider-mark': {
                     width: 4,
@@ -161,11 +165,20 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                   [`& .MuiSlider-mark[data-index="0"], & .MuiSlider-mark[data-index="${TERM_MARKS.length - 1}"]`]: {
                     display: 'none',
                   },
-                  '& .MuiSlider-thumb': { width: 20, height: 20, bgcolor: '#fff', border: `4px solid ${BLUE}`, '&::before': { display: 'none' } },
+                  '& .MuiSlider-thumb': {
+                    width: 36,
+                    height: 28,
+                    borderRadius: '999px',
+                    bgcolor: '#fff',
+                    border: 'none',
+                    boxShadow: '0 2px 6px rgba(16,24,40,0.24)',
+                    '&::before': { display: 'none' },
+                    '&:hover, &.Mui-focusVisible, &.Mui-active': { boxShadow: '0 3px 10px rgba(16,24,40,0.3)' },
+                  },
                   '& .MuiSlider-valueLabel': {
                     bgcolor: '#fff',
                     color: '#0B0F1A',
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: 700,
                     borderRadius: '999px',
                     px: 1,
@@ -179,22 +192,22 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
           </Box>
 
           {/* Loan term + interest */}
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 2, py: 1.25 }}>
-              <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Loan term</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.25 }}>
-                <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>{months}</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
-                  <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>Month</Typography>
-                  <Icon name="chevronsUpDown" size={14} color="#8A94A6" />
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ width: 171, flexShrink: 0, bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Loan term</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#000' }}>{months}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: MUTED }}>Month</Typography>
+                  <Icon name="chevronsUpDown" size={18} color={MUTED} />
                 </Box>
               </Box>
             </Box>
-            <Box sx={{ bgcolor: '#E7EAEF', borderRadius: '12px', px: 2, py: 1.25 }}>
-              <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Monthly interest</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.25 }}>
-                <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>{MONTHLY_RATE.toFixed(2)}</Typography>
-                <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>%</Typography>
+            <Box sx={{ flex: 1, minWidth: 0, bgcolor: '#E5E5E5', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Monthly interest</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#000' }}>{MONTHLY_RATE.toFixed(2)}</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: MUTED, ml: 1 }}>%</Typography>
               </Box>
             </Box>
           </Box>
@@ -203,36 +216,33 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
           <SelectField label="Repayment method" options={REPAYMENT_METHODS} value={method} onChange={setMethod} />
 
           {/* Monthly payment summary */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 2, py: 1.75 }}>
-            <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6' }}>MONTHLY PAYMENT</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mt: 0.5 }}>
-              <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px' }}>{money(payment, currency)}</Typography>
-              <Typography sx={{ fontSize: 14, color: '#8A94A6' }}>/ month</Typography>
+          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: '26px' }}>
+            <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: LABEL, textTransform: 'uppercase' }}>
+              Monthly payment
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 0.75, mt: 0.5 }}>
+              <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#000', letterSpacing: '-0.5px', lineHeight: 1 }}>
+                {money(payment, currency)}
+              </Typography>
+              <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#000', mb: '2px' }}>/ month</Typography>
             </Box>
-            <Box sx={{ height: '1px', bgcolor: '#ECEFF3', my: 1.5 }} />
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ flex: 1 }}>
-                <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.4px', color: '#8A94A6' }}>TOTAL INTEREST</Typography>
-                <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', mt: 0.25 }}>{money(totalInterest, currency)}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.4px', color: '#8A94A6' }}>TOTAL PAYABLE</Typography>
-                <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', mt: 0.25 }}>{money(totalPayable, currency)}</Typography>
-              </Box>
+            <Box sx={{ display: 'flex', gap: 2, mt: 2, pt: 2, borderTop: '1px solid rgba(0,0,0,0.18)' }}>
+              <SummaryStat label="Total interest" value={money(totalInterest, currency)} />
+              <SummaryStat label="Total payable" value={money(totalPayable, currency)} />
             </Box>
           </Box>
 
           {/* Repayment preview table */}
-          <Box>
-            <GroupLabel>REPAYMENT PREVIEW</GroupLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <SectionLabel>Repayment preview</SectionLabel>
+            <Box sx={{ bgcolor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
               <RepaymentTable
                 rows={rows}
                 totals={{ principal: totalPrincipalPaid, interest: totalInterest, payable: totalPayable }}
                 currency={currency}
               />
             </Box>
-            <Typography sx={{ fontSize: 12, color: '#8A94A6', textAlign: 'center', mt: 1.5 }}>
+            <Typography sx={{ fontSize: 14, color: LABEL, textAlign: 'center', py: 1.5 }}>
               Showing 3 of {months} · <Box component="span" sx={{ color: BLUE, fontWeight: 700 }}>Download</Box> for full view
             </Typography>
           </Box>
@@ -242,6 +252,23 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
       </Box>
 
       <MwlFooter onPrev={() => navigate(`${prefix}-about`)} onNext={() => navigate(nonMwl ? '/nonmwl-review' : '/mwl-guarantor')} />
+    </Box>
+  )
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <Typography sx={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.65px', color: LABEL, textTransform: 'uppercase' }}>
+      {children}
+    </Typography>
+  )
+}
+
+function SummaryStat({ label, value }: { label: string; value: string }) {
+  return (
+    <Box sx={{ flex: 1, minWidth: 0 }}>
+      <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.5px', color: LABEL, textTransform: 'uppercase' }}>{label}</Typography>
+      <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#000', mt: 0.5 }}>{value}</Typography>
     </Box>
   )
 }
@@ -261,7 +288,11 @@ function RepaymentTable({
       <Box component="thead">
         <Box component="tr">
           {TABLE_HEAD.map((h, i) => (
-            <Box component="th" key={h} sx={{ width: i === 0 ? 48 : undefined, fontSize: 11, fontWeight: 600, color: '#8A94A6', textAlign: 'center', px: 0.5, py: 1.5, verticalAlign: 'top', lineHeight: 1.3 }}>
+            <Box
+              component="th"
+              key={h}
+              sx={{ width: i === 0 ? 52 : undefined, bgcolor: '#FAFAFA', borderBottom: '1px solid #F0F0F0', fontSize: 11, fontWeight: 600, color: LABEL, textAlign: 'center', px: 0.5, py: 1, lineHeight: 1.2, verticalAlign: 'middle' }}
+            >
               {h}
             </Box>
           ))}
@@ -269,37 +300,38 @@ function RepaymentTable({
       </Box>
       <Box component="tbody">
         {preview.map((r) => (
-          <Box component="tr" key={r.month} sx={{ borderTop: '1px solid #F1F4F8' }}>
-            <Td>{r.month}</Td>
+          <Box component="tr" key={r.month} sx={{ borderTop: '1px solid #F0F0F0' }}>
+            <Td bold>{r.month}</Td>
             <Td>{money(r.principal, currency)}</Td>
             <Td>{money(r.interest, currency)}</Td>
             <Td strong>{money(r.payment, currency)}</Td>
             <Td>{money(r.balance, currency)}</Td>
           </Box>
         ))}
-        <Box component="tr" sx={{ borderTop: '1px solid #F1F4F8' }}>
-          <Td accent>សរុប</Td>
+        <Box component="tr" sx={{ borderTop: '1px solid #F0F0F0' }}>
+          <Td accent bold>សរុប</Td>
           <Td accent>{money(totals.principal, currency)}</Td>
           <Td accent>{money(totals.interest, currency)}</Td>
           <Td accent>{money(totals.payable, currency)}</Td>
-          <Td accent> </Td>
+          <Td> </Td>
         </Box>
       </Box>
     </Box>
   )
 }
 
-function Td({ children, strong = false, accent = false }: { children: React.ReactNode; strong?: boolean; accent?: boolean }) {
+function Td({ children, strong = false, accent = false, bold = false }: { children: React.ReactNode; strong?: boolean; accent?: boolean; bold?: boolean }) {
   return (
     <Box
       component="td"
       sx={{
-        fontSize: 12.5,
+        fontSize: 12,
         textAlign: 'center',
         px: 0.5,
-        py: 1.5,
-        color: accent ? BLUE : strong ? '#0B0F1A' : '#6B7280',
-        fontWeight: accent || strong ? 700 : 400,
+        py: 1,
+        height: 46,
+        color: accent ? BLUE : strong ? '#000' : LABEL,
+        fontWeight: bold || strong || accent ? 600 : 500,
       }}
     >
       {children}
