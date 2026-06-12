@@ -64,6 +64,7 @@ import {
   Fingerprint,
   Smartphone,
   Mail,
+  Gauge,
   type LucideProps,
 } from 'lucide-react'
 
@@ -147,6 +148,7 @@ export type IconName =
   | 'email'
   | 'website'
   | 'pin'
+  | 'gauge'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -239,6 +241,7 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   email:           { sf: 'envelope.fill',            cmp: Mail },
   website:         { sf: 'globe',                     cmp: Globe },
   pin:             { sf: 'asterisk',                  cmp: Lock },
+  gauge:           { sf: 'gauge',                      cmp: Gauge },
 }
 
 // ─── Brand glyph overrides ───────────────────────────────────────────────────

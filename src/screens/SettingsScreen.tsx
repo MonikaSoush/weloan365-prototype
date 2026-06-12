@@ -100,7 +100,34 @@ function ToggleRow({
         <Switch
           checked={checked}
           onChange={(e) => onToggle(e.target.checked)}
-          sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#fff' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1 } }}
+          disableRipple
+          sx={{
+            width: 51,
+            height: 31,
+            padding: 0,
+            '& .MuiSwitch-switchBase': {
+              padding: 0,
+              margin: '2px',
+              transitionDuration: '200ms',
+              '&.Mui-checked': {
+                transform: 'translateX(20px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1, border: 0 },
+              },
+            },
+            '& .MuiSwitch-thumb': {
+              width: 27,
+              height: 27,
+              boxShadow: '0 2px 4px rgba(0,0,0,0.18)',
+            },
+            '& .MuiSwitch-track': {
+              borderRadius: '999px',
+              bgcolor: '#E9E9EA',
+              border: '1px solid #DADBDD',
+              opacity: 1,
+              transition: 'background-color 200ms',
+            },
+          }}
         />
       }
     />
@@ -114,6 +141,7 @@ function SelectRow({
   divider,
   value,
   flag,
+  onClick,
 }: {
   icon: IconName
   label: string
@@ -121,6 +149,7 @@ function SelectRow({
   divider?: boolean
   value: string
   flag?: string
+  onClick?: () => void
 }) {
   return (
     <RowShell
@@ -128,7 +157,7 @@ function SelectRow({
       label={label}
       sub={sub}
       divider={divider}
-      onClick={() => {}}
+      onClick={onClick ?? (() => {})}
       right={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           {flag && <Box component="span" sx={{ fontSize: 18, lineHeight: 1 }}>{flag}</Box>}
@@ -147,6 +176,8 @@ export default function SettingsScreen() {
   const [paymentReminders, setPaymentReminders] = useState(false)
   const [promotions, setPromotions] = useState(true)
   const [chatNotifs, setChatNotifs] = useState(false)
+  const [language, setLanguage] = useState<'en' | 'km'>('en')
+  const [theme, setTheme] = useState<'System' | 'Light' | 'Dark'>('System')
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -237,8 +268,20 @@ export default function SettingsScreen() {
           <Box sx={{ mt: 2 }}>
             <SectionLabel>APPEARANCE</SectionLabel>
             <Card>
-              <SelectRow icon="globe" label="Language" value="English" flag="🇬🇧" divider />
-              <SelectRow icon="theme" label="Theme" value="System" />
+              <SelectRow
+                icon="globe"
+                label="Language"
+                value={language === 'en' ? 'English' : 'ខ្មែរ'}
+                flag={language === 'en' ? '🇬🇧' : '🇰🇭'}
+                onClick={() => setLanguage((l) => (l === 'en' ? 'km' : 'en'))}
+                divider
+              />
+              <SelectRow
+                icon="theme"
+                label="Theme"
+                value={theme}
+                onClick={() => setTheme((t) => (t === 'System' ? 'Light' : t === 'Light' ? 'Dark' : 'System'))}
+              />
             </Card>
           </Box>
 

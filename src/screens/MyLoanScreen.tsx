@@ -26,8 +26,8 @@ export default function MyLoanScreen() {
   const { sample } = useSample()
   // Applicants have only an in-review application: no summary card, no active/complete loans.
   const isApplicant = flow === 'Applicant'
-  // Visitors have no loans or applications at all — show a fully empty state.
-  const isVisitor = flow === 'Visitor'
+  // Visitors and New Users have no loans or applications at all — fully empty state.
+  const isEmpty = flow === 'Visitor' || flow === 'New User'
   const [tab, setTab] = useState<Tab>(isApplicant ? 'review' : 'active')
   const [payOpen, setPayOpen] = useState(false)
 
@@ -40,7 +40,7 @@ export default function MyLoanScreen() {
             My Loans
           </Typography>
 
-          {isVisitor ? (
+          {isEmpty ? (
             <EmptyState
               label="No loans yet"
               hint="Apply for a loan from the Products tab and it will appear here."

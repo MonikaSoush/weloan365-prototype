@@ -262,6 +262,46 @@ export function BottomSheet({
   )
 }
 
+// ─── Discard confirmation — shown when leaving a half-finished application ────
+export function DiscardSheet({
+  open,
+  onClose,
+  onDiscard,
+}: {
+  open: boolean
+  onClose: () => void
+  onDiscard: () => void
+}) {
+  return (
+    <BottomSheet open={open} onClose={onClose}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Typography sx={{ fontSize: 22, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.3px' }}>
+          Discard this application?
+        </Typography>
+        <Typography sx={{ fontSize: 14.5, color: '#5B6473', lineHeight: 1.5 }}>
+          Your progress won’t be saved. You can start a new loan application anytime.
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <Button
+          variant="contained"
+          onClick={onDiscard}
+          sx={{ height: 52, borderRadius: '14px', fontSize: 16, fontWeight: 700, bgcolor: '#E5484D', boxShadow: 'none', '&:hover': { bgcolor: '#D13A3F', boxShadow: 'none' } }}
+        >
+          Discard
+        </Button>
+        <Button
+          variant="text"
+          onClick={onClose}
+          sx={{ height: 52, borderRadius: '14px', fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}
+        >
+          Keep editing
+        </Button>
+      </Box>
+    </BottomSheet>
+  )
+}
+
 // ─── Footer — Continue (and optional Previous) ───────────────────────────────
 export function MwlFooter({
   onPrev,

@@ -340,9 +340,9 @@ export default function ProductsScreen() {
   const { flow } = useFlow()
   const showNav = sample === '1'
 
-  // Logged-in flows (Applicant / Borrower) in Sample 1 see the personalized
-  // greeting header; visitors and Sample 2 keep the brand logo bar.
-  const greeting = sample === '1' && (flow === 'Applicant' || flow === 'Borrower')
+  // Logged-in flows (New User / Applicant / Borrower) in Sample 1 see the
+  // personalized greeting header; visitors and Sample 2 keep the brand logo bar.
+  const greeting = sample === '1' && flow !== 'Visitor'
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>

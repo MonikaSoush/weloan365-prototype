@@ -30,10 +30,10 @@ export default function NotificationsScreen() {
   const { flow } = useFlow()
   const [filter, setFilter] = useState<Filter>('reminder')
 
-  // Visitors and applicants have no loan yet → no transaction history.
+  // Only borrowers have a loan → transaction history.
   const hasTransactions = flow === 'Borrower'
-  // Visitors have no loan → no payment reminders.
-  const hasReminders = flow !== 'Visitor'
+  // Visitors and New Users have no loan or application yet → no payment reminders.
+  const hasReminders = flow === 'Applicant' || flow === 'Borrower'
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>

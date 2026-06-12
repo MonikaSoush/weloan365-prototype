@@ -4,9 +4,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon, IconName } from '../../components/Icon'
-import { MwlHeader, MwlTitle, MwlFooter, GroupLabel, FieldCard, PhoneField, SelectField, BottomSheet, BLUE } from './MwlParts'
+import { MwlHeader, MwlTitle, MwlFooter, GroupLabel, FieldCard, PhoneField, SelectField, BottomSheet, DiscardSheet, BLUE } from './MwlParts'
 import { AssetImg, asset } from '../../components/home/media'
-import { useHomePath } from '../../workspace/useHomePath'
 
 const DESTINATIONS = [
   { id: 'korea', flag: '🇰🇷', name: 'Korea', sub: 'EPS · most active' },
@@ -28,8 +27,8 @@ const DOCS: { id: DocId; label: string; sample: string; img: string; canShare?: 
 
 export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } = {}) {
   const navigate = useNavigate()
-  const home = useHomePath()
   const prefix = nonMwl ? '/nonmwl' : '/mwl'
+  const [discardOpen, setDiscardOpen] = useState(false)
   const [dest, setDest] = useState('korea')
   const [city, setCity] = useState('Phnom Penh')
   const [occupation, setOccupation] = useState('Garment worker')
@@ -41,7 +40,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
-        <MwlHeader onBack={() => navigate(home)} step={1} totalSteps={nonMwl ? 2 : 3} />
+        <MwlHeader onBack={() => setDiscardOpen(true)} step={1} totalSteps={nonMwl ? 2 : 3} />
         <MwlTitle>Tell us about you</MwlTitle>
 
         <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
@@ -110,6 +109,9 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
       </Box>
 
       <MwlFooter onNext={() => navigate(`${prefix}-loan`)} />
+
+      {/* Discard confirmation — leaving step 1 exits the apply flow */}
+      <DiscardSheet open={discardOpen} onClose={() => setDiscardOpen(false)} onDiscard={() => navigate('/products')} />
 
       {/* Sample preview bottom sheet */}
       <BottomSheet open={sample !== null} onClose={() => setSample(null)}>

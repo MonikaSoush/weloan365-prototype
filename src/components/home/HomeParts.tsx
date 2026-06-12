@@ -231,8 +231,9 @@ export function MoreMenuBody({
 
       {/* Menu */}
       <Box sx={{ flex: 1, px: 3, pt: 2, pb: 4, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-        {/* Account entry — sign-up prompt for visitors, profile for members */}
-        {isVisitor ? (
+        {/* Account entry — sign-up prompt for visitors only. Signed-in flows
+            (New User / Applicant / Borrower) reach their profile elsewhere. */}
+        {isVisitor && (
           <Box
             role="button"
             onClick={() => navigate('/sign-up')}
@@ -247,21 +248,6 @@ export function MoreMenuBody({
               <Icon name="arrowRight" size={18} color="#fff" />
             </Box>
           </Box>
-        ) : (
-          <Box
-            role="button"
-            onClick={() => navigate('/profile')}
-            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '14px', borderRadius: '14px', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
-          >
-            <Box sx={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-              <AssetImg src={ILLUS.avatar01} alt="avatar" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<AvatarArt />} />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>Krong Kampuchea</Typography>
-              <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: 0.25 }}>View profile & documents</Typography>
-            </Box>
-            <Icon name="chevronRight" size={20} color="#C2C9D4" />
-          </Box>
         )}
 
         {/* Quick actions */}
@@ -271,7 +257,7 @@ export function MoreMenuBody({
             <MoreTile icon="calculator" label="Calculator" onClick={() => navigate('/calculator')} />
             <MoreTile icon="findBranch" label="Find a Branch" onClick={() => navigate('/branch-locator')} />
             <MoreTile icon="message" label="Live Chat" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} />
-            <MoreTile icon="bell" label="Notifications" onClick={() => navigate('/notifications')} />
+            <MoreTile icon="gauge" label="Credit Score" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score')} />
           </Box>
         </Box>
 

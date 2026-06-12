@@ -10,7 +10,8 @@ import { useSample, SAMPLES } from '../workspace/SampleContext'
 // (persisted to localStorage) and continues to the Splash screen.
 // ─────────────────────────────────────────────────────────────────────────────
 const OPTIONS: { flow: UserFlow; icon: IconName; title: string; sub: string }[] = [
-  { flow: 'Visitor', icon: 'eye', title: 'Visitor', sub: 'Just browsing — no loans yet' },
+  { flow: 'Visitor', icon: 'eye', title: 'Visitor', sub: 'Just browsing — not signed in' },
+  { flow: 'New User', icon: 'idCard', title: 'New User', sub: 'Signed in — no loans yet' },
   { flow: 'Applicant', icon: 'clock', title: 'Applicant', sub: 'Application in progress' },
   { flow: 'Borrower', icon: 'myLoan', title: 'Borrower', sub: 'Has one or more active loans' },
 ]

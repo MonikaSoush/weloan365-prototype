@@ -35,6 +35,7 @@ const RestructureConsentScreen = lazy(() => import('../screens/restructure/Restr
 const RestructureSuccessScreen = lazy(() => import('../screens/restructure/RestructureSuccessScreen'))
 const SettingsScreen   = lazy(() => import('../screens/SettingsScreen'))
 const NotificationsScreen = lazy(() => import('../screens/NotificationsScreen'))
+const CreditScoreScreen = lazy(() => import('../screens/CreditScoreScreen'))
 const EarlyPayoffScreen = lazy(() => import('../screens/EarlyPayoffScreen'))
 const ProfileScreen    = lazy(() => import('../screens/profile/ProfileScreen'))
 const ProfileDocumentsScreen = lazy(() => import('../screens/profile/ProfileDocumentsScreen'))
@@ -99,6 +100,7 @@ export default function AppRouter() {
         <Route path="/more" element={<MoreScreen />} />
         <Route path="/settings" element={<SettingsScreen />} />
         <Route path="/notifications" element={<NotificationsScreen />} />
+        <Route path="/credit-score" element={<CreditScoreScreen />} />
         <Route path="/early-payoff" element={<EarlyPayoffScreen />} />
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/profile-documents" element={<ProfileDocumentsScreen />} />
