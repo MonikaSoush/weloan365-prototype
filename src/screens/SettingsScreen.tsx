@@ -25,7 +25,7 @@ const LANGUAGES: { id: LangId; label: string; flag: string }[] = [
 ]
 type ThemeId = 'System' | 'Light' | 'Dark'
 const THEMES: { id: ThemeId; icon: IconName }[] = [
-  { id: 'System', icon: 'monitor' },
+  { id: 'System', icon: 'smartphone' },
   { id: 'Light', icon: 'sun' },
   { id: 'Dark', icon: 'moon' },
 ]

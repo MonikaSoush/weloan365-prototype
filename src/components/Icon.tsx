@@ -156,6 +156,7 @@ export type IconName =
   | 'sun'
   | 'moon'
   | 'monitor'
+  | 'smartphone'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -253,6 +254,7 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   sun:             { sf: 'sun.max',                    cmp: Sun },
   moon:            { sf: 'moon',                       cmp: Moon },
   monitor:         { sf: 'display',                    cmp: Monitor },
+  smartphone:      { sf: 'iphone',                     cmp: Smartphone },
 }
 
 // ─── Brand glyph overrides ───────────────────────────────────────────────────

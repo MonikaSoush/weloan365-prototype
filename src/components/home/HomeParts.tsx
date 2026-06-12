@@ -270,15 +270,6 @@ export function MoreMenuBody({
           </Box>
         </Box>
 
-        {/* General */}
-        <Box>
-          <MoreSectionLabel>GENERAL</MoreSectionLabel>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
-            <MoreRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
-            <MoreRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
-          </Box>
-        </Box>
-
         {/* Footer */}
         <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: 1, pb: 1 }}>
           NongHyup v1.0.0 · build 2026
