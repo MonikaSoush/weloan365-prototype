@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon } from '../components/Icon'
+import CallSheet from '../components/CallSheet'
 import { MwlHeader } from './mwl/MwlParts'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -19,6 +20,7 @@ const GREEN = '#76C043'
 
 export default function CompletedLoanDetailScreen() {
   const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -129,8 +131,8 @@ export default function CompletedLoanDetailScreen() {
                   <Icon name="message" size={22} color="#0B0F1A" />
                 </Box>
                 <Box
-                  component="a"
-                  href="tel:+855123456789"
+                  role="button"
+                  onClick={() => setCallOpen(true)}
                   aria-label="Call officer"
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', transition: 'background-color 0.15s ease', '&:active': { bgcolor: 'rgba(0,0,0,0.06)' } }}
                 >
@@ -141,6 +143,8 @@ export default function CompletedLoanDetailScreen() {
           </Box>
         </Box>
       </Box>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }

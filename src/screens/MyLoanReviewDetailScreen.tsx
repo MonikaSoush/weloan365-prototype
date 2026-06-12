@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon } from '../components/Icon'
+import CallSheet from '../components/CallSheet'
 import { MwlHeader } from './mwl/MwlParts'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -34,6 +36,7 @@ const EST_TOTAL = ['សរុប', '$500.00', '$39.85', '$539.85', '']
 
 export default function MyLoanReviewDetailScreen() {
   const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -171,13 +174,19 @@ export default function MyLoanReviewDetailScreen() {
                 <Typography sx={{ fontSize: 11, color: LABEL }}>Riverside Branch</Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Icon name="message" size={22} color="#0B0F1A" />
-                <Icon name="phone" size={22} color="#0B0F1A" />
+                <Box role="button" aria-label="Chat" onClick={() => navigate('/chat')} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+                  <Icon name="message" size={22} color="#0B0F1A" />
+                </Box>
+                <Box role="button" aria-label="Call" onClick={() => setCallOpen(true)} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+                  <Icon name="phone" size={22} color="#0B0F1A" />
+                </Box>
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }

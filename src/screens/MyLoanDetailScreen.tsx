@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
 import PayLoanSheet from '../components/PayLoanSheet'
+import CallSheet from '../components/CallSheet'
 import { MwlHeader } from './mwl/MwlParts'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -309,6 +310,7 @@ function StatusBadge({ text, tone }: { text: string; tone: 'paid' | 'soon' }) {
 // ─── OTHERS tab ──────────────────────────────────────────────────────────────
 function OthersTab() {
   const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
       {/* Loan service requests */}
@@ -355,11 +357,17 @@ function OthersTab() {
             <Typography sx={{ fontSize: 11, color: LABEL }}>Riverside Branch</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Icon name="message" size={22} color="#0B0F1A" />
-            <Icon name="phone" size={22} color="#0B0F1A" />
+            <Box role="button" aria-label="Chat" onClick={() => navigate('/chat')} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+              <Icon name="message" size={22} color="#0B0F1A" />
+            </Box>
+            <Box role="button" aria-label="Call" onClick={() => setCallOpen(true)} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+              <Icon name="phone" size={22} color="#0B0F1A" />
+            </Box>
           </Box>
         </Box>
       </Box>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }

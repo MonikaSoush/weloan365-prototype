@@ -76,13 +76,17 @@ function IdentityCard() {
             <Icon name="camera" size={14} color="#fff" />
           </Box>
         </Box>
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: 1.3 }}>Full Name</Typography>
-          <Typography sx={{ fontSize: 15, fontWeight: 800, color: HEADING, lineHeight: 1.25 }} noWrap>
-            Krong Kampuchea
-          </Typography>
-          <Typography sx={{ fontSize: 12, color: MUTED, mt: 0.75, lineHeight: 1.3 }}>National ID</Typography>
-          <Typography sx={{ fontSize: 15, fontWeight: 700, color: HEADING }}>28012026001</Typography>
+        <Box sx={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <Box>
+            <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: 1.3 }}>Full Name</Typography>
+            <Typography sx={{ fontSize: 15, fontWeight: 800, color: HEADING, lineHeight: 1.25 }} noWrap>
+              Krong Kampuchea
+            </Typography>
+          </Box>
+          <Box>
+            <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: 1.3 }}>National ID</Typography>
+            <Typography sx={{ fontSize: 15, fontWeight: 700, color: HEADING }}>28012026001</Typography>
+          </Box>
         </Box>
       </Box>
 

@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
+import CallSheet from '../components/CallSheet'
 import { ProductCard, PRODUCTS, MIGRATION } from './ProductsScreen'
 
 const HEADING = '#0B0F1A'
@@ -12,6 +14,7 @@ const HEADING = '#0B0F1A'
 // ─────────────────────────────────────────────────────────────────────────────
 export default function AllLoanScreen() {
   const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -22,8 +25,12 @@ export default function AllLoanScreen() {
             <Icon name="chevronLeft" size={26} color={HEADING} />
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Icon name="message" size={23} color={HEADING} />
-            <Icon name="phone" size={22} color={HEADING} />
+            <Box role="button" aria-label="Chat" onClick={() => navigate('/chat')} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+              <Icon name="message" size={23} color={HEADING} />
+            </Box>
+            <Box role="button" aria-label="Call" onClick={() => setCallOpen(true)} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
+              <Icon name="phone" size={22} color={HEADING} />
+            </Box>
           </Box>
         </Box>
 
@@ -43,6 +50,8 @@ export default function AllLoanScreen() {
           </Box>
         </Box>
       </Box>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }

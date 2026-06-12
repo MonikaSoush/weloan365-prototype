@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
+import CallSheet from '../components/CallSheet'
 import { useHomePath } from '../workspace/useHomePath'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -72,6 +73,7 @@ export default function ChatScreen() {
   const navigate = useNavigate()
   const home = useHomePath()
   const [tab, setTab] = useState<Tab>('all')
+  const [callOpen, setCallOpen] = useState(false)
   const unreadCount = CONVERSATIONS.filter((c) => c.unread > 0).length
   const list = tab === 'all' ? CONVERSATIONS : CONVERSATIONS.filter((c) => c.unread > 0)
 
@@ -87,7 +89,7 @@ export default function ChatScreen() {
               </IconButton>
               <Box component="img" src="/assets/brand/header_logo.svg" alt="NongHyup Finance" sx={{ height: 30, display: 'block' }} />
             </Box>
-            <IconButton aria-label="Call support" sx={{ color: HEADING }}>
+            <IconButton aria-label="Call support" onClick={() => setCallOpen(true)} sx={{ color: HEADING }}>
               <Icon name="phone" size={22} color={HEADING} />
             </IconButton>
           </Box>
@@ -140,6 +142,8 @@ export default function ChatScreen() {
       >
         <Icon name="plus" size={28} color="#fff" />
       </IconButton>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }

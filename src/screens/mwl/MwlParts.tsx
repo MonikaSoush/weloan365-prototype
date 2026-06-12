@@ -1,14 +1,28 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../../components/Icon'
+import CallSheet from '../../components/CallSheet'
 
 export const BLUE = '#275CB2'
 
 // ─── Header — back chevron + chat & phone icons + optional step bar ──────────
+// The chat icon routes to the inbox; the call icon opens the shared Call sheet.
+// The sheet is portaled into the phone canvas (not this sticky header) so it can
+// cover the whole screen and slide up from the bottom edge.
 export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onBack: () => void; step?: number; totalSteps?: number; kebab?: boolean }) {
+  const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setPortalEl(document.getElementById('phone-canvas'))
+  }, [])
+
   return (
     <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: step ? 1.5 : 1 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -17,13 +31,29 @@ export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onB
         </IconButton>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mr: '-7px' }}>
           {!kebab && (
-            <Box component="img" src="/assets/brand/ico_chat.svg" alt="Chat" sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer' }} />
+            <Box
+              component="img"
+              src="/assets/brand/ico_chat.svg"
+              alt="Chat"
+              role="button"
+              onClick={() => navigate('/chat')}
+              sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+            />
           )}
-          <Box component="img" src="/assets/brand/ico_call.svg" alt="Call" sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer' }} />
+          <Box
+            component="img"
+            src="/assets/brand/ico_call.svg"
+            alt="Call"
+            role="button"
+            onClick={() => setCallOpen(true)}
+            sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
+          />
           {kebab && <Icon name="dotsVertical" size={22} color="#0B0F1A" />}
         </Box>
       </Box>
       {step && <StepBar step={step} totalSteps={totalSteps} />}
+
+      {portalEl && createPortal(<CallSheet open={callOpen} onClose={() => setCallOpen(false)} />, portalEl)}
     </Box>
   )
 }

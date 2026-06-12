@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
+import CallSheet from '../components/CallSheet'
 import { useFlow } from '../workspace/FlowContext'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -131,6 +132,7 @@ function CardHead({ icon, badge, badgeColor, badgeBg, time }: { icon: 'alert' | 
 // ─── Reminder feed ───────────────────────────────────────────────────────────
 function ReminderFeed() {
   const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
   return (
     <Box>
       <DateLabel>TODAY</DateLabel>
@@ -140,7 +142,7 @@ function ReminderFeed() {
         <Typography sx={{ fontSize: 14, color: '#5B6473', lineHeight: 1.5, mt: 0.5 }}>
           Your repayment for loan account 0019-84727 is overdue by 4 days. Please pay the overdue amount today to avoid additional charges.
         </Typography>
-        <ReminderActions onPay={() => navigate('/my-loan-detail?pay=1')} />
+        <ReminderActions onPay={() => navigate('/my-loan-detail?pay=1')} onCall={() => setCallOpen(true)} />
       </NotifCard>
 
       <DateLabel>15 MAY 2026</DateLabel>
@@ -150,13 +152,15 @@ function ReminderFeed() {
         <Typography sx={{ fontSize: 14, color: '#5B6473', lineHeight: 1.5, mt: 0.5 }}>
           Your repayment for loan account 0019-84727 is due in 3 days. Pay early to keep your account in good standing.
         </Typography>
-        <ReminderActions onPay={() => navigate('/my-loan-detail?pay=1')} />
+        <ReminderActions onPay={() => navigate('/my-loan-detail?pay=1')} onCall={() => setCallOpen(true)} />
       </NotifCard>
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }
 
-function ReminderActions({ onPay }: { onPay: () => void }) {
+function ReminderActions({ onPay, onCall }: { onPay: () => void; onCall: () => void }) {
   return (
     <Box sx={{ display: 'flex', gap: 1, mt: 1.75 }}>
       <Button
@@ -168,6 +172,7 @@ function ReminderActions({ onPay }: { onPay: () => void }) {
       </Button>
       <Button
         variant="text"
+        onClick={onCall}
         startIcon={<Icon name="phone" size={18} color={HEADING} />}
         sx={{ height: 44, borderRadius: '10px', px: 2, fontSize: 14, fontWeight: 700, color: HEADING, bgcolor: '#F2F4F7', '&:hover': { bgcolor: '#E7ECF2' } }}
       >

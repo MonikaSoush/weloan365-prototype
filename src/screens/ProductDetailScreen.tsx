@@ -8,6 +8,7 @@ import { Icon, type IconName } from '../components/Icon'
 import { AssetImg, BANNERS } from '../components/home/media'
 import { useFlow } from '../workspace/FlowContext'
 import { BottomSheet } from './mwl/MwlParts'
+import CallSheet from '../components/CallSheet'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Product (loan) detail — opened by tapping a loan card on the Products screen.
@@ -16,9 +17,6 @@ import { BottomSheet } from './mwl/MwlParts'
 const LABEL = '#737373'
 const VALUE = '#171717'
 const BRAND = '#275CB2'
-
-// Support hotline shown in the call sheet.
-const HOTLINE = '017 666 036'
 
 // Map a product name → its hero banner. Uses the same Sample-1 assets shown on
 // the Products tab so the detail hero matches the card thumbnail.
@@ -330,87 +328,6 @@ export default function ProductDetailScreen() {
 }
 
 // ─── Call sheet — shows the hotline; tapping the number places the call ──────
-function CallSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  return (
-    <>
-      {/* Backdrop */}
-      <Box
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 100,
-          bgcolor: 'rgba(11,15,26,0.45)',
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? 'auto' : 'none',
-          transition: 'opacity 0.25s ease',
-        }}
-      />
-      {/* Sheet */}
-      <Box
-        sx={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 101,
-          bgcolor: '#fff',
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          transform: open ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
-          boxShadow: '0 -8px 30px rgba(11,15,26,0.18)',
-          px: 3,
-          pt: 1.25,
-          pb: '32px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {/* Drag handle */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', pb: 2 }}>
-          <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: '#D6DBE2' }} />
-        </Box>
-
-        <Typography sx={{ fontSize: 20, fontWeight: 800, color: VALUE, textAlign: 'center' }}>Call NongHyup Finance</Typography>
-        <Typography sx={{ fontSize: 13.5, color: LABEL, textAlign: 'center', mt: 0.5 }}>Tap the number to call our support line</Typography>
-
-        {/* Tappable number → places the call */}
-        <Box
-          component="a"
-          href={`tel:${HOTLINE.replace(/\s/g, '')}`}
-          sx={{
-            mt: 2.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1.25,
-            minHeight: 60,
-            borderRadius: '14px',
-            bgcolor: '#EEF3FC',
-            textDecoration: 'none',
-            cursor: 'pointer',
-            '&:active': { opacity: 0.85 },
-          }}
-        >
-          <Icon name="phone" size={22} color={BRAND} />
-          <Typography sx={{ fontSize: 22, fontWeight: 800, color: BRAND, letterSpacing: '0.5px' }}>{HOTLINE}</Typography>
-        </Box>
-        <Typography sx={{ fontSize: 12, color: LABEL, textAlign: 'center', mt: 1.25 }}>Support hotline · available 24/7</Typography>
-
-        {/* Cancel */}
-        <Box
-          role="button"
-          onClick={onClose}
-          sx={{ mt: 2, minHeight: 52, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', '&:active': { opacity: 0.7 } }}
-        >
-          <Typography sx={{ fontSize: 16, fontWeight: 700, color: VALUE }}>Cancel</Typography>
-        </Box>
-      </Box>
-    </>
-  )
-}
-
 // ─── Document preview sheet — opened from a Required Documents "Preview" link ─
 // Bottom sheet (same pattern as the apply-loan sample sheet) that shows what a
 // document category contains: a sample-page mockup, the items to bring and the

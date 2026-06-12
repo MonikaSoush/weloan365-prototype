@@ -81,9 +81,34 @@ function Row({
   )
 }
 
-const blueSwitch = {
-  '& .MuiSwitch-switchBase.Mui-checked': { color: '#fff' },
-  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1 },
+// iOS-style switch — matches the Notification Settings toggles.
+const iosSwitch = {
+  width: 51,
+  height: 31,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    margin: '2px',
+    transitionDuration: '200ms',
+    '&.Mui-checked': {
+      transform: 'translateX(20px)',
+      color: '#fff',
+      '& + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1, border: 0 },
+    },
+    '&.Mui-disabled + .MuiSwitch-track': { opacity: 0.5 },
+  },
+  '& .MuiSwitch-thumb': {
+    width: 27,
+    height: 27,
+    boxShadow: '0 2px 4px rgba(0,0,0,0.18)',
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: '999px',
+    bgcolor: '#E9E9EA',
+    border: '1px solid #DADBDD',
+    opacity: 1,
+    transition: 'background-color 200ms',
+  },
 }
 
 type Session = { id: string; device: string; place: string; current?: boolean }
@@ -110,7 +135,7 @@ export default function AccountSecurityScreen() {
               label="Face ID"
               sub="Use Face ID to sign in"
               divider
-              right={<Switch checked={faceId} onChange={(e) => setFaceId(e.target.checked)} sx={blueSwitch} />}
+              right={<Switch checked={faceId} onChange={(e) => setFaceId(e.target.checked)} disableRipple sx={iosSwitch} />}
             />
             <Row
               icon="fingerprint"
@@ -118,7 +143,7 @@ export default function AccountSecurityScreen() {
               sub="Not available on this device"
               divider
               disabled
-              right={<Switch checked={false} disabled />}
+              right={<Switch checked={false} disabled disableRipple sx={iosSwitch} />}
             />
             <Row
               icon="pin"

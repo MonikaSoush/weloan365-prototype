@@ -5,7 +5,8 @@
 // ║  falls back to styled placeholders so the prototype never breaks.         ║
 // ╚═══════════════════════════════════════════════════════════════════════════╝
 
-import { ReactNode, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -18,6 +19,7 @@ import { Icon, type IconName } from '../Icon'
 import { ProductScene, AvatarArt, PromoScene } from './illustrations'
 import { useFlow } from '../../workspace/FlowContext'
 import { SettingsSections } from '../../screens/SettingsScreen'
+import CallSheet from '../CallSheet'
 
 const BLUE = '#275CB2'
 const GREEN = '#8CC919'
@@ -149,6 +151,62 @@ function MoreRow({ icon, label, onClick, divider }: { icon: IconName; label: str
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// My Loan Officer card — shown in the More menu for Applicant / Borrower flows.
+// Chat icon → inbox; call icon → shared Call sheet (portaled into the canvas).
+// ─────────────────────────────────────────────────────────────────────────────
+function MyLoanOfficerCard() {
+  const navigate = useNavigate()
+  const [callOpen, setCallOpen] = useState(false)
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setPortalEl(document.getElementById('phone-canvas'))
+  }, [])
+
+  return (
+    <Box>
+      <MoreSectionLabel>MY LOAN OFFICER</MoreSectionLabel>
+      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            flexShrink: 0,
+            background: 'radial-gradient(circle at 30% 30%, #9BD0FF 0%, #4C8BE0 45%, #2B4F92 100%)',
+            boxShadow: '0 6px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
+          }}
+        />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }}>Mr. Pisey Sok</Typography>
+          <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 0.25 }}>Riverside Branch</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Box
+            role="button"
+            aria-label="Chat with officer"
+            onClick={() => navigate('/chat')}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', transition: 'background-color 0.15s ease', '&:active': { bgcolor: 'rgba(0,0,0,0.06)' } }}
+          >
+            <Icon name="message" size={22} color="#0B0F1A" />
+          </Box>
+          <Box
+            role="button"
+            aria-label="Call officer"
+            onClick={() => setCallOpen(true)}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', transition: 'background-color 0.15s ease', '&:active': { bgcolor: 'rgba(0,0,0,0.06)' } }}
+          >
+            <Icon name="phone" size={22} color="#0B0F1A" />
+          </Box>
+        </Box>
+      </Box>
+
+      {portalEl && createPortal(<CallSheet open={callOpen} onClose={() => setCallOpen(false)} />, portalEl)}
+    </Box>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Shared "More" menu body — rendered full-page by the More screen.
 // `greeting` swaps the back-chevron/profile header for the personalized
 // HomeTopBar (used when More is a logged-in bottom-nav tab).
@@ -236,6 +294,9 @@ export function MoreMenuBody({
             <MoreRow icon="gauge" label="Credit Score" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score')} />
           </Box>
         </Box>
+
+        {/* My loan officer — only relevant once a loan flow is underway */}
+        {(flow === 'Applicant' || flow === 'Borrower') && <MyLoanOfficerCard />}
 
         {/* Settings — Account / Notifications / Appearance / About + Sign out */}
         <SettingsSections />
