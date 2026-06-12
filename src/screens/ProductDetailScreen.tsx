@@ -4,9 +4,10 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import { Icon } from '../components/Icon'
+import { Icon, type IconName } from '../components/Icon'
 import { AssetImg, BANNERS } from '../components/home/media'
 import { useFlow } from '../workspace/FlowContext'
+import { BottomSheet } from './mwl/MwlParts'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Product (loan) detail — opened by tapping a loan card on the Products screen.
@@ -57,6 +58,61 @@ const DOCUMENTS = [
   'Owner identification',
 ]
 
+// Per-document preview content shown in the bottom sheet.
+type DocDetail = { icon: IconName; blurb: string; items: string[]; formats: string }
+const DOC_DETAILS: Record<string, DocDetail> = {
+  'Business Documents': {
+    icon: 'briefcase',
+    blurb: 'Proof that your business is registered and operating.',
+    items: [
+      'Business registration / patent certificate',
+      'Trade licence or commercial permit',
+      'Tax registration (VAT/TIN) if available',
+      'Business premises lease or ownership proof',
+    ],
+    formats: 'Originals to verify · clear photo or scan to upload',
+  },
+  'Financial information': {
+    icon: 'banknote',
+    blurb: 'Records that show your income and repayment capacity.',
+    items: [
+      'Bank statements — last 6 months',
+      'Sales / revenue records or invoices',
+      'Existing loan or debt statements',
+      'Profit & loss summary if available',
+    ],
+    formats: 'PDF or photo · last 6 months required',
+  },
+  'Collateral documents': {
+    icon: 'home',
+    blurb: 'Ownership proof for the asset offered as security.',
+    items: [
+      'Hard or soft land/property title',
+      'Vehicle registration card (if applicable)',
+      'Recent property valuation if available',
+      'Proof there are no existing liens',
+    ],
+    formats: 'Originals required at the branch for verification',
+  },
+  'Owner identification': {
+    icon: 'idCard',
+    blurb: 'Identity documents for the business owner and guarantor.',
+    items: [
+      'National ID card or valid passport',
+      'Family book or residence certificate',
+      'Recent passport-size photo',
+      "Guarantor's ID (if a guarantor is required)",
+    ],
+    formats: 'Originals to verify · must be valid and unexpired',
+  },
+}
+const DOC_FALLBACK: DocDetail = {
+  icon: 'appPolicy',
+  blurb: 'Documents required to support your loan application.',
+  items: ['Please contact your branch for the full document list.'],
+  formats: 'Originals to verify · photo or scan to upload',
+}
+
 export default function ProductDetailScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
@@ -75,6 +131,8 @@ export default function ProductDetailScreen() {
   // Compact header fades in once the hero image has scrolled mostly out of view.
   const [scrolled, setScrolled] = useState(false)
   const [callOpen, setCallOpen] = useState(false)
+  // Required-documents preview: holds the doc name whose sheet is open.
+  const [previewDoc, setPreviewDoc] = useState<string | null>(null)
 
   // Chat opens the support conversation (visitors sign up first).
   const onChat = () =>
@@ -226,7 +284,7 @@ export default function ProductDetailScreen() {
                   <Box
                     role="button"
                     aria-label={`Preview ${d}`}
-                    onClick={() => navigate(`/document-preview?p=${encodeURIComponent(name)}&doc=${encodeURIComponent(d)}`)}
+                    onClick={() => setPreviewDoc(d)}
                     sx={{
                       flexShrink: 0,
                       display: 'flex',
@@ -263,6 +321,9 @@ export default function ProductDetailScreen() {
 
       {/* ── Call sheet ─────────────────────────────────────────────────── */}
       <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
+
+      {/* ── Required-document preview sheet ────────────────────────────── */}
+      <DocPreviewSheet doc={previewDoc} onClose={() => setPreviewDoc(null)} />
     </Box>
   )
 }
@@ -346,6 +407,73 @@ function CallSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
         </Box>
       </Box>
     </>
+  )
+}
+
+// ─── Document preview sheet — opened from a Required Documents "Preview" link ─
+// Bottom sheet (same pattern as the apply-loan sample sheet) that shows what a
+// document category contains: a sample-page mockup, the items to bring and the
+// accepted formats.
+function DocPreviewSheet({ doc, onClose }: { doc: string | null; onClose: () => void }) {
+  const detail = (doc && DOC_DETAILS[doc]) || DOC_FALLBACK
+  return (
+    <BottomSheet open={doc !== null} onClose={onClose}>
+      <Typography sx={{ fontSize: 24, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.4px' }}>
+        {doc ?? 'Document'}
+      </Typography>
+
+      {/* Sample document mockup */}
+      <Box sx={{ bgcolor: '#F5F5F5', borderRadius: '16px', py: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.25 }}>
+        <SamplePage icon={detail.icon} title={doc ?? 'Document'} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <Icon name="info" size={15} color={LABEL} />
+          <Typography sx={{ fontSize: 12.5, color: LABEL }}>Sample preview · for reference only</Typography>
+        </Box>
+      </Box>
+
+      {/* Close */}
+      <Button
+        variant="contained"
+        fullWidth
+        onClick={onClose}
+        sx={{ height: 48, borderRadius: '12px', fontSize: 15, fontWeight: 700, bgcolor: BRAND, '&:hover': { bgcolor: '#1F4F9E' } }}
+      >
+        Got it
+      </Button>
+    </BottomSheet>
+  )
+}
+
+// A stylised "document page" placeholder: an icon header over faux text lines.
+function SamplePage({ icon, title }: { icon: IconName; title: string }) {
+  return (
+    <Box
+      sx={{
+        width: 168,
+        aspectRatio: '3 / 4',
+        bgcolor: '#fff',
+        border: '1px solid #E6EBF2',
+        borderRadius: '12px',
+        boxShadow: '0 8px 24px rgba(11,15,26,0.08)',
+        px: 2,
+        pt: 2.25,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 1,
+      }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 0.5 }}>
+        <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: 'rgba(39,92,178,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name={icon} size={24} color={BRAND} />
+        </Box>
+      </Box>
+      <Typography sx={{ fontSize: 10.5, fontWeight: 700, color: '#0B0F1A', textAlign: 'center', lineHeight: 1.3 }} noWrap>
+        {title}
+      </Typography>
+      {[0.92, 0.78, 0.86, 0.64, 0.8, 0.7].map((w, i) => (
+        <Box key={i} sx={{ height: 6, borderRadius: '3px', bgcolor: '#E6EBF2', width: `${w * 100}%` }} />
+      ))}
+    </Box>
   )
 }
 
