@@ -82,7 +82,7 @@ function EmptyState({ label, hint }: { label: string; hint: string }) {
 // ─── Segmented pill: Active | In Review | Complete ───────────────────────────
 function SegmentedTabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => void }) {
   return (
-    <Box sx={{ display: 'flex', bgcolor: '#EEF1F5', borderRadius: 2.5, p: 0.5, gap: 0.5 }}>
+    <Box sx={{ display: 'flex', alignItems: 'stretch', height: 40, bgcolor: '#EBEBEC', borderRadius: 2.5, p: 0.5, gap: 0.5 }}>
       {TABS.map((t) => {
         const active = value === t.id
         return (
@@ -91,14 +91,16 @@ function SegmentedTabs({ value, onChange }: { value: Tab; onChange: (t: Tab) => 
             onClick={() => onChange(t.id)}
             sx={{
               flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               textAlign: 'center',
-              py: 1,
               borderRadius: 2,
               fontSize: 13,
               fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.15s',
-              color: active ? '#0B0F1A' : '#8A94A6',
+              color: active ? '#0B0F1A' : '#71717A',
               bgcolor: active ? '#fff' : 'transparent',
               boxShadow: active ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
             }}
