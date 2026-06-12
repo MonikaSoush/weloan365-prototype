@@ -51,8 +51,8 @@ export default function CompletedLoanDetailScreen() {
             {/* Progress — fully complete */}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography sx={{ fontSize: 11, fontWeight: 500, color: LABEL }}>24 of 24 paid</Typography>
-                <Typography sx={{ fontSize: 11, fontWeight: 600, color: '#000' }}>100% completed</Typography>
+                <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: LABEL }}>24 of 24 paid</Typography>
+                <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: '#000' }}>100% completed</Typography>
               </Box>
               <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#F5F5F5', overflow: 'hidden' }}>
                 <Box sx={{ height: '100%', width: '100%', bgcolor: GREEN, borderRadius: '999px' }} />
@@ -141,8 +141,8 @@ function Donut() {
         <circle cx={46} cy={46} r={r} fill="none" stroke={GREEN} strokeWidth={9} />
       </Box>
       <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 700, color: VALUE, lineHeight: 1.1 }}>$0.00</Typography>
-        <Typography sx={{ fontSize: 10, fontWeight: 500, color: LABEL, lineHeight: 1.1 }}>outstanding</Typography>
+        <Typography sx={{ fontSize: 16, fontWeight: 700, color: VALUE, lineHeight: 1.1 }}>$0.00</Typography>
+        <Typography sx={{ fontSize: 11, fontWeight: 500, color: LABEL, lineHeight: 1.1 }}>outstanding</Typography>
       </Box>
     </Box>
   )
@@ -151,11 +151,11 @@ function Donut() {
 function LegendRow({ color, label, value }: { color: string; label: string; value: string }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: color }} />
-        <Typography sx={{ fontSize: 12, color: LABEL }}>{label}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+        <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: color }} />
+        <Typography sx={{ fontSize: 14, color: LABEL }}>{label}</Typography>
       </Box>
-      <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#000' }}>{value}</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 600, color: '#000' }}>{value}</Typography>
     </Box>
   )
 }
@@ -163,8 +163,8 @@ function LegendRow({ color, label, value }: { color: string; label: string; valu
 function MetaCol({ label, value }: { label: string; value: string }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-      <Typography sx={{ fontSize: 11, color: LABEL }}>{label}</Typography>
-      <Typography sx={{ fontSize: 11, fontWeight: 600, color: VALUE }}>{value}</Typography>
+      <Typography sx={{ fontSize: 12, color: LABEL }}>{label}</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 600, color: VALUE }}>{value}</Typography>
     </Box>
   )
 }
