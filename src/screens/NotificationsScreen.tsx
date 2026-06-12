@@ -40,20 +40,15 @@ export default function NotificationsScreen() {
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {/* Header */}
         <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
-              <Icon name="chevronLeft" size={26} color={HEADING} />
-            </IconButton>
-            <IconButton onClick={() => navigate('/settings')} aria-label="Notification settings" sx={{ color: HEADING }}>
-              <Icon name="appSettings" size={24} color={HEADING} />
-            </IconButton>
-          </Box>
+          <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
+            <Icon name="chevronLeft" size={26} color={HEADING} />
+          </IconButton>
           <Typography sx={{ fontSize: 30, fontWeight: 800, color: HEADING, letterSpacing: '-0.5px', mt: 0.5 }}>
             Notifications
           </Typography>
 
-          {/* Filter pills */}
-          <Box sx={{ display: 'flex', gap: 1, mt: 2, pb: 1 }}>
+          {/* Filter segmented control */}
+          <Box sx={{ display: 'flex', gap: '4px', mt: 2, mb: 1, p: '4px', bgcolor: '#EEF1F5', borderRadius: '999px' }}>
             {FILTERS.map((f) => (
               <FilterPill
                 key={f.id}
@@ -82,19 +77,20 @@ function FilterPill({ label, active, dot, onClick }: { label: string; active: bo
       onClick={onClick}
       role="button"
       sx={{
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
-        gap: 0.75,
-        px: 1.75,
-        height: 38,
+        justifyContent: 'center',
+        gap: 0.625,
+        height: 34,
         borderRadius: '999px',
         cursor: 'pointer',
-        bgcolor: active ? BLUE : '#fff',
-        border: active ? `1px solid ${BLUE}` : '1px solid #E7ECF2',
+        bgcolor: active ? '#fff' : 'transparent',
+        boxShadow: active ? '0 1px 4px rgba(16,24,40,0.12)' : 'none',
         transition: 'all 0.15s',
       }}
     >
-      <Typography sx={{ fontSize: 14, fontWeight: 700, color: active ? '#fff' : '#3A4256', whiteSpace: 'nowrap' }}>
+      <Typography sx={{ fontSize: 13, fontWeight: 700, color: active ? HEADING : MUTED, whiteSpace: 'nowrap' }}>
         {label}
       </Typography>
       {dot && <Box sx={{ width: 7, height: 7, borderRadius: '50%', bgcolor: DANGER }} />}
@@ -112,7 +108,7 @@ function DateLabel({ children }: { children: string }) {
 
 function NotifCard({ children }: { children: React.ReactNode }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: 2, mb: 1.5 }}>{children}</Box>
+    <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '12px', mb: 1.5 }}>{children}</Box>
   )
 }
 
