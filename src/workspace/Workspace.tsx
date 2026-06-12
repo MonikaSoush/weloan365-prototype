@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import PhoneCanvas from './PhoneCanvas'
 import AppRouter from '../router/AppRouter'
 import { findScreen, DEFAULT_SCREEN, screensForFlow } from './registry'
-import { FlowProvider, useFlow, USER_FLOWS } from './FlowContext'
+import { FlowProvider, useFlow, USER_FLOWS, type UserFlow } from './FlowContext'
 import { SampleProvider, useSample, SAMPLES } from './SampleContext'
 
 const SIDEBAR_W = 272
@@ -49,6 +49,14 @@ function SampleSelect() {
   )
 }
 
+// Display labels for the flow picker (the underlying flow values are kept).
+const FLOW_LABELS: Record<UserFlow, string> = {
+  Visitor: 'Visitor',
+  'New User': 'Visitor (logged in)',
+  Applicant: 'Applicant',
+  Borrower: 'Borrower',
+}
+
 // ─── User-flow selector — defines which user context the prototype represents ─
 function UserFlowSelect() {
   const [open, setOpen] = useState(false)
@@ -78,7 +86,7 @@ function UserFlowSelect() {
             transition: 'border-color 0.12s',
           }}
         >
-          {flow}
+          {FLOW_LABELS[flow]}
           <Box component="span" sx={{ color: '#8A94A6', fontSize: 11, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▲</Box>
         </Box>
         {open && (
@@ -117,7 +125,7 @@ function UserFlowSelect() {
                     '&:hover': { bgcolor: active ? '#F4F8FF' : '#F5F7FA' },
                   }}
                 >
-                  {f}
+                  {FLOW_LABELS[f]}
                 </Box>
               )
             })}
