@@ -50,24 +50,36 @@ export default function FlowSelectScreen() {
       <Box sx={{ display: 'flex', bgcolor: 'rgba(255,255,255,0.15)', borderRadius: '12px', p: 0.5, gap: 0.5, mb: 3 }}>
         {SAMPLES.map((s) => {
           const active = s.id === sample
+          // Sample 2 is not ready yet — show a "Coming soon" badge and block selection.
+          const disabled = s.id === '2'
           return (
             <Box
               key={s.id}
-              onClick={() => setSample(s.id)}
+              onClick={() => { if (!disabled) setSample(s.id) }}
+              aria-disabled={disabled}
               sx={{
                 flex: 1,
-                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 0.25,
                 py: 1.25,
                 borderRadius: '9px',
-                cursor: 'pointer',
+                cursor: disabled ? 'not-allowed' : 'pointer',
                 fontSize: 14,
                 fontWeight: 700,
+                opacity: disabled ? 0.45 : 1,
                 color: active ? '#1C4DB8' : 'rgba(255,255,255,0.85)',
                 bgcolor: active ? '#fff' : 'transparent',
                 transition: 'all 0.12s',
               }}
             >
               {s.label}
+              {disabled && (
+                <Box component="span" sx={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.4px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)' }}>
+                  Coming soon
+                </Box>
+              )}
             </Box>
           )
         })}

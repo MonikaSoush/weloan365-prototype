@@ -139,10 +139,7 @@ export default function ProductDetailScreen() {
     navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')
 
   return (
-    <Box className="screen-enter" sx={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
-      {/* Status-bar fill — paints the reserved notch area in the hero blue so
-          it blends seamlessly into the banner image below. */}
-      <Box sx={{ position: 'absolute', top: '-47px', left: 0, right: 0, height: '47px', bgcolor: '#4279B3', zIndex: 1 }} />
+    <Box className="screen-enter" sx={{ position: 'relative', height: 'calc(100% + 54px)', mt: '-54px', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
 
       {/* ── Compact sticky header (appears on scroll) ─────────────────── */}
       <Box
@@ -252,7 +249,7 @@ export default function ProductDetailScreen() {
           {/* Calculate / Request Consult */}
           <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
             <ToolButton icon="calculator" label="Calculate" onClick={() => navigate('/calculator?v=1')} sx={{ width: 132, flexShrink: 0 }} />
-            <ToolButton icon="clock" label="Request Consult" sx={{ flex: 1 }} />
+            <ToolButton icon="clock" label="Request Consult" onClick={() => navigate('/request-consult')} sx={{ flex: 1 }} />
           </Box>
 
           {/* Spec cards */}

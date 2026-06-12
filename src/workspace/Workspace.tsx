@@ -21,6 +21,8 @@ function SampleSelect() {
       <Box sx={{ display: 'flex', bgcolor: '#EEF1F5', borderRadius: 2, p: 0.5, gap: 0.5 }}>
         {SAMPLES.map((s) => {
           const active = s.id === sample
+          // Sample 2 is not ready yet — show a "Coming soon" badge and block selection.
+          const disabled = s.id === '2'
           return (
             <Box
               key={s.id}
@@ -28,7 +30,10 @@ function SampleSelect() {
               role="button"
               sx={{
                 flex: 1,
-                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 0.25,
                 py: 1,
                 borderRadius: 1.5,
                 cursor: 'pointer',
@@ -41,6 +46,11 @@ function SampleSelect() {
               }}
             >
               {s.label}
+              {disabled && (
+                <Box component="span" sx={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.4px', textTransform: 'uppercase', color: '#9AA3B2' }}>
+                  Coming soon
+                </Box>
+              )}
             </Box>
           )
         })}
