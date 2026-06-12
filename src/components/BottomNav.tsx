@@ -27,8 +27,6 @@ export default function BottomNav() {
         flexShrink: 0,
         bgcolor: '#fff',
         borderTop: '1px solid #ECEFF3',
-        // Extend white into the home-indicator safe area so the gesture bar blends.
-        pb: '34px',
         display: 'flex',
         alignItems: 'stretch',
         // Nav row height; safe-area padding sits below it.
