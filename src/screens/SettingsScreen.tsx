@@ -9,11 +9,26 @@ import { Icon, type IconName } from '../components/Icon'
 import { AssetImg, ILLUS } from '../components/home/media'
 import { AvatarArt } from '../components/home/illustrations'
 import { useFlow } from '../workspace/FlowContext'
+import { BottomSheet } from './mwl/MwlParts'
 
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
 const BLUE = '#0052CC'
 const DANGER = '#E11D48'
+
+// Appearance picker options.
+type LangId = 'en' | 'km' | 'ko'
+const LANGUAGES: { id: LangId; label: string; flag: string }[] = [
+  { id: 'en', label: 'English', flag: '🇬🇧' },
+  { id: 'km', label: 'ខ្មែរ', flag: '🇰🇭' },
+  { id: 'ko', label: '한국어', flag: '🇰🇷' },
+]
+type ThemeId = 'System' | 'Light' | 'Dark'
+const THEMES: { id: ThemeId; icon: IconName }[] = [
+  { id: 'System', icon: 'monitor' },
+  { id: 'Light', icon: 'sun' },
+  { id: 'Dark', icon: 'moon' },
+]
 
 // ─── Reusable settings cards ─────────────────────────────────────────────────
 function SectionLabel({ children }: { children: string }) {
@@ -176,8 +191,10 @@ export default function SettingsScreen() {
   const [paymentReminders, setPaymentReminders] = useState(false)
   const [promotions, setPromotions] = useState(true)
   const [chatNotifs, setChatNotifs] = useState(false)
-  const [language, setLanguage] = useState<'en' | 'km'>('en')
-  const [theme, setTheme] = useState<'System' | 'Light' | 'Dark'>('System')
+  const [language, setLanguage] = useState<LangId>('en')
+  const [theme, setTheme] = useState<ThemeId>('System')
+  const [picker, setPicker] = useState<'language' | 'theme' | null>(null)
+  const activeLang = LANGUAGES.find((l) => l.id === language) ?? LANGUAGES[0]
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -271,27 +288,17 @@ export default function SettingsScreen() {
               <SelectRow
                 icon="globe"
                 label="Language"
-                value={language === 'en' ? 'English' : 'ខ្មែរ'}
-                flag={language === 'en' ? '🇬🇧' : '🇰🇭'}
-                onClick={() => setLanguage((l) => (l === 'en' ? 'km' : 'en'))}
+                value={activeLang.label}
+                flag={activeLang.flag}
+                onClick={() => setPicker('language')}
                 divider
               />
               <SelectRow
                 icon="theme"
                 label="Theme"
                 value={theme}
-                onClick={() => setTheme((t) => (t === 'System' ? 'Light' : t === 'Light' ? 'Dark' : 'System'))}
+                onClick={() => setPicker('theme')}
               />
-            </Card>
-          </Box>
-
-          <Box sx={{ mt: 2 }}>
-            <SectionLabel>SUPPORT</SectionLabel>
-            <Card>
-              <NavRow icon="findBranch" label="Find a branch" divider onClick={() => navigate('/branch-locator')} />
-              <NavRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
-              <NavRow icon="feedback" label="Feedback" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback')} />
-              <NavRow icon="faq" label="FAQ" onClick={() => navigate('/faq')} />
             </Card>
           </Box>
 
@@ -320,6 +327,81 @@ export default function SettingsScreen() {
           NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>
+
+      {/* Language picker */}
+      <PickerSheet
+        open={picker === 'language'}
+        title="Language"
+        options={LANGUAGES.map((l) => ({ value: l.id, label: l.label, flag: l.flag }))}
+        selected={language}
+        onSelect={(v) => setLanguage(v as LangId)}
+        onClose={() => setPicker(null)}
+      />
+
+      {/* Theme picker */}
+      <PickerSheet
+        open={picker === 'theme'}
+        title="Theme"
+        options={THEMES.map((t) => ({ value: t.id, label: t.id, icon: t.icon }))}
+        selected={theme}
+        onSelect={(v) => setTheme(v as ThemeId)}
+        onClose={() => setPicker(null)}
+      />
     </Box>
+  )
+}
+
+// Bottom-sheet option picker for the Appearance rows.
+function PickerSheet({
+  open,
+  title,
+  options,
+  selected,
+  onSelect,
+  onClose,
+}: {
+  open: boolean
+  title: string
+  options: { value: string; label: string; flag?: string; icon?: IconName }[]
+  selected: string
+  onSelect: (v: string) => void
+  onClose: () => void
+}) {
+  return (
+    <BottomSheet open={open} onClose={onClose} title={title}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {options.map((opt) => {
+          const active = opt.value === selected
+          return (
+            <Box
+              key={opt.value}
+              role="button"
+              onClick={() => {
+                onSelect(opt.value)
+                onClose()
+              }}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                minHeight: 60,
+                px: '16px',
+                borderRadius: '12px',
+                bgcolor: active ? '#EEF3FC' : '#F7F9FC',
+                border: active ? `1px solid ${BLUE}` : '1px solid transparent',
+                cursor: 'pointer',
+                transition: 'background 0.12s',
+                '&:active': { opacity: 0.85 },
+              }}
+            >
+              {opt.flag && <Box component="span" sx={{ fontSize: 22, lineHeight: 1 }}>{opt.flag}</Box>}
+              {opt.icon && <Icon name={opt.icon} size={22} color="#1A1A1A" />}
+              <Typography sx={{ flex: 1, fontSize: 16, fontWeight: 700, color: HEADING }}>{opt.label}</Typography>
+              {active && <Icon name="checkCircle" size={22} color={BLUE} />}
+            </Box>
+          )
+        })}
+      </Box>
+    </BottomSheet>
   )
 }

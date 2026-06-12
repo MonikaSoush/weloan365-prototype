@@ -274,7 +274,6 @@ export function MoreMenuBody({
         <Box>
           <MoreSectionLabel>GENERAL</MoreSectionLabel>
           <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
-            <MoreRow icon="appSettings" label="Settings" divider onClick={() => navigate('/settings')} />
             <MoreRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
             <MoreRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
           </Box>

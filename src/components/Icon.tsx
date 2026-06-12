@@ -65,6 +65,9 @@ import {
   Smartphone,
   Mail,
   Gauge,
+  Sun,
+  Moon,
+  Monitor,
   type LucideProps,
 } from 'lucide-react'
 
@@ -150,6 +153,9 @@ export type IconName =
   | 'pin'
   | 'gauge'
   | 'cash'
+  | 'sun'
+  | 'moon'
+  | 'monitor'
 
 // ─── Custom filled tab-bar glyphs (brand exports, recolor via `color`) ───────
 const Filled = (path: string): ComponentType<LucideProps> =>
@@ -244,6 +250,9 @@ const REGISTRY: Record<IconName, { sf: string; cmp: ComponentType<LucideProps> }
   pin:             { sf: 'asterisk',                  cmp: Lock },
   gauge:           { sf: 'gauge',                      cmp: Gauge },
   cash:            { sf: 'banknote',                   cmp: Banknote },
+  sun:             { sf: 'sun.max',                    cmp: Sun },
+  moon:            { sf: 'moon',                       cmp: Moon },
+  monitor:         { sf: 'display',                    cmp: Monitor },
 }
 
 // ─── Brand glyph overrides ───────────────────────────────────────────────────
