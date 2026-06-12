@@ -30,7 +30,7 @@ export default function SignUpScreen() {
           </IconButton>
           <Box
             role="button"
-            sx={{ display: 'flex', alignItems: 'center', gap: 0.75, bgcolor: '#fff', borderRadius: 999, pl: 1.25, pr: 1, py: 0.5, cursor: 'pointer', boxShadow: '0 1px 3px rgba(16,24,40,0.06)' }}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75, width: 70, height: 36, bgcolor: '#fff', borderRadius: 999, cursor: 'pointer', boxShadow: '0 1px 3px rgba(16,24,40,0.06)' }}
           >
             <Flag code="gb" size={22} />
             <Icon name="chevronDown" size={16} color="#0B0F1A" />
