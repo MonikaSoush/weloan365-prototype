@@ -186,7 +186,7 @@ function ActiveLoanCard({ banner, onPay }: { banner?: { tone: 'neutral' | 'warni
           <Icon name="clock" size={14} color="#8A94A6" />
           <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Due Date 20 May</Typography>
         </Box>
-        <Button variant="contained" onClick={(e) => { e.stopPropagation(); onPay() }} startIcon={<Icon name="pay" size={18} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
+        <Button variant="contained" onClick={(e) => { e.stopPropagation(); onPay() }} startIcon={<Icon name="cash" size={16} />} sx={{ height: 38, minWidth: 0, borderRadius: '9px', px: '12px', py: '10px', fontSize: 13, fontWeight: 500, bgcolor: '#345EAC', '&:hover': { bgcolor: '#2B4F92' } }}>
           Pay $320.00
         </Button>
       </Box>
