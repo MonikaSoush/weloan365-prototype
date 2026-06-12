@@ -319,7 +319,7 @@ export function CurrencyToggle({ value, onChange }: { value: 'USD' | 'KHR'; onCh
 // Donut — outstanding ring (green progress arc)
 // ─────────────────────────────────────────────────────────────────────────────
 export function OutstandingDonut({ pct = 60, centerText, blurred = false }: { pct?: number; centerText?: string; blurred?: boolean }) {
-  const SIZE = 76
+  const SIZE = 92
   const STROKE = 8
   const r = (SIZE - STROKE) / 2
   const c = 2 * Math.PI * r
