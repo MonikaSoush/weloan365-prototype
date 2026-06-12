@@ -69,7 +69,7 @@ export const SCREENS: FlowScreen[] = [
   {
     id: 'more',
     name: 'More menu',
-    section: 'HOME',
+    section: 'MORE',
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {

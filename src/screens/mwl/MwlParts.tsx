@@ -15,9 +15,11 @@ export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onB
         <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
           <Icon name="chevronLeft" size={26} color="#0B0F1A" />
         </IconButton>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {!kebab && <Icon name="message" size={23} color="#0B0F1A" />}
-          <Icon name="phone" size={22} color="#0B0F1A" />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', mr: '-7px' }}>
+          {!kebab && (
+            <Box component="img" src="/assets/brand/ico_chat.svg" alt="Chat" sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer' }} />
+          )}
+          <Box component="img" src="/assets/brand/ico_call.svg" alt="Call" sx={{ width: 22, height: 22, p: '7px', boxSizing: 'content-box', display: 'block', cursor: 'pointer' }} />
           {kebab && <Icon name="dotsVertical" size={22} color="#0B0F1A" />}
         </Box>
       </Box>

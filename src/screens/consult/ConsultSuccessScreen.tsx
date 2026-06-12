@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../../components/Icon'
+import { useHomePath } from '../../workspace/useHomePath'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Request consultation · Success — booking request submitted.
@@ -13,6 +14,7 @@ const GREEN = '#2E7D32'
 
 export default function ConsultSuccessScreen() {
   const navigate = useNavigate()
+  const home = useHomePath()
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -61,7 +63,7 @@ export default function ConsultSuccessScreen() {
         <Button
           variant="contained"
           fullWidth
-          onClick={() => navigate('/home?v=1')}
+          onClick={() => navigate(home)}
           startIcon={<Icon name="home" size={20} />}
           sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}
         >

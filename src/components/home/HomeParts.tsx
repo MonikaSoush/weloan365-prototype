@@ -121,7 +121,7 @@ function MoreSectionLabel({ children }: { children: ReactNode }) {
   )
 }
 
-function MoreTile({ icon, label, tint, onClick }: { icon: IconName; label: string; tint: string; onClick?: () => void }) {
+function MoreTile({ icon, label, onClick }: { icon: IconName; label: string; onClick?: () => void }) {
   return (
     <Box
       onClick={onClick}
@@ -140,8 +140,8 @@ function MoreTile({ icon, label, tint, onClick }: { icon: IconName; label: strin
         '&:active': { transform: 'scale(0.98)', bgcolor: '#F8FAFC' },
       }}
     >
-      <Box sx={{ width: 40, height: 40, borderRadius: '11px', bgcolor: `${tint}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name={icon} size={22} color={tint} />
+      <Box sx={{ width: 40, height: 40, borderRadius: '11px', bgcolor: '#F2F4F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name={icon} size={22} color="#1A1A1A" />
       </Box>
       <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
     </Box>
@@ -236,15 +236,15 @@ export function MoreMenuBody({
           <Box
             role="button"
             onClick={() => navigate('/sign-up')}
-            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '16px', borderRadius: '14px', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '16px', borderRadius: '14px', bgcolor: '#fff', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
           >
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>Welcome!</Typography>
-              <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>Sign up to apply for a loan faster</Typography>
+              <Typography sx={{ fontSize: 18, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>Welcome!</Typography>
+              <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>Sign up to apply loan faster</Typography>
             </Box>
-            <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.5, bgcolor: BLUE, borderRadius: '10px', px: 1.5, py: 1 }}>
-              <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>Get Started</Typography>
-              <Icon name="arrowRight" size={16} color="#fff" />
+            <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 0.75, bgcolor: BLUE, borderRadius: '10px', p: '8px' }}>
+              <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: '#fff' }}>Get Started</Typography>
+              <Icon name="arrowRight" size={18} color="#fff" />
             </Box>
           </Box>
         ) : (
@@ -268,10 +268,10 @@ export function MoreMenuBody({
         <Box>
           <MoreSectionLabel>QUICK ACTIONS</MoreSectionLabel>
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-            <MoreTile icon="calculator" label="Calculator" tint="#0052CC" onClick={() => navigate('/calculator')} />
-            <MoreTile icon="findBranch" label="Find a Branch" tint="#1FA85C" onClick={() => navigate('/branch-locator')} />
-            <MoreTile icon="message" label="Live Chat" tint="#7A5AF8" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} />
-            <MoreTile icon="bell" label="Notifications" tint="#E8770B" onClick={() => navigate('/notifications')} />
+            <MoreTile icon="calculator" label="Calculator" onClick={() => navigate('/calculator')} />
+            <MoreTile icon="findBranch" label="Find a Branch" onClick={() => navigate('/branch-locator')} />
+            <MoreTile icon="message" label="Live Chat" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} />
+            <MoreTile icon="bell" label="Notifications" onClick={() => navigate('/notifications')} />
           </Box>
         </Box>
 

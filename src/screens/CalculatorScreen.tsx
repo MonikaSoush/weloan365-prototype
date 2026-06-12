@@ -35,9 +35,28 @@ const LOAN_PRODUCTS: IconOption[] = [
 const MUTED = '#747A81'
 const LABEL = '#737373'
 
-// Evenly-spaced interior dots for the term slider (12 → 240 months).
-const TERM_MARKS = Array.from({ length: 7 }, (_, i) => ({ value: Math.round(12 + (228 * (i + 1)) / 8) }))
-const TERM_MARK_VALUES = new Set(TERM_MARKS.map((m) => m.value))
+// Per-product limits: amount ceiling and the maximum loan term (months).
+const MIN_AMOUNT = 100
+const MIN_MONTHS = 12
+const PRODUCT_LIMITS: Record<string, { maxAmount: number; maxMonths: number }> = {
+  'Micro Loan': { maxAmount: 3000, maxMonths: 48 },
+  'Small Biz Loan': { maxAmount: 30000, maxMonths: 96 },
+  'Small & Medium Enterprise Loan': { maxAmount: 100000, maxMonths: 120 },
+  'Housing Loan': { maxAmount: 300000, maxMonths: 240 },
+  'Migrant Worker Loan': { maxAmount: 15000, maxMonths: 240 },
+  None: { maxAmount: 300000, maxMonths: 240 },
+}
+
+// Build the term-slider snap stops for a given max term: 7 evenly-spaced
+// interior dots plus the two endpoints (kept reachable, hidden via CSS).
+function termMarksFor(maxMonths: number) {
+  const span = maxMonths - MIN_MONTHS
+  const dots = Array.from({ length: 7 }, (_, i) => Math.round(MIN_MONTHS + (span * (i + 1)) / 8))
+  return {
+    marks: [MIN_MONTHS, ...dots, maxMonths].map((value) => ({ value })),
+    dotValues: new Set(dots),
+  }
+}
 
 type Currency = 'USD' | 'KHR'
 
@@ -133,6 +152,16 @@ export default function CalculatorScreen() {
   // The rate is fixed per product; only the "None" option lets the user edit it.
   const rateEditable = loanProduct === 'None'
 
+  // Amount ceiling + max term follow the selected loan product.
+  const { maxAmount, maxMonths } = PRODUCT_LIMITS[loanProduct] ?? PRODUCT_LIMITS.None
+  const { marks: termMarks, dotValues: termDotValues } = useMemo(() => termMarksFor(maxMonths), [maxMonths])
+
+  // When the product changes, clamp the amount and term to the new limits.
+  useEffect(() => {
+    setAmount((a) => Math.min(a, maxAmount))
+    setTerm((t) => Math.min(Math.max(t, MIN_MONTHS), maxMonths))
+  }, [maxAmount, maxMonths])
+
   const { payment, totalPayable, totalInterest, rows } = useMemo(
     () => buildSchedule(amount, term, Number.isNaN(monthlyInterest) ? 0 : monthlyInterest, repaymentMethod),
     [amount, term, monthlyInterest, repaymentMethod],
@@ -144,7 +173,7 @@ export default function CalculatorScreen() {
   const handleTermChange = (_: Event, v: number | number[]) => {
     const n = v as number
     setTerm(n)
-    if (TERM_MARK_VALUES.has(n)) {
+    if (termDotValues.has(n)) {
       if (lastMarkRef.current !== n) {
         navigator.vibrate?.(10)
         lastMarkRef.current = n
@@ -174,7 +203,9 @@ export default function CalculatorScreen() {
 
             {/* Amount */}
             <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
-              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Amount $100 ~ $300,000</Typography>
+              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>
+                Amount ${MIN_AMOUNT.toLocaleString('en-US')} ~ ${maxAmount.toLocaleString('en-US')}
+              </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1, minWidth: 0 }}>
                   <Typography sx={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{currency === 'USD' ? '$' : '៛'}</Typography>
@@ -220,16 +251,16 @@ export default function CalculatorScreen() {
               <SectionLabel>Payment estimate</SectionLabel>
               <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? '1 year' : '12 months'}</Typography>
-                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? '20 years' : '240 months'}</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? '1 year' : `${MIN_MONTHS} months`}</Typography>
+                  <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? `${Math.round(maxMonths / 12)} years` : `${maxMonths} months`}</Typography>
                 </Box>
                 <Slider
                   value={term}
                   onChange={handleTermChange}
-                  min={12}
-                  max={240}
-                  step={1}
-                  marks={TERM_MARKS}
+                  min={MIN_MONTHS}
+                  max={maxMonths}
+                  step={null}
+                  marks={termMarks}
                   valueLabelDisplay="auto"
                   valueLabelFormat={(v) => `${v}`}
                   aria-label="Loan term in months"
@@ -246,6 +277,10 @@ export default function CalculatorScreen() {
                       bgcolor: '#C7CDD6',
                       opacity: 1,
                       '&.MuiSlider-markActive': { bgcolor: 'rgba(255,255,255,0.65)' },
+                    },
+                    // Hide the two endpoint dots — only the 7 interior dots show.
+                    [`& .MuiSlider-mark[data-index="0"], & .MuiSlider-mark[data-index="${termMarks.length - 1}"]`]: {
+                      display: 'none',
                     },
                     '& .MuiSlider-thumb': {
                       width: 36,
@@ -340,7 +375,7 @@ export default function CalculatorScreen() {
             />
 
             {/* Monthly payment summary */}
-            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5 }}>
+            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: '26px' }}>
               <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: LABEL, textTransform: 'uppercase' }}>
                 Monthly payment
               </Typography>

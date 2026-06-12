@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
+import { useHomePath } from '../workspace/useHomePath'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chat — conversation list (inbox). Opened from the chat icon in the home header.
@@ -69,6 +70,7 @@ type Tab = 'all' | 'unread'
 
 export default function ChatScreen() {
   const navigate = useNavigate()
+  const home = useHomePath()
   const [tab, setTab] = useState<Tab>('all')
   const unreadCount = CONVERSATIONS.filter((c) => c.unread > 0).length
   const list = tab === 'all' ? CONVERSATIONS : CONVERSATIONS.filter((c) => c.unread > 0)
@@ -80,7 +82,7 @@ export default function ChatScreen() {
         <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <IconButton onClick={() => navigate('/home?v=1')} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
+              <IconButton onClick={() => navigate(home)} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
                 <Icon name="chevronLeft" size={26} color={HEADING} />
               </IconButton>
               <Box component="img" src="/assets/brand/header_logo.svg" alt="NongHyup Finance" sx={{ height: 30, display: 'block' }} />

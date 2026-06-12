@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
 import { MwlHeader, BottomSheet, BLUE } from './mwl/MwlParts'
+import { useHomePath } from '../workspace/useHomePath'
 
 // ─── Advances payment ledger ─────────────────────────────────────────────────
 const TABLE_HEAD = ['កាលបរិច្ឆេទ', 'ដាក់ប្រាក់', 'ប្រាក់បង់កម្ចី', 'ផ្ទេរទៅកាន់កម្ចី']
@@ -30,6 +31,7 @@ const METHODS: Method[] = [
 
 export default function AdvanceAccountScreen() {
   const navigate = useNavigate()
+  const home = useHomePath()
   const [params] = useSearchParams()
   // Sample 2 (?v=2) opens the Top-up sheet by default for review.
   const [topUpOpen, setTopUpOpen] = useState((params.get('v') ?? '1') === '2')
@@ -38,7 +40,7 @@ export default function AdvanceAccountScreen() {
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
-        <MwlHeader onBack={() => navigate('/home?v=1')} kebab={false} />
+        <MwlHeader onBack={() => navigate(home)} kebab={false} />
         <Typography sx={{ fontSize: 30, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', px: 3, mt: 0.5, mb: 2 }}>
           Advance Account
         </Typography>
