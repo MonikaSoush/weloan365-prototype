@@ -7,7 +7,7 @@ import { Icon } from '../../components/Icon'
 import { MwlHeader, MwlTitle, GroupLabel, FieldCard, SelectField } from '../mwl/MwlParts'
 
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 
 export default function ProfileEditScreen() {
   const navigate = useNavigate()

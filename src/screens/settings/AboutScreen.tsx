@@ -9,7 +9,7 @@ import { Icon, type IconName } from '../../components/Icon'
 // ─────────────────────────────────────────────────────────────────────────────
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 
 type ContactItem = { icon: IconName; value: string; label: string }
 const CONTACTS: ContactItem[] = [

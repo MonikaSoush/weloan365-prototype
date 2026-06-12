@@ -20,7 +20,7 @@ import {
   Card,
 } from '../components/home/HomeParts'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 
 // Home — the main dashboard. Its top section adapts to the active user flow:
 //   • Visitor   → welcome + explore prompt (no loans)

@@ -19,7 +19,7 @@ import { ProductScene, AvatarArt, PromoScene } from './illustrations'
 import { useFlow } from '../../workspace/FlowContext'
 import { SettingsSections } from '../../screens/SettingsScreen'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const GREEN = '#8CC919'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -122,32 +122,6 @@ function MoreSectionLabel({ children }: { children: ReactNode }) {
   )
 }
 
-function MoreTile({ icon, label, onClick }: { icon: IconName; label: string; onClick?: () => void }) {
-  return (
-    <Box
-      onClick={onClick}
-      role="button"
-      aria-label={label}
-      sx={{
-        bgcolor: '#fff',
-        borderRadius: '14px',
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 1.25,
-        cursor: 'pointer',
-        transition: 'transform 0.12s, background 0.12s',
-        '&:active': { transform: 'scale(0.98)', bgcolor: '#F8FAFC' },
-      }}
-    >
-      <Box sx={{ width: 40, height: 40, borderRadius: '11px', bgcolor: '#F2F4F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name={icon} size={22} color="#1A1A1A" />
-      </Box>
-      <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
-    </Box>
-  )
-}
-
 function MoreRow({ icon, label, onClick, divider }: { icon: IconName; label: string; onClick?: () => void; divider?: boolean }) {
   return (
     <Box
@@ -168,7 +142,7 @@ function MoreRow({ icon, label, onClick, divider }: { icon: IconName; label: str
       }}
     >
       <Icon name={icon} size={24} color="#1A1A1A" />
-      <Typography sx={{ flex: 1, fontSize: 14.5, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
+      <Typography sx={{ flex: 1, fontSize: 14.5, fontWeight: 600, color: '#0B0F1A' }}>{label}</Typography>
       <Icon name="chevronRight" size={20} color="#C2C9D4" />
     </Box>
   )
@@ -230,7 +204,7 @@ export function MoreMenuBody({
       )}
 
       {/* Menu */}
-      <Box sx={{ flex: 1, px: 3, pt: 2, pb: 4, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+      <Box sx={{ flex: 1, px: 3, pt: '24px', pb: 4, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
         {/* Account entry — sign-up prompt for visitors only. Signed-in flows
             (New User / Applicant / Borrower) reach their profile elsewhere. */}
         {isVisitor && (
@@ -250,25 +224,16 @@ export function MoreMenuBody({
           </Box>
         )}
 
-        {/* Quick actions */}
-        <Box>
-          <MoreSectionLabel>QUICK ACTIONS</MoreSectionLabel>
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-            <MoreTile icon="calculator" label="Calculator" onClick={() => navigate('/calculator')} />
-            <MoreTile icon="findBranch" label="Find a Branch" onClick={() => navigate('/branch-locator')} />
-            <MoreTile icon="message" label="Live Chat" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} />
-            <MoreTile icon="gauge" label="Credit Score" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score')} />
-          </Box>
-        </Box>
-
         {/* Services */}
         <Box>
           <MoreSectionLabel>SUPPORT</MoreSectionLabel>
           <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
             <MoreRow icon="phone" label="Request a consultation" divider onClick={() => navigate('/request-consult')} />
             <MoreRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
-            <MoreRow icon="faq" label="FAQ" divider onClick={() => navigate('/faq')} />
-            <MoreRow icon="feedback" label="Feedback" onClick={() => navigate('/send-feedback')} />
+            <MoreRow icon="feedback" label="Feedback" divider onClick={() => navigate('/send-feedback')} />
+            <MoreRow icon="calculator" label="Calculator" divider onClick={() => navigate('/calculator')} />
+            <MoreRow icon="findBranch" label="Find a Branch" divider onClick={() => navigate('/branch-locator')} />
+            <MoreRow icon="gauge" label="Credit Score" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score')} />
           </Box>
         </Box>
 

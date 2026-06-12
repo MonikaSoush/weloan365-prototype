@@ -368,7 +368,7 @@ export default function ProductsScreen() {
                 role="button"
                 sx={{ cursor: 'pointer', '&:active': { opacity: 0.6 } }}
               >
-                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0052CC' }}>See all</Typography>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#275CB2' }}>See all</Typography>
               </Box>
             </Box>
 

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon, type IconName } from './Icon'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const MUTED = '#8A94A6'
 
 const TABS: { id: string; label: string; icon: IconName; path: string }[] = [

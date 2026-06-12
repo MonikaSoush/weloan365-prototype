@@ -10,7 +10,7 @@ import { Icon } from '../../components/Icon'
 // ─────────────────────────────────────────────────────────────────────────────
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 
 const TABS = ['All', 'Blog', 'News', 'Tips', 'EDU', 'CSR']
 
@@ -21,7 +21,7 @@ const GROUPS: Group[] = [
   {
     date: '15 May 2026',
     posts: [
-      { id: 'p1', cat: 'News', title: 'Khmer New Year promotion', body: 'Special interest rates on migrant worker loans throughout the holiday season.', day: 'Wed, 14 May', tint: '#0052CC' },
+      { id: 'p1', cat: 'News', title: 'Khmer New Year promotion', body: 'Special interest rates on migrant worker loans throughout the holiday season.', day: 'Wed, 14 May', tint: '#275CB2' },
       { id: 'p2', cat: 'Tips', title: 'How to plan your repayments', body: 'Five simple habits that keep your loan healthy and your credit score strong.', day: 'Wed, 14 May', tint: '#1FA85C' },
     ],
   },

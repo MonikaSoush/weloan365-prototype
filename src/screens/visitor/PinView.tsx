@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../../components/Icon'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const MUTED = '#8A94A6'
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'back']

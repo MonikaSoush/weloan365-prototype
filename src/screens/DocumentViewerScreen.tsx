@@ -9,7 +9,7 @@ import { Icon } from '../components/Icon'
 // Renders the NongHyup customer-history repayment schedule as a print-style page.
 // ─────────────────────────────────────────────────────────────────────────────
 const HEADING = '#0B0F1A'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const BRAND = '#2B53A8'
 const HEAD_ORANGE = '#C2700C'
 const BORDER = '#C9CDD4'

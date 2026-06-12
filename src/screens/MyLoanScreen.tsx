@@ -10,7 +10,7 @@ import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel } from '../comp
 import { useFlow } from '../workspace/FlowContext'
 import { useSample } from '../workspace/SampleContext'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 
 type Tab = 'active' | 'review' | 'complete'
 

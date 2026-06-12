@@ -11,7 +11,7 @@ import { Icon } from '../components/Icon'
 // ─────────────────────────────────────────────────────────────────────────────
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const GREEN = '#1FA85C'
 
 type Contact = {
@@ -28,7 +28,7 @@ const CONTACTS: { heading: string; people: Contact[] }[] = [
   {
     heading: 'SUPPORT',
     people: [
-      { id: 'nhfc', name: 'NHFC Support', role: 'Customer Support · replies in minutes', online: true, tint: '#0052CC' },
+      { id: 'nhfc', name: 'NHFC Support', role: 'Customer Support · replies in minutes', online: true, tint: '#275CB2' },
       { id: 'pisey', name: 'Pisey Sok', role: 'Customer Support', online: true, tint: '#7A3FF2' },
     ],
   },

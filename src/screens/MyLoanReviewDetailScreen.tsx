@@ -12,7 +12,7 @@ const HEADING = '#0B0F1A'
 const LABEL = '#737373'
 const VALUE = '#171717'
 const ACCENT = '#345EAC'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const KH = `'Noto Sans Khmer', sans-serif`
 
 type Step = { title: string; sub: string; state: 'done' | 'current' | 'pending' }

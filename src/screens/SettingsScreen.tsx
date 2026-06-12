@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import Switch from '@mui/material/Switch'
 import Badge from '@mui/material/Badge'
 import { Icon, type IconName } from '../components/Icon'
 import { Flag, type FlagCode } from '../components/Flag'
@@ -14,7 +13,7 @@ import { BottomSheet } from './mwl/MwlParts'
 
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const DANGER = '#E11D48'
 
 // Appearance picker options.
@@ -79,7 +78,7 @@ function RowShell({
     >
       <Icon name={icon} size={24} color="#1A1A1A" />
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>{label}</Typography>
+        <Typography sx={{ fontSize: 14.5, fontWeight: 600, color: HEADING, lineHeight: 1.3 }}>{label}</Typography>
         {sub && <Typography sx={{ fontSize: 12, color: MUTED, mt: 0.25 }} noWrap>{sub}</Typography>}
       </Box>
       {right}
@@ -89,65 +88,6 @@ function RowShell({
 
 function NavRow(props: { icon: IconName; label: string; sub?: string; divider?: boolean; onClick?: () => void }) {
   return <RowShell {...props} right={<Icon name="chevronRight" size={20} color="#C2C9D4" />} />
-}
-
-function ToggleRow({
-  icon,
-  label,
-  sub,
-  divider,
-  checked,
-  onToggle,
-}: {
-  icon: IconName
-  label: string
-  sub?: string
-  divider?: boolean
-  checked: boolean
-  onToggle: (v: boolean) => void
-}) {
-  return (
-    <RowShell
-      icon={icon}
-      label={label}
-      sub={sub}
-      divider={divider}
-      right={
-        <Switch
-          checked={checked}
-          onChange={(e) => onToggle(e.target.checked)}
-          disableRipple
-          sx={{
-            width: 51,
-            height: 31,
-            padding: 0,
-            '& .MuiSwitch-switchBase': {
-              padding: 0,
-              margin: '2px',
-              transitionDuration: '200ms',
-              '&.Mui-checked': {
-                transform: 'translateX(20px)',
-                color: '#fff',
-                '& + .MuiSwitch-track': { bgcolor: BLUE, opacity: 1, border: 0 },
-              },
-            },
-            '& .MuiSwitch-thumb': {
-              width: 27,
-              height: 27,
-              boxShadow: '0 2px 4px rgba(0,0,0,0.18)',
-            },
-            '& .MuiSwitch-track': {
-              borderRadius: '999px',
-              bgcolor: '#E9E9EA',
-              border: '1px solid #DADBDD',
-              opacity: 1,
-              transition: 'background-color 200ms',
-            },
-          }}
-        />
-      }
-    />
-  )
 }
 
 function SelectRow({
@@ -177,7 +117,7 @@ function SelectRow({
       right={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           {flag && <Flag code={flag} size={20} />}
-          <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING }}>{value}</Typography>
+          <Typography sx={{ fontSize: 14.5, fontWeight: 600, color: HEADING }}>{value}</Typography>
           <Icon name="chevronsUpDown" size={18} color="#8A94A6" />
         </Box>
       }
@@ -192,9 +132,6 @@ export function SettingsSections() {
   const navigate = useNavigate()
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
-  const [paymentReminders, setPaymentReminders] = useState(false)
-  const [promotions, setPromotions] = useState(true)
-  const [chatNotifs, setChatNotifs] = useState(false)
   const [language, setLanguage] = useState<LangId>('en')
   const [theme, setTheme] = useState<ThemeId>('System')
   const [picker, setPicker] = useState<'language' | 'theme' | null>(null)
@@ -203,27 +140,13 @@ export function SettingsSections() {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {!isVisitor && (
-          <Box>
-            <SectionLabel>ACCOUNT</SectionLabel>
-            <Card>
-              <NavRow icon="accountSecurity" label="Account Security" onClick={() => navigate('/account-security')} />
-            </Card>
-          </Box>
-        )}
-
         <Box>
-          <SectionLabel>NOTIFICATION SETTINGS</SectionLabel>
+          <SectionLabel>ACCOUNT SETTINGS</SectionLabel>
           <Card>
-            <ToggleRow icon="bellOff" label="Payment reminders" divider checked={paymentReminders} onToggle={setPaymentReminders} />
-            <ToggleRow icon="bell" label="Promotions & news" divider checked={promotions} onToggle={setPromotions} />
-            <ToggleRow icon="bellOff" label="Chat notifications" checked={chatNotifs} onToggle={setChatNotifs} />
-          </Card>
-        </Box>
-
-        <Box>
-          <SectionLabel>APPEARANCE</SectionLabel>
-          <Card>
+            {!isVisitor && (
+              <NavRow icon="accountSecurity" label="Account Security" divider onClick={() => navigate('/account-security')} />
+            )}
+            <NavRow icon="bell" label="Notifications" divider onClick={() => navigate('/notification-settings')} />
             <SelectRow
               icon="globe"
               label="Language"
@@ -244,6 +167,7 @@ export function SettingsSections() {
         <Box>
           <SectionLabel>ABOUT</SectionLabel>
           <Card>
+            <NavRow icon="faq" label="FAQ" divider onClick={() => navigate('/faq')} />
             <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
             <NavRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
           </Card>

@@ -1,13 +1,22 @@
+import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
-import { Flag } from '../components/Flag'
+import { Flag, type FlagCode } from '../components/Flag'
 
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const MUTED = '#8A94A6'
+const HEADING = '#0B0F1A'
+
+type LangId = 'en' | 'km' | 'ko'
+const LANGUAGES: { id: LangId; label: string; flag: FlagCode }[] = [
+  { id: 'en', label: 'English', flag: 'gb' },
+  { id: 'km', label: 'ភាសាខ្មែរ', flag: 'kh' },
+  { id: 'ko', label: '한국어', flag: 'kr' },
+]
 
 // Carry an optional post-signup destination (e.g. an apply-loan screen) forward.
 function nextSuffix(next: string | null) {
@@ -19,6 +28,9 @@ export default function SignUpScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const next = params.get('next')
+  const [language, setLanguage] = useState<LangId>('en')
+  const [langOpen, setLangOpen] = useState(false)
+  const activeLang = LANGUAGES.find((l) => l.id === language) ?? LANGUAGES[0]
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -28,12 +40,68 @@ export default function SignUpScreen() {
           <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
             <Icon name="chevronLeft" size={26} color="#0B0F1A" />
           </IconButton>
-          <Box
-            role="button"
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75, width: 70, height: 36, bgcolor: '#fff', borderRadius: 999, cursor: 'pointer', boxShadow: '0 1px 3px rgba(16,24,40,0.06)' }}
-          >
-            <Flag code="gb" size={22} />
-            <Icon name="chevronDown" size={16} color="#0B0F1A" />
+          <Box sx={{ position: 'relative' }}>
+            <Box
+              role="button"
+              onClick={() => setLangOpen((v) => !v)}
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75, width: 70, height: 36, bgcolor: '#fff', borderRadius: 999, cursor: 'pointer', boxShadow: '0 1px 3px rgba(16,24,40,0.06)' }}
+            >
+              <Flag code={activeLang.flag} size={22} />
+              <Box component="span" sx={{ display: 'inline-flex', transition: 'transform 0.2s', transform: langOpen ? 'rotate(180deg)' : 'none' }}>
+                <Icon name="chevronDown" size={16} color="#0B0F1A" />
+              </Box>
+            </Box>
+
+            {/* Inline language dropdown */}
+            {langOpen && (
+              <>
+                {/* Click-away layer */}
+                <Box onClick={() => setLangOpen(false)} sx={{ position: 'fixed', inset: 0, zIndex: 40 }} />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    right: 0,
+                    zIndex: 50,
+                    width: 180,
+                    bgcolor: '#fff',
+                    borderRadius: '14px',
+                    boxShadow: '0 8px 30px rgba(11,15,26,0.16)',
+                    p: 0.75,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.25,
+                  }}
+                >
+                  {LANGUAGES.map((lang) => {
+                    const active = lang.id === language
+                    return (
+                      <Box
+                        key={lang.id}
+                        role="button"
+                        onClick={() => { setLanguage(lang.id); setLangOpen(false) }}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1.25,
+                          minHeight: 44,
+                          px: 1.25,
+                          borderRadius: '10px',
+                          bgcolor: active ? '#EEF3FC' : 'transparent',
+                          cursor: 'pointer',
+                          transition: 'background 0.12s',
+                          '&:active': { opacity: 0.85 },
+                        }}
+                      >
+                        <Flag code={lang.flag} size={22} />
+                        <Typography sx={{ flex: 1, fontSize: 15, fontWeight: 600, color: HEADING }}>{lang.label}</Typography>
+                        {active && <Icon name="checkCircle" size={18} color={BLUE} />}
+                      </Box>
+                    )
+                  })}
+                </Box>
+              </>
+            )}
           </Box>
         </Box>
 

@@ -288,6 +288,7 @@ const BRAND: Partial<Record<IconName, string>> = {
   pin:             'PIN.svg',
   cash:            'ico_cash.svg',
   restructure:     'restructure.svg',
+  aboutNhfc:       'NH.svg',
 }
 
 export interface IconProps {

@@ -50,6 +50,7 @@ const ConsultSuccessScreen = lazy(() => import('../screens/consult/ConsultSucces
 const DocumentViewerScreen = lazy(() => import('../screens/DocumentViewerScreen'))
 const AnnouncementDetailScreen = lazy(() => import('../screens/AnnouncementDetailScreen'))
 const AccountSecurityScreen = lazy(() => import('../screens/settings/AccountSecurityScreen'))
+const NotificationSettingsScreen = lazy(() => import('../screens/settings/NotificationSettingsScreen'))
 const AppSettingsScreen = lazy(() => import('../screens/settings/AppSettingsScreen'))
 const AboutScreen      = lazy(() => import('../screens/settings/AboutScreen'))
 const TermsPrivacyScreen = lazy(() => import('../screens/settings/TermsPrivacyScreen'))
@@ -71,7 +72,7 @@ function ScreenLoader() {
         bgcolor: 'background.default',
       }}
     >
-      <CircularProgress size={28} thickness={4} sx={{ color: '#0052CC' }} />
+      <CircularProgress size={28} thickness={4} sx={{ color: '#275CB2' }} />
     </Box>
   )
 }
@@ -129,6 +130,7 @@ export default function AppRouter() {
         <Route path="/document-view" element={<DocumentViewerScreen />} />
         <Route path="/announcement" element={<AnnouncementDetailScreen />} />
         <Route path="/account-security" element={<AccountSecurityScreen />} />
+        <Route path="/notification-settings" element={<NotificationSettingsScreen />} />
         <Route path="/app-settings" element={<AppSettingsScreen />} />
         <Route path="/about" element={<AboutScreen />} />
         <Route path="/terms-privacy" element={<TermsPrivacyScreen />} />

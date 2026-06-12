@@ -86,7 +86,7 @@ export function ProductScene({ kind }: { kind: ProductKind }) {
       <defs>
         <linearGradient id="sbiz" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#5BA8FF" />
-          <stop offset="1" stopColor="#0052CC" />
+          <stop offset="1" stopColor="#275CB2" />
         </linearGradient>
       </defs>
       <rect width="160" height="120" fill="url(#sbiz)" />
@@ -121,7 +121,7 @@ export function AvatarArt() {
       <defs>
         <linearGradient id="av" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#4D9BFF" />
-          <stop offset="1" stopColor="#0052CC" />
+          <stop offset="1" stopColor="#275CB2" />
         </linearGradient>
       </defs>
       <rect width="64" height="64" fill="url(#av)" />

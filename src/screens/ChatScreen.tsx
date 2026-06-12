@@ -12,7 +12,7 @@ import { useHomePath } from '../workspace/useHomePath'
 // ─────────────────────────────────────────────────────────────────────────────
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
-const BLUE = '#0052CC'
+const BLUE = '#275CB2'
 const GREEN = '#1FA85C'
 
 type Conversation = {
@@ -36,7 +36,7 @@ const CONVERSATIONS: Conversation[] = [
     time: 'just now',
     unread: 2,
     online: true,
-    tint: '#0052CC',
+    tint: '#275CB2',
   },
   {
     id: 'nhfc',

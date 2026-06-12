@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles'
 
 // =============================================
 // WeLoan365 Design Tokens
-// Primary:     #0052CC
+// Primary:     #275CB2
 // Heading:     #0B0F1A
 // Text 1:      #1A1A1A
 // Text 2:      #666666
@@ -16,10 +16,10 @@ import { createTheme } from '@mui/material/styles'
 // =============================================
 
 export const TOKENS = {
-  primary: '#0052CC',
-  primaryLight: '#0065FF',
-  primaryDark: '#003D99',
-  primarySurface: '#E8F0FE',
+  primary: '#275CB2',
+  primaryLight: '#3D74C9',
+  primaryDark: '#1F4F9E',
+  primarySurface: '#EAF1FC',
 
   heading: '#0B0F1A',
   textPrimary: '#1A1A1A',

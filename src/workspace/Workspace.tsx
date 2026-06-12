@@ -78,7 +78,7 @@ function UserFlowSelect() {
             px: 1.5,
             py: 1.25,
             borderRadius: 2,
-            border: `1px solid ${open ? '#0052CC' : '#D6DBE2'}`,
+            border: `1px solid ${open ? '#275CB2' : '#D6DBE2'}`,
             cursor: 'pointer',
             fontSize: 14.5,
             fontWeight: 600,
@@ -120,7 +120,7 @@ function UserFlowSelect() {
                     cursor: 'pointer',
                     fontSize: 14.5,
                     fontWeight: active ? 700 : 500,
-                    color: active ? '#0052CC' : '#3A4256',
+                    color: active ? '#275CB2' : '#3A4256',
                     bgcolor: active ? '#F4F8FF' : 'transparent',
                     '&:hover': { bgcolor: active ? '#F4F8FF' : '#F5F7FA' },
                   }}
@@ -196,7 +196,7 @@ function Sidebar() {
         const sectionActive = section === activeSection
         return (
         <Box key={section} sx={{ mb: 3 }}>
-          <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: sectionActive ? '#0052CC' : '#9AA3B2', mb: 1, transition: 'color 0.12s' }}>
+          <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: sectionActive ? '#275CB2' : '#9AA3B2', mb: 1, transition: 'color 0.12s' }}>
             {section}
           </Typography>
           {screens.filter((s) => s.section === section).map((s) => {

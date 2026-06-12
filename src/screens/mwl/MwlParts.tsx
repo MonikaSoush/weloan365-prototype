@@ -5,7 +5,7 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../../components/Icon'
 
-export const BLUE = '#0052CC'
+export const BLUE = '#275CB2'
 
 // ─── Header — back chevron + chat & phone icons + optional step bar ──────────
 export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onBack: () => void; step?: number; totalSteps?: number; kebab?: boolean }) {
