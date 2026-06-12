@@ -47,7 +47,7 @@ export default function MyLoanScreen() {
             />
           ) : (
             <>
-              {!isApplicant && <SummaryCard loanCount={3} defaultExpanded />}
+              {!isApplicant && <SummaryCard loanCount={3} />}
 
               <SegmentedTabs value={tab} onChange={setTab} />
 
@@ -116,7 +116,7 @@ function ActiveTab({ onPay }: { onPay: () => void }) {
   return (
     <Box>
       <SectionLabel label="ACTIVE LOANS (3)" />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <ActiveLoanCard onPay={onPay} />
         <ActiveLoanCard onPay={onPay} banner={{ tone: 'neutral', text: 'This loan is under review for restructuring' }} />
         <ActiveLoanCard onPay={onPay} banner={{ tone: 'warning', text: 'This loan is overdue, penalty may charge' }} />

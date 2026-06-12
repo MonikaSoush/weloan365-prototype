@@ -99,7 +99,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <IconButton onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
-          <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
+          <Badge badgeContent={isVisitor ? 0 : 2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
             <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
           </Badge>
         </IconButton>
@@ -287,14 +287,13 @@ export function MoreMenuBody({
 // ─────────────────────────────────────────────────────────────────────────────
 // Currency toggle pill  (USD | KHR)
 // ─────────────────────────────────────────────────────────────────────────────
-export function CurrencyToggle() {
-  const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
+export function CurrencyToggle({ value, onChange }: { value: 'USD' | 'KHR'; onChange: (c: 'USD' | 'KHR') => void }) {
   return (
     <Box sx={{ display: 'flex', bgcolor: '#EEF1F5', borderRadius: 2, p: 0.5, gap: 0.5 }}>
       {(['USD', 'KHR'] as const).map((c) => (
         <Box
           key={c}
-          onClick={() => setCur(c)}
+          onClick={() => onChange(c)}
           sx={{
             flex: 1,
             textAlign: 'center',
@@ -304,9 +303,9 @@ export function CurrencyToggle() {
             fontWeight: 700,
             cursor: 'pointer',
             transition: 'all 0.15s',
-            color: cur === c ? '#0B0F1A' : '#8A94A6',
-            bgcolor: cur === c ? '#fff' : 'transparent',
-            boxShadow: cur === c ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+            color: value === c ? '#0B0F1A' : '#8A94A6',
+            bgcolor: value === c ? '#fff' : 'transparent',
+            boxShadow: value === c ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
           }}
         >
           {c}
@@ -354,7 +353,7 @@ export function OutstandingDonut({ pct = 60, centerText, blurred = false }: { pc
       >
         <Typography
           sx={{
-            fontSize: 11,
+            fontSize: 13,
             color: '#0B0F1A',
             fontWeight: 800,
             lineHeight: 1.2,
@@ -365,7 +364,7 @@ export function OutstandingDonut({ pct = 60, centerText, blurred = false }: { pc
         >
           {centerText ?? ''}
         </Typography>
-        <Typography sx={{ fontSize: 7.5, color: '#8A94A6', fontWeight: 600, lineHeight: 1 }}>outstanding</Typography>
+        <Typography sx={{ fontSize: 9, color: '#8A94A6', fontWeight: 600, lineHeight: 1 }}>outstanding</Typography>
       </Box>
     </Box>
   )
@@ -374,21 +373,24 @@ export function OutstandingDonut({ pct = 60, centerText, blurred = false }: { pc
 // ─────────────────────────────────────────────────────────────────────────────
 // Summary card — currency toggle, total outstanding, donut, view-full link
 // ─────────────────────────────────────────────────────────────────────────────
+// Riel figures use the same KHR≈4,100/USD rate applied to the dollar amounts below.
 const SUMMARY_ROWS = [
-  { label: 'Paid to date', value: '$3,860', pct: '45%', color: '#275CB2' },
-  { label: 'Outstanding', value: '$4,780', pct: '55%', color: GREEN },
-  { label: 'Total approved', value: '$8,640', pct: '100%', color: '#F0F0F0' },
+  { label: 'Paid to date', usd: '$3,860', khr: '៛15,826,000', pct: '45%', color: '#275CB2' },
+  { label: 'Outstanding', usd: '$4,780', khr: '៛19,598,000', pct: '55%', color: GREEN },
+  { label: 'Total approved', usd: '$8,640', khr: '៛35,424,000', pct: '100%', color: '#F0F0F0' },
 ]
 
 export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }: { children?: ReactNode; loanCount?: number; defaultExpanded?: boolean }) {
   const [hidden, setHidden] = useState(false)
   const [expanded, setExpanded] = useState(defaultExpanded)
-  const total = '$4,780.00'
-  const totalShort = '$4,780'
+  const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
+  const isKHR = cur === 'KHR'
+  const total = isKHR ? '៛19,598,000' : '$4,780.00'
+  const totalShort = isKHR ? '៛19.6M' : '$4,780'
 
   return (
     <Card>
-      <CurrencyToggle />
+      <CurrencyToggle value={cur} onChange={setCur} />
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 3 }}>
         <OutstandingDonut pct={55} centerText={totalShort} blurred={hidden} />
         <Box sx={{ flex: 1, ml: '34px' }}>
@@ -459,7 +461,7 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }
                   transition: 'filter 0.15s',
                 }}
               >
-                {row.value} <Box component="span" sx={{ color: '#8A94A6', fontWeight: 600 }}>({row.pct})</Box>
+                {isKHR ? row.khr : row.usd} <Box component="span" sx={{ color: '#8A94A6', fontWeight: 600 }}>({row.pct})</Box>
               </Typography>
             </Box>
           ))}
