@@ -16,13 +16,14 @@ const LABEL = '#737373'
 const VALUE = '#171717'
 const BRAND = '#275CB2'
 
-// Map a product name → its hero banner (falls back to the SME banner).
+// Map a product name → its hero banner. Uses the same Sample-1 assets shown on
+// the Products tab so the detail hero matches the card thumbnail.
 const HERO_BY_NAME: Record<string, string> = {
-  'SME Loan': BANNERS.enterprise,
-  'Micro Loan': BANNERS.micro,
-  'Small Biz Loan': BANNERS.smallBusiness,
-  'Housing Loan': BANNERS.housing,
-  'Migration Worker Loan': BANNERS.migrant,
+  'SME Loan': BANNERS.smeS1,
+  'Micro Loan': BANNERS.microS1,
+  'Small Biz Loan': BANNERS.smallS1,
+  'Housing Loan': BANNERS.housingS1,
+  'Migration Worker Loan': BANNERS.mwlS1,
 }
 
 const USES = [
@@ -58,7 +59,7 @@ export default function ProductDetailScreen() {
   const [params] = useSearchParams()
   const { flow } = useFlow()
   const name = params.get('p') ?? 'SME Loan'
-  const hero = HERO_BY_NAME[name] ?? BANNERS.enterprise
+  const hero = HERO_BY_NAME[name] ?? BANNERS.smeS1
   // Only the Migration Worker Loan uses the MWL apply flow; the other four
   // products (Micro / Small Biz / Housing / SME) apply via the Non-MWL flow.
   const isMwl = name === 'Migration Worker Loan'
