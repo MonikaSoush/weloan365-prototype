@@ -139,7 +139,7 @@ function StatBox({ label, value }: { label: string; value: string }) {
 function ActiveLoanCard({ banner, onPay }: { banner?: { tone: 'neutral' | 'warning'; text: string }; onPay: () => void }) {
   const navigate = useNavigate()
   return (
-    <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer' }}>
+    <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer', p: '18px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>Small Business Loan</Typography>
         <StatusChip label="Active" color="#275CB2" bg="#D8E9FF" />
