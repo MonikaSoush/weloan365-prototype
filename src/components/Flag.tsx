@@ -1,25 +1,33 @@
 import Box from '@mui/material/Box'
 
-// ISO-ish country codes for the flag SVGs in /public/assets/flags.
+// ISO-ish country codes for the flag SVGs.
 export type FlagCode = 'gb' | 'kh' | 'kr' | 'jp' | 'sg'
 
-// Rounded flag chip. Real SVG flags (no emoji) so they render identically
-// across platforms. `size` is the width in px; height keeps a 4:3 ratio.
+// Source per code — the designed flags live in /assets/brand/Flags; jp/sg keep
+// the legacy set until designed versions are dropped in.
+const FLAG_SRC: Record<FlagCode, string> = {
+  gb: '/assets/brand/Flags/United Kingdom.svg',
+  kh: '/assets/brand/Flags/Cambodia.svg',
+  kr: '/assets/brand/Flags/South Korea.svg',
+  jp: '/assets/flags/jp.svg',
+  sg: '/assets/flags/sg.svg',
+}
+
+// Flag chip. The designed SVGs are square (24×24) circular badges, so render
+// in a square box with `contain` — never crop them. `size` is the box width.
 export function Flag({ code, size = 22 }: { code: FlagCode; size?: number }) {
   return (
     <Box
       component="img"
-      src={`/assets/flags/${code}.svg`}
+      src={encodeURI(FLAG_SRC[code])}
       alt=""
       aria-hidden
       sx={{
         width: size,
-        height: Math.round(size * 0.75),
-        borderRadius: '3px',
-        objectFit: 'cover',
+        height: size,
+        objectFit: 'contain',
         display: 'block',
         flexShrink: 0,
-        boxShadow: 'inset 0 0 0 1px rgba(16,24,40,0.10)',
       }}
     />
   )

@@ -145,36 +145,21 @@ export default function PhoneCanvas({ children }: PhoneCanvasProps) {
           width: FAB_SIZE,
           height: FAB_SIZE,
           borderRadius: '50%',
-          color: '#fff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: dragging ? 'grabbing' : 'grab',
           touchAction: 'none',
           userSelect: 'none',
-          // ── Liquid glass: translucent brand tint over a blurred backdrop ──
+          // ── Frosted glass: blur whatever is behind, minimal neutral tint ──
           overflow: 'hidden',
-          background:
-            'linear-gradient(135deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.05) 42%, rgba(39,92,178,0.18) 100%), rgba(39,92,178,0.42)',
-          backdropFilter: 'blur(14px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(14px) saturate(180%)',
-          border: '1px solid rgba(255,255,255,0.45)',
+          bgcolor: 'rgba(255,255,255,0.18)',
+          backdropFilter: 'blur(18px) saturate(160%)',
+          WebkitBackdropFilter: 'blur(18px) saturate(160%)',
+          border: '1px solid rgba(255,255,255,0.55)',
           boxShadow: dragging
-            ? '0 14px 34px rgba(39,92,178,0.45), inset 0 1px 1px rgba(255,255,255,0.7), inset 0 -3px 8px rgba(39,92,178,0.30)'
-            : '0 8px 22px rgba(39,92,178,0.32), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -3px 8px rgba(39,92,178,0.25)',
-          '& svg': { filter: 'drop-shadow(0 1px 2px rgba(11,15,26,0.35))' },
-          // Top specular sheen
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 3,
-            left: '14%',
-            right: '14%',
-            height: '38%',
-            borderRadius: '50%',
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0.75), rgba(255,255,255,0))',
-            pointerEvents: 'none',
-          },
+            ? '0 14px 34px rgba(16,24,40,0.20), inset 0 1px 1px rgba(255,255,255,0.65)'
+            : '0 8px 22px rgba(16,24,40,0.14), inset 0 1px 1px rgba(255,255,255,0.55)',
           // Smooth settle when released / clamped; instant tracking while dragging.
           transition: dragging
             ? 'none'
@@ -183,7 +168,7 @@ export default function PhoneCanvas({ children }: PhoneCanvasProps) {
           '&:active': { transform: dragging ? 'scale(1.08)' : 'scale(0.94)' },
         }}
       >
-        <Icon name="redo" size={24} color="#fff" />
+        <Icon name="redo" size={24} color="#275CB2" />
       </Box>
     </Box>
   )
