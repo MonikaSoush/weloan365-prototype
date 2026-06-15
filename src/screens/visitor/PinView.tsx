@@ -48,7 +48,7 @@ export default function PinView({
           <Typography
             component="button"
             onClick={onSkip}
-            sx={{ border: 'none', bgcolor: 'transparent', fontSize: 15, fontWeight: 600, color: MUTED, cursor: 'pointer', p: 0, mr: -0.5 }}
+            sx={{ border: 'none', bgcolor: 'transparent', fontSize: 15, fontWeight: 600, color: MUTED, cursor: 'pointer', px: '8px', py: 0, mr: -0.5 }}
           >
             Skip
           </Typography>
@@ -58,7 +58,6 @@ export default function PinView({
       {/* Lock badge + title */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 3, mt: 1 }}>
         <Box component="img" src="/assets/brand/four_pin.svg" alt="" sx={{ width: 80, height: 80, mb: 1 }} />
-        <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', letterSpacing: 2, mt: 0.5, mb: 1.5 }}>***</Typography>
         <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', textAlign: 'center' }}>{title}</Typography>
         <Typography sx={{ fontSize: 15, color: MUTED, mt: 1, textAlign: 'center', lineHeight: 1.4 }}>{subtitle}</Typography>
 

@@ -77,10 +77,11 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
 
         <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Loan request hero */}
-          <Box sx={{ background: `linear-gradient(135deg, ${BLUE} 0%, #003C99 100%)`, borderRadius: '14px', p: '18px', color: '#fff', display: 'flex', flexDirection: 'column', gap: '-4px' }}>
+          <Box sx={{ position: 'relative', overflow: 'hidden', background: `linear-gradient(135deg, ${BLUE} 0%, #003C99 100%)`, borderRadius: '14px', p: '18px', height: 120, color: '#fff', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <Box component="img" src="/assets/brand/NH_Logo_White.svg" alt="" sx={{ position: 'absolute', right: '16px', bottom: 0, width: 100, height: 100, opacity: 0.3, pointerEvents: 'none' }} />
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: 'rgba(255,255,255,0.85)' }}>LOAN REQUEST</Typography>
             <Box sx={{ display: 'flex', alignItems: 'baseline', mt: 0.5 }}>
-              <Typography sx={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff' }}>$5,000</Typography>
+              <Typography sx={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.5px', color: '#fff', lineHeight: 1 }}>$5,000</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.5 }}>
               <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.9)' }}>30 months</Typography>
@@ -96,7 +97,7 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => setSignOpen(true)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 15, fontWeight: 700 }}>
+        <Button variant="contained" fullWidth onClick={() => setSignOpen(true)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
           Continue
         </Button>
       </Box>
@@ -163,7 +164,7 @@ function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onE
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-        <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6' }}>{title}</Typography>
+        <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6' }}>{title}</Typography>
         <Typography onClick={onEdit} sx={{ fontSize: 13, fontWeight: 700, color: BLUE, cursor: 'pointer' }}>EDIT</Typography>
       </Box>
       <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
@@ -178,8 +179,8 @@ function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onE
 function Row({ label, value, divider }: { label: string; value: ReactNode; divider: boolean }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, px: '14px', py: '12px', borderBottom: divider ? '1px solid #F1F4F8' : 'none' }}>
-      <Typography sx={{ fontSize: 13, color: '#6B7280' }}>{label}</Typography>
-      <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A', textAlign: 'right' }}>{value}</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#6B7280' }}>{label}</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A', textAlign: 'right' }}>{value}</Typography>
     </Box>
   )
 }

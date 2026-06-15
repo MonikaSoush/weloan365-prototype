@@ -48,7 +48,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
         <MwlHeader onBack={() => globalSample === '2' && flow === 'New User' ? navigate('/home') : setDiscardOpen(true)} step={1} totalSteps={nonMwl ? 2 : 3} />
         <MwlTitle>Tell us about you</MwlTitle>
 
-        <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        <Box sx={{ px: 3, pb: 3, pt: '24px', display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Destination picker — MWL only (migrant workers heading abroad) */}
           {!nonMwl && (
           <Box>
@@ -102,7 +102,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
           </Box>
 
           {/* Upload documents */}
-          <Box>
+          <Box sx={{ mt: '34px' }}>
             <GroupLabel>UPLOAD YOUR DOCUMENTS</GroupLabel>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {DOCS.map((d) => (
@@ -163,7 +163,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
 
 function DocRow({ label, img, canShare, onPreview }: { label: string; img?: string; canShare?: boolean; onPreview: () => void }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 1.5, minHeight: 80, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 1.5, minHeight: 80, display: 'flex', alignItems: 'center', gap: '12px' }}>
       <Box sx={{ width: 56, height: 56, borderRadius: '10px', bgcolor: '#F5F5F5', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <AssetImg
           src={img}

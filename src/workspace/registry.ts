@@ -65,12 +65,6 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {
-    id: 'products',
-    name: 'Products',
-    section: 'PRODUCTS',
-    samples: [{ v: '1', label: 'Sample 1' }],
-  },
-  {
     id: 'product-detail',
     name: 'Loan Detail',
     section: 'PRODUCTS',

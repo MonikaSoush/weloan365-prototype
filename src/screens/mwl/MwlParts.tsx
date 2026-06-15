@@ -83,7 +83,7 @@ export function MwlTitle({ children }: { children: ReactNode }) {
 // ─── Section label (e.g. "YOUR INFO") ────────────────────────────────────────
 export function GroupLabel({ children }: { children: ReactNode }) {
   return (
-    <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1 }}>
+    <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1 }}>
       {children}
     </Typography>
   )
@@ -196,7 +196,7 @@ export function SelectField({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  px: 2,
+                  px: '16px',
                   minHeight: 56,
                   bgcolor: active ? '#F4F8FF' : '#fff',
                   cursor: 'pointer',
@@ -348,7 +348,7 @@ export function MwlFooter({
           variant="outlined"
           onClick={onPrev}
           startIcon={<Icon name="arrowLeft" size={16} />}
-          sx={{ height: 48, borderRadius: '12px', px: 2.5, fontSize: 14, fontWeight: 700, color: '#0B0F1A', borderColor: '#E2E6EC', bgcolor: '#fff' }}
+          sx={{ height: 48, borderRadius: '12px', px: '16px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif', color: '#0B0F1A', border: 'none', bgcolor: '#fff', '&:hover': { border: 'none', bgcolor: '#F5F5F5' } }}
         >
           Previous
         </Button>
@@ -357,7 +357,7 @@ export function MwlFooter({
         variant="contained"
         onClick={onNext}
         endIcon={<Icon name="arrowRight" size={16} />}
-        sx={{ flex: 1, height: 48, borderRadius: '12px', fontSize: 14, fontWeight: 700 }}
+        sx={{ flex: 1, height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}
       >
         {nextLabel}
       </Button>

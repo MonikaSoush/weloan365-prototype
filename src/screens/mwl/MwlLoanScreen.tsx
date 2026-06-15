@@ -72,7 +72,7 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
         <MwlHeader onBack={() => navigate(`${prefix}-about`)} step={2} totalSteps={nonMwl ? 2 : 3} />
         <MwlTitle>Loan request</MwlTitle>
 
-        <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ px: 3, pb: 3, pt: '24px', display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Amount */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             <GroupLabel>
@@ -107,6 +107,8 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                       fontWeight: 600,
                       color: '#000',
                       fontFamily: 'inherit',
+                      height: 24,
+                      lineHeight: '24px',
                     }}
                   />
                 </Box>
@@ -123,10 +125,10 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
             </Box>
             <Box
               onClick={() => setShowTable((v) => !v)}
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, cursor: 'pointer' }}
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, cursor: 'pointer', pt: '8px' }}
             >
               <Icon name={showTable ? 'eyeOff' : 'eye'} size={17} color={BLUE} />
-              <Typography sx={{ fontSize: 13, fontWeight: 700, color: BLUE }}>
+              <Typography sx={{ fontSize: 13, fontWeight: 500, color: BLUE }}>
                 {showTable ? 'Hide' : 'Show'} Payment Table
               </Typography>
             </Box>
