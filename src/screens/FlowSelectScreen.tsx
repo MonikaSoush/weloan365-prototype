@@ -50,13 +50,12 @@ export default function FlowSelectScreen() {
       <Box sx={{ display: 'flex', bgcolor: 'rgba(255,255,255,0.15)', borderRadius: '12px', p: 0.5, gap: 0.5, mb: 3 }}>
         {SAMPLES.map((s) => {
           const active = s.id === sample
-          // Sample 2 is not ready yet — show a "Coming soon" badge and block selection.
-          const disabled = s.id === '2'
+          // Sample 2 is selectable but still a work in progress.
+          const wip = s.id === '2'
           return (
             <Box
               key={s.id}
-              onClick={() => { if (!disabled) setSample(s.id) }}
-              aria-disabled={disabled}
+              onClick={() => setSample(s.id)}
               sx={{
                 flex: 1,
                 display: 'flex',
@@ -65,19 +64,18 @@ export default function FlowSelectScreen() {
                 gap: 0.25,
                 py: 1.25,
                 borderRadius: '9px',
-                cursor: disabled ? 'not-allowed' : 'pointer',
+                cursor: 'pointer',
                 fontSize: 14,
                 fontWeight: 700,
-                opacity: disabled ? 0.45 : 1,
                 color: active ? '#1C4DB8' : 'rgba(255,255,255,0.85)',
                 bgcolor: active ? '#fff' : 'transparent',
                 transition: 'all 0.12s',
               }}
             >
               {s.label}
-              {disabled && (
-                <Box component="span" sx={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.4px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)' }}>
-                  Coming soon
+              {wip && (
+                <Box component="span" sx={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.4px', textTransform: 'uppercase', color: active ? 'rgba(28,77,184,0.7)' : 'rgba(255,255,255,0.85)' }}>
+                  Under constructing
                 </Box>
               )}
             </Box>
@@ -133,6 +131,24 @@ export default function FlowSelectScreen() {
           </Box>
         ))}
       </Box>
+
+      {/* Last deploy timestamp (last git commit, injected at build time) */}
+      <Typography sx={{ fontSize: 11.5, fontWeight: 600, color: 'rgba(255,255,255,0.6)', textAlign: 'center', mt: 3 }}>
+        Last updated · {formatBuildTime(__BUILD_TIME__)}
+      </Typography>
     </Box>
   )
+}
+
+// "15 Jun 2026, 09:00" from the injected ISO commit time.
+function formatBuildTime(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
