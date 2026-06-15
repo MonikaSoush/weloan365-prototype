@@ -18,6 +18,7 @@ import { AssetImg, BANNERS, ILLUS, DISCOVER } from './media'
 import { Icon, type IconName } from '../Icon'
 import { ProductScene, AvatarArt, PromoScene } from './illustrations'
 import { useFlow } from '../../workspace/FlowContext'
+import { useSample } from '../../workspace/SampleContext'
 import { SettingsSections } from '../../screens/SettingsScreen'
 import CallSheet from '../CallSheet'
 
@@ -767,51 +768,58 @@ function ApplyCard({ title, subtitle, img, iconName, color, variant = 'color', o
 // (gradient + icon + rate badge + amount), no image files required.
 // ─────────────────────────────────────────────────────────────────────────────
 const POPULAR_PRODUCTS: { name: string; amount: string; rate: string; img: string; kind: 'sme' | 'housing' | 'agri' | 'shop' }[] = [
-  { name: 'SME Loan', amount: 'USD ≤ 100,000', rate: '1.4%', img: BANNERS.productSme, kind: 'sme' },
-  { name: 'Housing Loan', amount: 'USD ≤ 300,000', rate: '1.4%', img: BANNERS.productHousing, kind: 'housing' },
-  { name: 'Micro Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.productAgri, kind: 'agri' },
-  { name: 'Small Biz Loan', amount: 'USD ≤ 30,000', rate: '1.2%', img: BANNERS.productSmallBiz, kind: 'shop' },
+  { name: 'Micro Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.microS1, kind: 'agri' },
+  { name: 'Small Biz Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smallS1, kind: 'shop' },
+  { name: 'Housing Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.housingS1, kind: 'housing' },
+  { name: 'SME Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smeS1, kind: 'sme' },
 ]
 
 export function ProductScroller() {
   const navigate = useNavigate()
+  const { sample } = useSample()
   return (
     <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', pb: 1, mx: -0.5, px: 0.5 }} className="scroll-content">
       {POPULAR_PRODUCTS.map(({ name, amount, rate, img, kind }) => (
-        <Box
-          key={name}
-          role="button"
-          onClick={() => navigate(`/product-detail?p=${encodeURIComponent(name)}`)}
-          sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}
-        >
-          <Box sx={{ position: 'relative', height: 118 }}>
+        sample === '2' ? (
+          <Box
+            key={name}
+            role="button"
+            onClick={() => navigate(`/product-detail?p=${encodeURIComponent(name)}`)}
+            sx={{ width: 150, height: 150, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+          >
             <AssetImg
               src={img}
               alt={name}
               sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
               fallback={<ProductScene kind={kind} />}
             />
-            <Box sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.92)', borderRadius: '8px', px: 0.75, py: 0.25 }}>
-              <Typography sx={{ fontSize: 11, fontWeight: 800, color: '#0B0F1A' }}>{rate}</Typography>
+          </Box>
+        ) : (
+          <Box
+            key={name}
+            role="button"
+            onClick={() => navigate(`/product-detail?p=${encodeURIComponent(name)}`)}
+            sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}
+          >
+            <Box sx={{ position: 'relative', height: 106 }}>
+              <AssetImg
+                src={img}
+                alt={name}
+                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fallback={<ProductScene kind={kind} />}
+              />
+              <Box sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'rgba(255,255,255,0.92)', borderRadius: '8px', px: 0.75, py: 0.25 }}>
+                <Typography sx={{ fontSize: 11, fontWeight: 800, color: '#0B0F1A' }}>{rate}</Typography>
+              </Box>
+            </Box>
+            <Box sx={{ px: 1.25, py: 1.25 }}>
+              <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A' }} noWrap>{name}</Typography>
+              <Box sx={{ display: 'inline-flex', mt: 0.75, px: 1.25, py: '4px', bgcolor: '#F4F6F9', border: '1px solid #E7ECF2', borderRadius: '8px' }}>
+                <Typography sx={{ fontSize: 11, color: '#8A94A6' }}>{amount}</Typography>
+              </Box>
             </Box>
           </Box>
-          <Box sx={{ px: 1.25, py: 1.25 }}>
-            <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A' }} noWrap>{name}</Typography>
-            <Box
-              sx={{
-                display: 'inline-flex',
-                mt: 0.75,
-                px: 1.25,
-                py: '4px',
-                bgcolor: '#F4F6F9',
-                border: '1px solid #E7ECF2',
-                borderRadius: '8px',
-              }}
-            >
-              <Typography sx={{ fontSize: 11, color: '#8A94A6' }}>{amount}</Typography>
-            </Box>
-          </Box>
-        </Box>
+        )
       ))}
     </Box>
   )
@@ -821,10 +829,11 @@ export function ProductScroller() {
 // News & promotions — carousel of real promo banners (swipe / tap dots)
 // ─────────────────────────────────────────────────────────────────────────────
 const NEWS_SLIDES = [
-  { src: BANNERS.migrant, hue: 210, label: 'ពលករក្រៅប្រទេស' },
-  { src: BANNERS.enterprise, hue: 205, label: 'សហគ្រាសខ្នាតតូច' },
-  { src: BANNERS.housing, hue: 215, label: 'គេហដ្ឋាន' },
-  { src: BANNERS.micro, hue: 95, label: 'ខ្នាតតូចបំផុត' },
+  { src: BANNERS.bannerSme, hue: 205, label: 'SME Loan' },
+  { src: BANNERS.bannerSbl, hue: 210, label: 'Small Business Loan' },
+  { src: BANNERS.bannerMicro, hue: 95, label: 'Micro Loan' },
+  { src: BANNERS.bannerMwl, hue: 210, label: 'Migrant Worker Loan' },
+  { src: BANNERS.bannerHousing, hue: 215, label: 'Housing Loan' },
 ]
 
 export function NewsBanner() {
@@ -938,43 +947,40 @@ export function DiscoverRow() {
   return (
     <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', pb: 1, mx: -0.5, px: 0.5 }} className="scroll-content">
       {/* Calculator */}
-      <Box onClick={() => navigate('/calculator')} sx={{ width: 130, height: 218, flexShrink: 0, borderRadius: '8px', position: 'relative', overflow: 'hidden', bgcolor: '#0E5C54', cursor: 'pointer' }}>
+      <Box onClick={() => navigate('/calculator')} role="button" aria-label="Loan calculator" sx={{ flexShrink: 0, position: 'relative', width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#0B1A14', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
         <AssetImg
           src={DISCOVER.calculator}
-          alt="Calculator"
+          alt=""
           sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          fallback={
-            <Box sx={{ width: '100%', height: '100%', background: 'linear-gradient(160deg, #1A1A2E 0%, #2D2D4A 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name="calculator" size={52} color="rgba(255,255,255,0.9)" />
-            </Box>
-          }
+          fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#0B1A14' }} />}
         />
-        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 45%)' }} />
-        <Box sx={{ position: 'absolute', top: 10, left: 12, right: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff' }}>
-          <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>Calculator</Typography>
-          <Icon name="arrowRight" size={15} color="#fff" />
+        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)' }} />
+        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: '12px' }}>
+          <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.2px' }}>Calculator</Typography>
+          <Icon name="arrowRight" size={18} color="#fff" />
         </Box>
       </Box>
       {/* News cards */}
       {([
-        ['Khmer New Year promotion', 'Lower micro-loan rates this season — apply b…', BANNERS.micro, 28],
-        ['Migrant Worker offer', 'Special rate for overseas workers — limited…', BANNERS.migrant, 205],
-      ] as [string, string, string, number][]).map(([title, body, img, hue], i) => (
-        <Box key={i} role="button" onClick={() => navigate('/announcement')} sx={{ width: 160, height: 218, display: 'flex', flexDirection: 'column', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}>
-          <Box sx={{ flex: 1, minHeight: 0, position: 'relative' }}>
+        ['Khmer New Year promotion', 'Lower micro-loan rates this season — apply by mid-April.', BANNERS.bannerKhmerNewYear],
+        ['Migrant worker support', 'Special rates for overseas workers and their families.', BANNERS.bannerSupport],
+        ['Build your credit score', 'Simple habits that help you qualify for a bigger loan.', BANNERS.bannerScore],
+      ] as [string, string, string][]).map(([title, body, img], i) => (
+        <Box key={i} role="button" onClick={() => navigate('/announcement')} sx={{ flexShrink: 0, width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', display: 'flex', flexDirection: 'column', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          <Box sx={{ height: 106, flexShrink: 0 }}>
             <AssetImg
               src={img}
               alt={title}
               sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              fallback={<PromoScene hue={hue} />}
+              fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />}
             />
           </Box>
-          <Box sx={{ p: 1.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Box sx={{ bgcolor: '#FFF1DC', color: '#B25E00', fontSize: 9, fontWeight: 800, px: 0.875, py: 0.375, borderRadius: '6px', mb: 0.75 }}>
-              NEWS
+          <Box sx={{ p: '12px', display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
+            <Box sx={{ alignSelf: 'flex-start', bgcolor: '#FBF0CE', borderRadius: '6px', px: 0.75, py: '2px' }}>
+              <Typography sx={{ fontSize: 9, fontWeight: 800, color: '#C79200', letterSpacing: '0.5px' }}>NEWS</Typography>
             </Box>
-            <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.3 }}>{title}</Typography>
-            <Typography sx={{ fontSize: 10, color: '#8A94A6', mt: 0.5, lineHeight: 1.4 }}>{body}</Typography>
+            <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{title}</Typography>
+            <Typography sx={{ fontSize: 11, color: '#8A94A6', lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{body}</Typography>
           </Box>
         </Box>
       ))}

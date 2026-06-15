@@ -357,6 +357,11 @@ function EmptyTransactions() {
 export type Announcement = { title: string; body: string; date: string }
 export const ANNOUNCEMENTS: Announcement[] = [
   {
+    title: 'Your Loan Application Was Not Approved',
+    body: 'We regret to inform you that your recent loan application has not been approved at this time. This may be due to eligibility criteria or documentation requirements. Please visit your nearest NongHyup Finance branch or contact our support team for more details and guidance on reapplying.',
+    date: 'Mon, 15 Jun',
+  },
+  {
     title: 'Khmer New Year promotion',
     body: 'Lower micro-loan rates this season — apply between 14 Apr and 31 May to qualify.',
     date: 'Wed, 14 May',

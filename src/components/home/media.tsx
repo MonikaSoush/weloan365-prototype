@@ -37,6 +37,15 @@ export const BANNERS = mapAssets({
   housing: 'banners/housing.png',
   enterprise: 'banners/enterprise-sme.png',
   migrant: 'banners/migrant-worker.png',
+  // New hi-res promotion banners
+  bannerSme: 'banners/Banner_SME.jpg',
+  bannerSbl: 'banners/Banner_SBL.jpg',
+  bannerMicro: 'banners/Banner_Micro.jpg',
+  bannerMwl: 'banners/Banner_MWL.jpg',
+  bannerHousing: 'banners/Banner_Housing.jpg',
+  bannerKhmerNewYear: 'banners/KNY.png',
+  bannerScore: 'banners/Score.png',
+  bannerSupport: 'banners/Support.png',
   // Popular Loan Products photo banners (reuse existing banner photos)
   productSme: 'banners/enterprise-sme.png',
   productHousing: 'banners/housing.png',

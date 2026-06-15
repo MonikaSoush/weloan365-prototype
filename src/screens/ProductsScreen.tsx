@@ -67,7 +67,7 @@ const DISCOVER_NEWS: NewsItem[] = [
     tag: 'NEWS',
     title: 'Khmer New Year promotion',
     body: 'Lower micro-loan rates this season — apply by mid-April.',
-    img: BANNERS.micro,
+    img: BANNERS.bannerKhmerNewYear,
     detail:
       'Celebrate Khmer New Year with reduced micro-loan rates across all branches. Apply before mid-April to lock in the seasonal rate and enjoy faster approval with fewer documents. Talk to our team to see how much you can save.',
   },
@@ -75,7 +75,7 @@ const DISCOVER_NEWS: NewsItem[] = [
     tag: 'NEWS',
     title: 'Migrant worker support',
     body: 'Special rates for overseas workers and their families.',
-    img: BANNERS.migrant,
+    img: BANNERS.bannerSupport,
     detail:
       'NongHyup Finance offers dedicated loan packages for migrant workers and their families, with flexible repayment aligned to overseas income. Get help with guarantor setup and remittance-friendly schedules.',
   },
@@ -83,14 +83,14 @@ const DISCOVER_NEWS: NewsItem[] = [
     tag: 'TIPS',
     title: 'Build your credit score',
     body: 'Simple habits that help you qualify for a bigger loan.',
-    img: BANNERS.housing,
+    img: BANNERS.bannerScore,
     detail:
       'Paying on time, keeping balances low, and maintaining a steady income are the habits that build a strong credit profile. A better score unlocks larger limits and lower rates on your next loan.',
   },
 ]
 
 const DISCOVER_CARD_W = 152
-const DISCOVER_CARD_H = 202
+const DISCOVER_CARD_H = 218
 
 function CalculatorCard() {
   const navigate = useNavigate()
@@ -146,7 +146,7 @@ function NewsCard({ n, onClick }: { n: NewsItem; onClick?: () => void }) {
         '&:active': { opacity: 0.85 },
       }}
     >
-      <Box sx={{ height: 90, flexShrink: 0 }}>
+      <Box sx={{ height: 106, flexShrink: 0 }}>
         <AssetImg
           src={n.img}
           alt={n.title}
