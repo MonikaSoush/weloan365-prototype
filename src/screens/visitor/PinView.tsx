@@ -15,11 +15,13 @@ export default function PinView({
   subtitle,
   onBack,
   onComplete,
+  onSkip,
 }: {
   title: string
   subtitle: string
   onBack: () => void
   onComplete: () => void
+  onSkip?: () => void
 }) {
   const [pin, setPin] = useState('')
 
@@ -38,15 +40,24 @@ export default function PinView({
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
-      <Box sx={{ px: 3, pt: 3 }}>
+      <Box sx={{ px: 3, pt: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
           <Icon name="chevronLeft" size={26} color="#0B0F1A" />
         </IconButton>
+        {onSkip && (
+          <Typography
+            component="button"
+            onClick={onSkip}
+            sx={{ border: 'none', bgcolor: 'transparent', fontSize: 15, fontWeight: 600, color: MUTED, cursor: 'pointer', p: 0, mr: -0.5 }}
+          >
+            Skip
+          </Typography>
+        )}
       </Box>
 
       {/* Lock badge + title */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 3, mt: 1 }}>
-        <Icon name="lock" size={34} color="#0B0F1A" />
+        <Box component="img" src="/assets/brand/four_pin.svg" alt="" sx={{ width: 80, height: 80, mb: 1 }} />
         <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', letterSpacing: 2, mt: 0.5, mb: 1.5 }}>***</Typography>
         <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', textAlign: 'center' }}>{title}</Typography>
         <Typography sx={{ fontSize: 15, color: MUTED, mt: 1, textAlign: 'center', lineHeight: 1.4 }}>{subtitle}</Typography>
@@ -54,7 +65,7 @@ export default function PinView({
         {/* Dots */}
         <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
           {[0, 1, 2, 3].map((i) => (
-            <Box key={i} sx={{ width: 14, height: 14, borderRadius: '50%', bgcolor: i < pin.length ? BLUE : 'transparent', border: `2px solid ${i < pin.length ? BLUE : '#CBD3DF'}` }} />
+            <Box key={i} sx={{ width: 18, height: 18, borderRadius: '50%', bgcolor: i < pin.length ? BLUE : 'transparent', border: `2px solid ${i < pin.length ? BLUE : '#CBD3DF'}` }} />
           ))}
         </Box>
       </Box>
@@ -65,7 +76,7 @@ export default function PinView({
           {KEYS.map((k) => (
             <Box key={k} component="button" type="button" onClick={() => press(k)} aria-label={k === 'back' ? 'Delete' : k}
               sx={{ height: 64, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', border: 'none', fontFamily: 'inherit', fontSize: 30, fontWeight: 500, color: '#0B0F1A', cursor: 'pointer', borderRadius: '50%', '&:active': { bgcolor: 'rgba(11,15,26,0.06)' } }}>
-              {k === 'back' ? <Icon name="backspace" size={26} color="#0B0F1A" /> : k}
+              {k === 'back' ? <Box component="img" src="/assets/brand/clear.svg" alt="Delete" sx={{ width: 26, height: 26 }} /> : k === 'C' ? <Box component="span" sx={{ opacity: 0.5 }}>C</Box> : k}
             </Box>
           ))}
         </Box>

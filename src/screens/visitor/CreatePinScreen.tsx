@@ -11,6 +11,7 @@ export default function CreatePinScreen() {
       subtitle="You'll use this to sign in and approve actions"
       onBack={() => navigate('/otp' + suffix)}
       onComplete={() => navigate('/confirm-pin' + suffix)}
+      onSkip={() => navigate(params.get('next') ?? '/home')}
     />
   )
 }
