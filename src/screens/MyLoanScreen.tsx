@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Badge from '@mui/material/Badge'
 import BottomNav from '../components/BottomNav'
 import PayLoanSheet from '../components/PayLoanSheet'
 import { Icon } from '../components/Icon'
-import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel, AdvanceCard } from '../components/home/HomeParts'
+import { SummaryCard, Card, StatusChip, SectionLabel, AdvanceCard } from '../components/home/HomeParts'
 import { useFlow } from '../workspace/FlowContext'
 import { useSample } from '../workspace/SampleContext'
 
@@ -24,6 +26,7 @@ const TABS: { id: Tab; label: string }[] = [
 export default function MyLoanScreen() {
   const { flow } = useFlow()
   const { sample } = useSample()
+  const navigate = useNavigate()
   // Applicants have only an in-review application: no summary card, no active/complete loans.
   const isApplicant = flow === 'Applicant'
   // Visitors and New Users have no loans or applications at all — fully empty state.
@@ -34,8 +37,29 @@ export default function MyLoanScreen() {
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
-        <HomeTopBar secondIcon="phone" />
-        <Box sx={{ px: 3, pb: 5, display: 'flex', flexDirection: 'column', gap: '24px', mt: '24px' }}>
+        {/* Header */}
+        <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton onClick={() => navigate('/home')} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
+              <Icon name="chevronLeft" size={26} color="#0B0F1A" />
+            </IconButton>
+            <Box sx={{ flex: 1 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <IconButton onClick={() => navigate('/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
+                <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
+                  <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+                </Badge>
+              </IconButton>
+              <IconButton onClick={() => navigate('/request-consult')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Call">
+                <Icon name="phone" size={24} color="#1A1A1A" />
+              </IconButton>
+            </Box>
+          </Box>
+          <Typography sx={{ fontSize: 30, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.5 }}>
+            My Loans
+          </Typography>
+        </Box>
+        <Box sx={{ px: 3, pb: '54px', display: 'flex', flexDirection: 'column', gap: '24px', mt: '24px' }}>
           {isEmpty ? (
             <EmptyState
               label="No loans yet"

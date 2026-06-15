@@ -116,8 +116,78 @@ function VisitorTopBar() {
 const APP_STEPS = ['Submitted', 'Under review', 'Approved']
 const APP_CURRENT = 1 // index of the in-progress step
 
+const APP_STEPS_V2 = [
+  { label: 'You Submitted', sub: '19 May, 02:23PM', state: 'done' as const },
+  { label: 'Our Team Reviewing', sub: '20 May, 02:23PM', state: 'active' as const },
+  { label: 'Result', sub: 'To be update soon!', state: 'future' as const },
+]
+
 function ApplicationProgress() {
   const navigate = useNavigate()
+  const { sample } = useSample()
+
+  if (sample === '2') {
+    return (
+      <Box>
+        <SectionLabel label="YOUR APPLICATION" action="View details" onAction={() => navigate('/my-loan-review')} />
+        <Card sx={{ cursor: 'pointer', '&:active': { opacity: 0.8 } }} onClick={() => navigate('/my-loan-review')}>
+          {/* Header */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}>
+            <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>Migrant Worker Loan</Typography>
+            <Box sx={{ fontSize: 12, fontWeight: 700, px: 1.5, py: 0.5, borderRadius: 2, color: '#B25E00', bgcolor: '#FFF1DC', flexShrink: 0 }}>In Progress</Box>
+          </Box>
+
+          {/* Vertical timeline */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {APP_STEPS_V2.map((step, i) => {
+              const done = step.state === 'done'
+              const active = step.state === 'active'
+              const future = step.state === 'future'
+              const isLast = i === APP_STEPS_V2.length - 1
+              return (
+                <Box key={step.label} sx={{ display: 'flex', gap: 1.5 }}>
+                  {/* Circle + vertical line */}
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                    <Box
+                      sx={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        ...(done
+                          ? { bgcolor: BLUE }
+                          : active
+                          ? { bgcolor: '#fff', border: `2px solid ${BLUE}` }
+                          : { bgcolor: '#fff', border: '2px solid #CBD2DC' }),
+                      }}
+                    >
+                      {done ? (
+                        <Icon name="check" size={13} color="#fff" />
+                      ) : (
+                        <Typography sx={{ fontSize: 12, fontWeight: 700, color: active ? BLUE : '#9AA3B2', lineHeight: 1 }}>{i + 1}</Typography>
+                      )}
+                    </Box>
+                    {!isLast && <Box sx={{ width: 2, flex: 1, minHeight: 16, bgcolor: '#E2E6EC', my: 0.5 }} />}
+                  </Box>
+
+                  {/* Text */}
+                  <Box sx={{ pb: isLast ? 0 : 2 }}>
+                    <Typography sx={{ fontSize: 14, fontWeight: done || active ? 700 : 500, color: future ? '#9AA3B2' : '#0B0F1A', lineHeight: 1.2 }}>
+                      {step.label}
+                    </Typography>
+                    <Typography sx={{ fontSize: 12, color: future ? '#B8C0CC' : '#8A94A6', mt: 0.25 }}>{step.sub}</Typography>
+                  </Box>
+                </Box>
+              )
+            })}
+          </Box>
+        </Card>
+      </Box>
+    )
+  }
+
   return (
     <Box>
       <SectionLabel label="YOUR APPLICATION" action="View details" onAction={() => navigate('/my-loan-review')} />
@@ -143,7 +213,6 @@ function ApplicationProgress() {
             const reached = done || active
             return (
               <Box key={label} sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-                {/* connector to previous dot */}
                 {i > 0 && (
                   <Box sx={{ position: 'absolute', top: 9, right: '50%', left: '-50%', height: 3, borderRadius: 2, bgcolor: i <= APP_CURRENT ? BLUE : '#E2E6EC' }} />
                 )}

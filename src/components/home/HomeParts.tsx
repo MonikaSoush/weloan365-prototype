@@ -53,6 +53,7 @@ export function SectionLabel({ label, action, onAction }: { label: string; actio
 export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = {}) {
   const navigate = useNavigate()
   const { flow } = useFlow()
+  const { sample } = useSample()
   // Visitors aren't signed in, so there's no profile to show — display the
   // NongHyup brand logo instead (matching the visitor Home tab). Chat is
   // gated behind sign-up for visitors.
@@ -85,7 +86,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
       ) : (
         /* Tap the profile (avatar + name) to open the Profile screen. */
         <Box
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate(sample === '2' ? '/more' : '/profile')}
           role="button"
           aria-label="Open profile"
           sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
@@ -234,27 +235,47 @@ export function MoreMenuBody({
       ) : (
         /* Header — back chevron + profile (brand logo for visitors) */
         <Box sx={{ px: 3, pt: 4, pb: 1 }}>
-          <IconButton size="small" onClick={onBack} sx={{ ml: -1, mb: 2, color: '#3A4256' }} aria-label="Back">
-            <Icon name="chevronLeft" />
-          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <IconButton size="small" onClick={onBack} sx={{ ml: -1, color: '#3A4256' }} aria-label="Back">
+              <Icon name="chevronLeft" />
+            </IconButton>
+            <Box sx={{ flex: 1 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <IconButton onClick={() => navigate('/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
+                <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
+                  <Box component="img" src="/assets/brand/ico_chat.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+                </Badge>
+              </IconButton>
+              <IconButton onClick={() => navigate('/notifications')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Notifications">
+                <Box component="img" src="/assets/brand/ico_bell.svg" alt="" sx={{ width: 24, height: 24, display: 'block' }} />
+              </IconButton>
+            </Box>
+          </Box>
           {isVisitor ? (
             <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#0B0F1A' }}>Settings</Typography>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+            <Box
+              role="button"
+              onClick={() => navigate('/profile')}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', '&:active': { opacity: 0.7 } }}
+            >
+              <Box sx={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
                 <AssetImg
-                  src={ILLUS.orb}
+                  src={ILLUS.avatar01}
                   alt="avatar"
                   sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   fallback={<AvatarArt />}
                 />
               </Box>
-              <Box sx={{ minWidth: 0 }}>
-                <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Good morning!</Typography>
+                <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }} noWrap>
                   Krong Kampuchea
                 </Typography>
-                <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.25 }}>ID: 00239913</Typography>
               </Box>
+              <IconButton size="small" onClick={(e) => { e.stopPropagation(); navigate('/settings') }} sx={{ color: '#3A4256', flexShrink: 0 }} aria-label="Settings">
+                <Icon name="appSettings" size={22} />
+              </IconButton>
             </Box>
           )}
         </Box>
@@ -701,8 +722,8 @@ function ApplyCard({ title, subtitle, img, iconName, color, variant = 'color', o
           ? { bgcolor: '#fff', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)' }
           : {
               color: '#fff',
-              background: `linear-gradient(140deg, ${color} 0%, color-mix(in srgb, ${color} 80%, #000) 100%)`,
-              border: '1px solid rgba(0,0,0,0.1)',
+              background: `linear-gradient(135deg, color-mix(in srgb, ${color} 85%, #fff) 0%, ${color} 45%, color-mix(in srgb, ${color} 80%, #000) 100%)`,
+              boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.10)',
             }),
         display: 'flex',
         flexDirection: 'column',
@@ -716,7 +737,7 @@ function ApplyCard({ title, subtitle, img, iconName, color, variant = 'color', o
       <Box sx={{ position: 'relative', zIndex: 1, maxWidth: '72%' }}>
         <Typography
           sx={{
-            fontSize: 15,
+            fontSize: 18,
             fontWeight: 800,
             lineHeight: 1.2,
             color: isWhite ? '#0B0F1A' : '#fff',
