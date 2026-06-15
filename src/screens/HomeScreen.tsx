@@ -31,6 +31,7 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
   const { sample } = useSample()
   const showNav = sample === '1'
   const { flow } = useFlow()
+  const navigate = useNavigate()
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -55,7 +56,7 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
             <NewsBanner />
           </Box>
           <Box>
-            <SectionLabel label="POPULAR LOAN PRODUCTS" action="See all" />
+            <SectionLabel label="POPULAR LOAN PRODUCTS" action="See all" onAction={() => navigate('/all-loan')} />
             <ProductScroller />
           </Box>
           <Box>
@@ -113,9 +114,10 @@ const APP_STEPS = ['Submitted', 'Under review', 'Approved']
 const APP_CURRENT = 1 // index of the in-progress step
 
 function ApplicationProgress() {
+  const navigate = useNavigate()
   return (
     <Box>
-      <SectionLabel label="YOUR APPLICATION" action="View details" />
+      <SectionLabel label="YOUR APPLICATION" action="View details" onAction={() => navigate('/my-loan-review')} />
       <Card>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>

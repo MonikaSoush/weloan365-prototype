@@ -161,7 +161,7 @@ export default function ProductDetailScreen() {
           pointerEvents: scrolled ? 'auto' : 'none',
         }}
       >
-        <IconButton onClick={() => navigate('/products?v=1')} aria-label="Back" sx={{ color: '#171717' }}>
+        <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: '#171717' }}>
           <Icon name="chevronLeft" size={24} color="#171717" />
         </IconButton>
         <Typography sx={{ flex: 1, fontSize: 18, fontWeight: 800, color: '#171717', letterSpacing: '-0.3px' }} noWrap>
@@ -202,7 +202,7 @@ export default function ProductDetailScreen() {
 
           {/* Back button */}
           <Box
-            onClick={() => navigate('/products?v=1')}
+            onClick={() => navigate(-1)}
             role="button"
             aria-label="Back"
             sx={{

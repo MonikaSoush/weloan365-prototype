@@ -33,7 +33,7 @@ export default function MyLoanDetailScreen() {
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
-        <MwlHeader onBack={() => navigate('/my-loan')} />
+        <MwlHeader onBack={() => navigate(-1)} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 1 }}>
           Small Business Loan
         </Typography>

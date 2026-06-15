@@ -41,7 +41,7 @@ export default function MyLoanReviewDetailScreen() {
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
-        <MwlHeader onBack={() => navigate('/my-loan')} />
+        <MwlHeader onBack={() => navigate(-1)} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 0.5 }}>
           Request Housing Loan
         </Typography>

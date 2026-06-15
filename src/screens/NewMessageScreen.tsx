@@ -56,7 +56,7 @@ export default function NewMessageScreen() {
         {/* Header */}
         <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton onClick={() => navigate('/chat')} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
+            <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
               <Icon name="chevronLeft" size={26} color={HEADING} />
             </IconButton>
             <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>

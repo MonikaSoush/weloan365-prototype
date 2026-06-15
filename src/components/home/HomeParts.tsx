@@ -27,14 +27,20 @@ const GREEN = '#8CC919'
 // ─────────────────────────────────────────────────────────────────────────────
 // Section label  ("POPULAR LOAN PRODUCTS"  +  optional "See all")
 // ─────────────────────────────────────────────────────────────────────────────
-export function SectionLabel({ label, action }: { label: string; action?: string }) {
+export function SectionLabel({ label, action, onAction }: { label: string; action?: string; onAction?: () => void }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
       <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6' }}>
         {label}
       </Typography>
       {action && (
-        <Typography sx={{ fontSize: 13, fontWeight: 600, color: BLUE }}>{action}</Typography>
+        <Typography
+          role={onAction ? 'button' : undefined}
+          onClick={onAction}
+          sx={{ fontSize: 13, fontWeight: 600, color: BLUE, cursor: onAction ? 'pointer' : 'default', '&:active': onAction ? { opacity: 0.6 } : undefined }}
+        >
+          {action}
+        </Typography>
       )}
     </Box>
   )
@@ -528,6 +534,7 @@ export function AdvanceCard({ amount = '$320.00' }: { amount?: string } = {}) {
 // Active loan card — Small Business Loan + progress + next payment + Pay Now
 // ─────────────────────────────────────────────────────────────────────────────
 export function ActiveLoanBody({ title = 'Small Business Loan', paid = false }: { title?: string; paid?: boolean }) {
+  const navigate = useNavigate()
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -555,12 +562,17 @@ export function ActiveLoanBody({ title = 'Small Business Loan', paid = false }: 
           </Typography>
         </Box>
         {paid ? (
-          <Button variant="outlined" sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
+          <Button
+            variant="outlined"
+            onClick={(e) => { e.stopPropagation(); navigate('/my-loan-detail') }}
+            sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}
+          >
             View Details
           </Button>
         ) : (
           <Button
             variant="contained"
+            onClick={(e) => { e.stopPropagation(); navigate('/my-loan-detail?pay=1') }}
             startIcon={<Icon name="pay" size={18} />}
             sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}
           >
@@ -573,8 +585,9 @@ export function ActiveLoanBody({ title = 'Small Business Loan', paid = false }: 
 }
 
 export function ActiveLoanCard({ title, paid = false }: { title?: string; paid?: boolean }) {
+  const navigate = useNavigate()
   return (
-    <Card>
+    <Card sx={{ cursor: 'pointer' }} onClick={() => navigate('/my-loan-detail')}>
       <ActiveLoanBody title={title} paid={paid} />
     </Card>
   )
@@ -583,6 +596,7 @@ export function ActiveLoanCard({ title, paid = false }: { title?: string; paid?:
 // Compact loan card — used in the multi-loan grid (2 / 3 / 4 loans).
 // `wide` lays it out horizontally (progress left, Pay button right) for a full-width slot.
 export function CompactLoanCard({ title, wide = false }: { title: string; wide?: boolean }) {
+  const navigate = useNavigate()
   const header = (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
       <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }} noWrap>{title}</Typography>
@@ -603,6 +617,7 @@ export function CompactLoanCard({ title, wide = false }: { title: string; wide?:
   const payBtn = (
     <Button
       variant="contained"
+      onClick={(e) => { e.stopPropagation(); navigate('/my-loan-detail?pay=1') }}
       startIcon={<Icon name="pay" size={17} />}
       sx={{ height: 38, borderRadius: '10px', fontSize: 13, px: 2.5, flexShrink: 0 }}
     >
@@ -612,7 +627,7 @@ export function CompactLoanCard({ title, wide = false }: { title: string; wide?:
 
   if (wide) {
     return (
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 2, cursor: 'pointer' }} onClick={() => navigate('/my-loan-detail')}>
         {header}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1.5 }}>
           <Box sx={{ flex: 1, minWidth: 0 }}>{progress}</Box>
@@ -623,7 +638,7 @@ export function CompactLoanCard({ title, wide = false }: { title: string; wide?:
   }
 
   return (
-    <Card sx={{ p: 2 }}>
+    <Card sx={{ p: 2, cursor: 'pointer' }} onClick={() => navigate('/my-loan-detail')}>
       {header}
       <Box sx={{ mt: 1.5 }}>{progress}</Box>
       <Box sx={{ mt: 2, '& .MuiButton-root': { width: '100%' } }}>{payBtn}</Box>
@@ -635,6 +650,7 @@ export function CompactLoanCard({ title, wide = false }: { title: string; wide?:
 const COMPACT_LOAN_NAMES = ['SBL', 'SME', 'SBL', 'SME']
 
 export function ActiveLoansSection({ count, paid = false }: { count: 1 | 2 | 3 | 4; paid?: boolean }) {
+  const navigate = useNavigate()
   if (count === 1) {
     return (
       <Box>
@@ -646,7 +662,7 @@ export function ActiveLoansSection({ count, paid = false }: { count: 1 | 2 | 3 |
   const names = COMPACT_LOAN_NAMES.slice(0, count)
   return (
     <Box>
-      <SectionLabel label={`ACTIVE LOAN (${count})`} action={count >= 3 ? 'See all' : undefined} />
+      <SectionLabel label={`ACTIVE LOAN (${count})`} action={count >= 3 ? 'See all' : undefined} onAction={count >= 3 ? () => navigate('/my-loan') : undefined} />
       <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
         {names.map((n, i) => {
           // For 3 loans, the last (odd) card spans full width.
@@ -766,12 +782,15 @@ const POPULAR_PRODUCTS: { name: string; amount: string; rate: string; img: strin
 ]
 
 export function ProductScroller() {
+  const navigate = useNavigate()
   return (
     <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', pb: 1, mx: -0.5, px: 0.5 }} className="scroll-content">
       {POPULAR_PRODUCTS.map(({ name, amount, rate, img, kind }) => (
         <Box
           key={name}
-          sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3' }}
+          role="button"
+          onClick={() => navigate(`/product-detail?p=${encodeURIComponent(name)}`)}
+          sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}
         >
           <Box sx={{ position: 'relative', height: 118 }}>
             <AssetImg
@@ -817,6 +836,7 @@ const NEWS_SLIDES = [
 ]
 
 export function NewsBanner() {
+  const navigate = useNavigate()
   const [idx, setIdx] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -851,7 +871,9 @@ export function NewsBanner() {
         {NEWS_SLIDES.map((slide) => (
           <Box
             key={slide.label}
-            sx={{ flex: '0 0 100%', width: '100%', aspectRatio: '2.9 / 1', scrollSnapAlign: 'start', position: 'relative' }}
+            role="button"
+            onClick={() => navigate('/announcement')}
+            sx={{ flex: '0 0 100%', width: '100%', aspectRatio: '2.9 / 1', scrollSnapAlign: 'start', position: 'relative', cursor: 'pointer' }}
           >
             <AssetImg
               src={slide.src}
@@ -946,7 +968,7 @@ export function DiscoverRow() {
         ['Khmer New Year promotion', 'Lower micro-loan rates this season — apply b…', BANNERS.micro, 28],
         ['Migrant Worker offer', 'Special rate for overseas workers — limited…', BANNERS.migrant, 205],
       ] as [string, string, string, number][]).map(([title, body, img, hue], i) => (
-        <Box key={i} sx={{ width: 160, height: 218, display: 'flex', flexDirection: 'column', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3' }}>
+        <Box key={i} role="button" onClick={() => navigate('/announcement')} sx={{ width: 160, height: 218, display: 'flex', flexDirection: 'column', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}>
           <Box sx={{ flex: 1, minHeight: 0, position: 'relative' }}>
             <AssetImg
               src={img}

@@ -38,7 +38,7 @@ export default function ChatThreadScreen() {
       {/* Header */}
       <Box sx={{ flexShrink: 0, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1.5, borderBottom: '1px solid #ECEEF1' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton onClick={() => navigate('/chat')} aria-label="Back" sx={{ color: HEADING }}>
+          <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: HEADING }}>
             <Icon name="chevronLeft" size={26} color={HEADING} />
           </IconButton>
           <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: BLUE + '1F', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
