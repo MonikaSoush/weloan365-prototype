@@ -67,6 +67,8 @@ export const ILLUS = mapAssets({
   orb: 'illustrations/orb.png',
   avatar: 'illustrations/orb-avatar.svg',
   avatar01: 'illustrations/Avatar_01.png',
+  nonMwl: 'illustrations/Non.png',
+  mwlCard: 'illustrations/MWL.png',
 })
 
 export const DISCOVER = mapAssets({

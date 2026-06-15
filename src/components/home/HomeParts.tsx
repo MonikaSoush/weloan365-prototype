@@ -681,8 +681,8 @@ export function ApplyLoanCards({ variant = 'color', loggedIn = false }: { varian
   const isVisitor = flow === 'Visitor' && !loggedIn
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-      <ApplyCard title="Apply Loan Non-MWL" subtitle={'Domestic\nborrowers'} img={ILLUS.briefcase} iconName="briefcase" color="#45A89C" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/nonmwl-about') : '/nonmwl-about')} />
-      <ApplyCard title="Apply Loan MWL" subtitle={'Migrant\nworkers'} img={ILLUS.mwl} iconName="plane" color="#1FA84F" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/mwl-about') : '/mwl-about')} />
+      <ApplyCard title="Apply Loan Non-MWL" subtitle={'Domestic\nborrowers'} img={ILLUS.nonMwl} iconName="briefcase" color="#45A89C" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/nonmwl-about') : '/nonmwl-about')} />
+      <ApplyCard title="Apply Loan MWL" subtitle={'Migrant\nworkers'} img={ILLUS.mwlCard} iconName="plane" color="#1FA84F" variant={variant} onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/mwl-about') : '/mwl-about')} />
     </Box>
   )
 }
@@ -696,7 +696,7 @@ function ApplyCard({ title, subtitle, img, iconName, color, variant = 'color', o
         position: 'relative',
         borderRadius: '12px',
         p: 2.5,
-        minHeight: 116,
+        minHeight: 132,
         ...(isWhite
           ? { bgcolor: '#fff', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)' }
           : {
@@ -741,10 +741,10 @@ function ApplyCard({ title, subtitle, img, iconName, color, variant = 'color', o
       <Box
         sx={{
           position: 'absolute',
-          right: -15,
-          bottom: -9,
-          width: 96,
-          height: 88,
+          right: -8,
+          bottom: -8,
+          width: 112,
+          height: 104,
           pointerEvents: 'none',
         }}
       >
