@@ -113,8 +113,8 @@ export default function PhoneCanvas({ children }: PhoneCanvasProps) {
         flexDirection: 'column',
         flexShrink: 0,
 
-        // ── Uniform 54px top inset for every screen ─────────────────────────
-        pt: '54px',
+        // ── Uniform 34px top inset for every screen ─────────────────────────
+        pt: '34px',
 
         // ── Workspace: light, rounded prototype frame (desktop only) ────────
         borderRadius: { xs: 0, md: '40px' },

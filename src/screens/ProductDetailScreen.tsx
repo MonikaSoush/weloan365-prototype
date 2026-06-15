@@ -137,7 +137,7 @@ export default function ProductDetailScreen() {
     navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')
 
   return (
-    <Box className="screen-enter" sx={{ position: 'relative', height: 'calc(100% + 54px)', mt: '-54px', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ position: 'relative', height: 'calc(100% + 34px)', mt: '-34px', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
 
       {/* ── Compact sticky header (appears on scroll) ─────────────────── */}
       <Box

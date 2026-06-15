@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
+import { useHomePath } from '../workspace/useHomePath'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen registry — each flow screen rendered inside the phone canvas.
@@ -29,7 +30,6 @@ const ConfirmPinScreen = lazy(() => import('../screens/visitor/ConfirmPinScreen'
 const AdvanceAccountScreen = lazy(() => import('../screens/AdvanceAccountScreen'))
 const CalculatorScreen  = lazy(() => import('../screens/CalculatorScreen'))
 const ProductDetailScreen = lazy(() => import('../screens/ProductDetailScreen'))
-const DocumentPreviewScreen = lazy(() => import('../screens/DocumentPreviewScreen'))
 const RestructureInfoScreen = lazy(() => import('../screens/restructure/RestructureInfoScreen'))
 const RestructureConditionsScreen = lazy(() => import('../screens/restructure/RestructureConditionsScreen'))
 const RestructureConsentScreen = lazy(() => import('../screens/restructure/RestructureConsentScreen'))
@@ -62,6 +62,12 @@ const SendFeedbackScreen = lazy(() => import('../screens/settings/SendFeedbackSc
 const FeedbackHistoryScreen = lazy(() => import('../screens/settings/FeedbackHistoryScreen'))
 const FaqScreen        = lazy(() => import('../screens/settings/FaqScreen'))
 // ─────────────────────────────────────────────────────────────────────────────
+
+// Sample-aware fallback: unknown paths go to the active sample's home
+// (Sample 1 → Products / My Loan tab; Sample 2 → the Home dashboard).
+function HomeRedirect() {
+  return <Navigate to={useHomePath()} replace />
+}
 
 function ScreenLoader() {
   return (
@@ -121,7 +127,6 @@ export default function AppRouter() {
         <Route path="/advance" element={<AdvanceAccountScreen />} />
         <Route path="/calculator" element={<CalculatorScreen />} />
         <Route path="/product-detail" element={<ProductDetailScreen />} />
-        <Route path="/document-preview" element={<DocumentPreviewScreen />} />
         <Route path="/restructure-info" element={<RestructureInfoScreen />} />
         <Route path="/restructure-conditions" element={<RestructureConditionsScreen />} />
         <Route path="/restructure-consent" element={<RestructureConsentScreen />} />
@@ -144,8 +149,8 @@ export default function AppRouter() {
         <Route path="/feedback-history" element={<FeedbackHistoryScreen />} />
         <Route path="/faq" element={<FaqScreen />} />
 
-        {/* Catch-all: redirect unknown paths to home */}
-        <Route path="*" element={<Navigate to="/home?v=1" replace />} />
+        {/* Catch-all: redirect unknown paths to the active sample's home */}
+        <Route path="*" element={<HomeRedirect />} />
       </Routes>
     </Suspense>
   )

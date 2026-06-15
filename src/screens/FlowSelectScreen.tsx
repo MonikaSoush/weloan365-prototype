@@ -30,8 +30,8 @@ export default function FlowSelectScreen() {
     <Box
       className="screen-enter"
       sx={{
-        height: 'calc(100% + 47px)',
-        mt: '-47px',
+        height: 'calc(100% + 34px)',
+        mt: '-34px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
