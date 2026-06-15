@@ -78,7 +78,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
           alt="NongHyup Finance (Cambodia) Plc"
           role="button"
           aria-label="Settings"
-          onClick={() => navigate('/settings')}
+          onClick={() => navigate(isVisitor ? '/sign-up' : '/settings')}
           sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
         />
       ) : (
@@ -237,15 +237,7 @@ export function MoreMenuBody({
             <Icon name="chevronLeft" />
           </IconButton>
           {isVisitor ? (
-            <Box
-              component="img"
-              src="/assets/brand/header_logo.svg"
-              alt="NongHyup Finance (Cambodia) Plc"
-              role="button"
-              aria-label="Settings"
-              onClick={() => navigate('/settings')}
-              sx={{ height: 26, width: 'auto', display: 'block', objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
-            />
+            <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#0B0F1A' }}>Settings</Typography>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Box sx={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>

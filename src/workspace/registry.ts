@@ -50,20 +50,12 @@ export const SCREENS: FlowScreen[] = [
   },
   {
     id: 'home',
-    name: 'Home (not yet login)',
+    name: 'Home',
     section: 'HOME',
     samples: [{ v: '1', label: 'Sample 1' }],
     // Visitor sees the "not yet login" home; signed-in flows see a single "Home".
     flowNames: { 'New User': 'Home', Applicant: 'Home', Borrower: 'Home' },
     // The nav-less Home is the Sample 2 experience only.
-    inSamples: ['2'],
-  },
-  {
-    id: 'home-app',
-    name: 'Home (logged in)',
-    section: 'HOME',
-    samples: [{ v: '1', label: 'Sample 1' }],
-    flows: ['Visitor'],
     inSamples: ['2'],
   },
   {

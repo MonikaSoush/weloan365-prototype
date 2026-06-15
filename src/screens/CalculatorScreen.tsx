@@ -120,7 +120,7 @@ export default function CalculatorScreen() {
             {/* Amount */}
             <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
               <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>
-                Amount ${MIN_AMOUNT.toLocaleString('en-US')} ~ ${maxAmount.toLocaleString('en-US')}
+                {currency === 'KHR' ? 'Amount 400K ~ 1,200M' : `Amount $${MIN_AMOUNT.toLocaleString('en-US')} ~ $${maxAmount.toLocaleString('en-US')}`}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1, minWidth: 0 }}>

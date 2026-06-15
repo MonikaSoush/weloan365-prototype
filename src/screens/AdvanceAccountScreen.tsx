@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
 import { MwlHeader, BottomSheet, BLUE } from './mwl/MwlParts'
+import { AssetImg, BANKS } from '../components/home/media'
 
 // ─── Advances payment ledger ─────────────────────────────────────────────────
 const TABLE_HEAD = ['កាលបរិច្ឆេទ', 'ដាក់ប្រាក់', 'ប្រាក់បង់កម្ចី', 'ផ្ទេរទៅកាន់កម្ចី']
@@ -97,15 +98,36 @@ export default function AdvanceAccountScreen() {
           <Box sx={{ bgcolor: '#fff', borderRadius: '14px', border: '1px solid #ECEFF3', overflow: 'hidden' }}>
             {METHODS.map((m, i) => {
               const active = method === m.id
+              const showQr = m.id === 'khqr' && active
               return (
-                <Box
-                  key={m.id}
-                  onClick={() => setMethod(m.id)}
-                  sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1.5, cursor: 'pointer', borderTop: i > 0 ? '1px solid #F1F4F8' : 'none' }}
-                >
-                  <LogoTile logo={m.logo} alt={m.name} />
-                  <Typography sx={{ flex: 1, minWidth: 0, fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{m.name}</Typography>
-                  <Radio active={active} />
+                <Box key={m.id}>
+                  <Box
+                    onClick={() => setMethod(m.id)}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1.5, cursor: 'pointer', borderTop: i > 0 ? '1px solid #F1F4F8' : 'none' }}
+                  >
+                    <LogoTile logo={m.logo} alt={m.name} />
+                    <Typography sx={{ flex: 1, minWidth: 0, fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{m.name}</Typography>
+                    <Radio active={active} />
+                  </Box>
+                  {showQr && (
+                    <Box sx={{ px: 2, pb: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, borderTop: '1px solid #F1F4F8' }}>
+                      <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>Scan to pay</Typography>
+                      <AssetImg
+                        src={BANKS.khqrCard}
+                        alt="KHQR — NongHyup M.F.I"
+                        sx={{ width: 200, height: 'auto', display: 'block' }}
+                        fallback={<Box sx={{ width: 200, aspectRatio: '189 / 259', borderRadius: '12px', bgcolor: '#9C1820' }} />}
+                      />
+                      <Box sx={{ display: 'flex', gap: 1.5, pt: 0.5, width: '100%' }}>
+                        {(['share', 'download'] as const).map((ic, idx) => (
+                          <Box key={ic} role="button" sx={{ flex: 1, minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, px: 2, borderRadius: '12px', bgcolor: '#EAF1FC', cursor: 'pointer', '&:active': { bgcolor: '#CFE0F8' } }}>
+                            <Icon name={ic} size={22} color={BLUE} />
+                            <Typography sx={{ fontSize: 15, fontWeight: 700, color: BLUE }}>{idx === 0 ? 'Share' : 'Download QR'}</Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  )}
                 </Box>
               )
             })}

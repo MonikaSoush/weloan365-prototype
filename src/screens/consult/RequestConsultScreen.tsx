@@ -25,7 +25,7 @@ export default function RequestConsultScreen() {
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton onClick={() => navigate('/chat')} aria-label="Chat support" sx={{ color: HEADING }}>
-              <Icon name="feedback" size={24} color={HEADING} />
+              <Icon name="message" size={24} color={HEADING} />
             </IconButton>
             <IconButton aria-label="Call support" sx={{ color: HEADING }}>
               <Icon name="phone" size={22} color={HEADING} />

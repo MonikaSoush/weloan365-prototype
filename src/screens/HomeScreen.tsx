@@ -74,6 +74,7 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
 // ─── Visitor top bar — brand logo with chat & bell ───────────────────────────
 function VisitorTopBar() {
   const navigate = useNavigate()
+  const { sample } = useSample()
   return (
     <Box
       sx={{
@@ -93,7 +94,9 @@ function VisitorTopBar() {
         component="img"
         src="/assets/brand/header_logo.svg"
         alt="NongHyup Finance (Cambodia) Plc"
-        sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left' }}
+        role="button"
+        onClick={() => navigate(sample === '2' ? '/more' : '/sign-up')}
+        sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
       />
       {/* Visitors must sign up before chatting; carry /chat as the post-sign-up destination. */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -118,7 +121,7 @@ function ApplicationProgress() {
   return (
     <Box>
       <SectionLabel label="YOUR APPLICATION" action="View details" onAction={() => navigate('/my-loan-review')} />
-      <Card>
+      <Card sx={{ cursor: 'pointer', '&:active': { opacity: 0.8 } }} onClick={() => navigate('/my-loan-review')}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
             <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>Migrant Worker Loan</Typography>

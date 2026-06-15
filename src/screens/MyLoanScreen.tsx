@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import BottomNav from '../components/BottomNav'
 import PayLoanSheet from '../components/PayLoanSheet'
 import { Icon } from '../components/Icon'
-import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel } from '../components/home/HomeParts'
+import { HomeTopBar, SummaryCard, Card, StatusChip, SectionLabel, AdvanceCard } from '../components/home/HomeParts'
 import { useFlow } from '../workspace/FlowContext'
 import { useSample } from '../workspace/SampleContext'
 
@@ -44,6 +44,7 @@ export default function MyLoanScreen() {
           ) : (
             <>
               {!isApplicant && <SummaryCard loanCount={3} />}
+              {!isApplicant && <AdvanceCard />}
 
               <SegmentedTabs value={tab} onChange={setTab} />
 
