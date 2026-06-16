@@ -663,12 +663,12 @@ export function CompactLoanCard({ title, wide = false }: { title: string; wide?:
 // Active-loan section — switches layout by number of active loans
 const COMPACT_LOAN_NAMES = ['SBL', 'SME', 'SBL', 'SME']
 
-export function ActiveLoansSection({ count, paid = false }: { count: 1 | 2 | 3 | 4; paid?: boolean }) {
+export function ActiveLoansSection({ count, paid = false, hideSectionLabel = false }: { count: 1 | 2 | 3 | 4; paid?: boolean; hideSectionLabel?: boolean }) {
   const navigate = useNavigate()
   if (count === 1) {
     return (
       <Box>
-        <SectionLabel label="ACTIVE LOAN (1)" />
+        {!hideSectionLabel && <SectionLabel label="ACTIVE LOAN (1)" />}
         <ActiveLoanCard paid={paid} />
       </Box>
     )
@@ -676,10 +676,9 @@ export function ActiveLoansSection({ count, paid = false }: { count: 1 | 2 | 3 |
   const names = COMPACT_LOAN_NAMES.slice(0, count)
   return (
     <Box>
-      <SectionLabel label={`ACTIVE LOAN (${count})`} action={count >= 3 ? 'See all' : undefined} onAction={count >= 3 ? () => navigate('/my-loan') : undefined} />
+      {!hideSectionLabel && <SectionLabel label={`ACTIVE LOAN (${count})`} action={count >= 3 ? 'See all' : undefined} onAction={count >= 3 ? () => navigate('/my-loan') : undefined} />}
       <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
         {names.map((n, i) => {
-          // For 3 loans, the last (odd) card spans full width.
           const isLastFullWidth = count === 3 && i === names.length - 1
           return (
             <Box key={i} sx={isLastFullWidth ? { gridColumn: '1 / -1' } : undefined}>

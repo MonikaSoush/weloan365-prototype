@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -13,6 +13,7 @@ import {
   AdvanceCard,
   ActiveLoansSection,
   SectionLabel,
+  StatusChip,
   ApplyLoanCards,
   NewsBanner,
   ProductScroller,
@@ -32,6 +33,12 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
   const showNav = sample === '1'
   const { flow } = useFlow()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const v = params.get('v') ?? '1'
+
+  // Borrower loan variant: v=1 → 1 active + 1 review, v=2 → 2 active + 1 review, v=3 → 1 active only
+  const activeCount = v === '2' ? 2 : 1
+  const showReview = v === '1' || v === '2'
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -41,9 +48,15 @@ export default function HomeScreen({ loggedIn = false }: { loggedIn?: boolean } 
           {!loggedIn && flow === 'Applicant' && <ApplicationProgress />}
           {!loggedIn && flow === 'Borrower' && (
             <>
-              <SummaryCard loanCount={3} />
+              <SummaryCard loanCount={activeCount} />
               <AdvanceCard />
-              <ActiveLoansSection count={3} />
+              <Box>
+                <SectionLabel label="ALL LOAN" action="See all" onAction={() => navigate('/my-loan')} />
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <ActiveLoansSection count={activeCount as 1 | 2 | 3 | 4} hideSectionLabel />
+                  {showReview && <HomeReviewCard />}
+                </Box>
+              </Box>
             </>
           )}
 
@@ -111,6 +124,48 @@ function VisitorTopBar() {
   )
 }
 
+// ─── Borrower — compact in-review loan card shown on Home when a review exists ──
+function HomeReviewCard() {
+  const navigate = useNavigate()
+  return (
+    <Card sx={{ cursor: 'pointer', '&:active': { opacity: 0.8 } }} onClick={() => navigate('/my-loan-review')}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2.5 }}>
+        <Box>
+          <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>Small Business Loan</Typography>
+          <Box sx={{ display: 'flex', gap: 1.5, mt: 0.5 }}>
+            <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>$4,500 requested</Typography>
+            <Typography sx={{ fontSize: 13, color: '#CBD2DC' }}>·</Typography>
+            <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>24 months</Typography>
+          </Box>
+        </Box>
+        <Box sx={{ fontSize: 12, fontWeight: 700, px: 1.5, py: 0.5, borderRadius: 2, color: '#B25E00', bgcolor: '#FFF1DC', flexShrink: 0 }}>In Review</Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+        {APP_STEPS_V2.map((step, i) => {
+          const done = step.state === 'done'
+          const active = step.state === 'active'
+          const future = step.state === 'future'
+          const isLast = i === APP_STEPS_V2.length - 1
+          return (
+            <Box key={step.label} sx={{ display: 'flex', gap: 1.5 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                <Box sx={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', ...(done ? { bgcolor: BLUE } : active ? { bgcolor: '#fff', border: `2px solid ${BLUE}` } : { bgcolor: '#fff', border: '2px solid #CBD2DC' }) }}>
+                  {done ? <Icon name="check" size={13} color="#fff" /> : <Typography sx={{ fontSize: 12, fontWeight: 700, color: active ? BLUE : '#9AA3B2', lineHeight: 1 }}>{i + 1}</Typography>}
+                </Box>
+                {!isLast && <Box sx={{ width: 2, flex: 1, minHeight: 16, bgcolor: '#E2E6EC', my: 0.5 }} />}
+              </Box>
+              <Box sx={{ pb: isLast ? 0 : 2 }}>
+                <Typography sx={{ fontSize: 14, fontWeight: done || active ? 700 : 500, color: future ? '#9AA3B2' : '#0B0F1A', lineHeight: 1.2 }}>{step.label}</Typography>
+                <Typography sx={{ fontSize: 12, color: future ? '#B8C0CC' : '#8A94A6', mt: 0.25 }}>{step.sub}</Typography>
+              </Box>
+            </Box>
+          )
+        })}
+      </Box>
+    </Card>
+  )
+}
+
 // ─── Visitor — no loans yet; sign-up prompt ──────────────────────────────────
 // ─── Applicant — application submitted; tracking its progress ────────────────
 const APP_STEPS = ['Submitted', 'Under review', 'Approved']
@@ -131,13 +186,17 @@ function ApplicationProgress() {
       <Box>
         <SectionLabel label="YOUR APPLICATION" action="View details" onAction={() => navigate('/my-loan-review')} />
         <Card sx={{ cursor: 'pointer', '&:active': { opacity: 0.8 } }} onClick={() => navigate('/my-loan-review')}>
-          {/* Header */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}>
-            <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>Migrant Worker Loan</Typography>
-            <Box sx={{ fontSize: 12, fontWeight: 700, px: 1.5, py: 0.5, borderRadius: 2, color: '#B25E00', bgcolor: '#FFF1DC', flexShrink: 0 }}>In Progress</Box>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2.5 }}>
+            <Box>
+              <Typography sx={{ fontSize: 17, fontWeight: 700, color: '#0B0F1A' }}>Migrant Worker Loan</Typography>
+              <Box sx={{ display: 'flex', gap: 1.5, mt: 0.5 }}>
+                <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>$5,000 requested</Typography>
+                <Typography sx={{ fontSize: 13, color: '#CBD2DC' }}>·</Typography>
+                <Typography sx={{ fontSize: 13, color: '#8A94A6' }}>30 months</Typography>
+              </Box>
+            </Box>
+            <Box sx={{ fontSize: 12, fontWeight: 700, px: 1.5, py: 0.5, borderRadius: 2, color: '#B25E00', bgcolor: '#FFF1DC', flexShrink: 0 }}>In Review</Box>
           </Box>
-
-          {/* Vertical timeline */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {APP_STEPS_V2.map((step, i) => {
               const done = step.state === 'done'
@@ -146,37 +205,14 @@ function ApplicationProgress() {
               const isLast = i === APP_STEPS_V2.length - 1
               return (
                 <Box key={step.label} sx={{ display: 'flex', gap: 1.5 }}>
-                  {/* Circle + vertical line */}
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-                    <Box
-                      sx={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        ...(done
-                          ? { bgcolor: BLUE }
-                          : active
-                          ? { bgcolor: '#fff', border: `2px solid ${BLUE}` }
-                          : { bgcolor: '#fff', border: '2px solid #CBD2DC' }),
-                      }}
-                    >
-                      {done ? (
-                        <Icon name="check" size={13} color="#fff" />
-                      ) : (
-                        <Typography sx={{ fontSize: 12, fontWeight: 700, color: active ? BLUE : '#9AA3B2', lineHeight: 1 }}>{i + 1}</Typography>
-                      )}
+                    <Box sx={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', ...(done ? { bgcolor: BLUE } : active ? { bgcolor: '#fff', border: `2px solid ${BLUE}` } : { bgcolor: '#fff', border: '2px solid #CBD2DC' }) }}>
+                      {done ? <Icon name="check" size={13} color="#fff" /> : <Typography sx={{ fontSize: 12, fontWeight: 700, color: active ? BLUE : '#9AA3B2', lineHeight: 1 }}>{i + 1}</Typography>}
                     </Box>
                     {!isLast && <Box sx={{ width: 2, flex: 1, minHeight: 16, bgcolor: '#E2E6EC', my: 0.5 }} />}
                   </Box>
-
-                  {/* Text */}
                   <Box sx={{ pb: isLast ? 0 : 2 }}>
-                    <Typography sx={{ fontSize: 14, fontWeight: done || active ? 700 : 500, color: future ? '#9AA3B2' : '#0B0F1A', lineHeight: 1.2 }}>
-                      {step.label}
-                    </Typography>
+                    <Typography sx={{ fontSize: 14, fontWeight: done || active ? 700 : 500, color: future ? '#9AA3B2' : '#0B0F1A', lineHeight: 1.2 }}>{step.label}</Typography>
                     <Typography sx={{ fontSize: 12, color: future ? '#B8C0CC' : '#8A94A6', mt: 0.25 }}>{step.sub}</Typography>
                   </Box>
                 </Box>

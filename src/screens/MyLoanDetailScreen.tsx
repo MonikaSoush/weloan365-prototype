@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useSample } from '../workspace/SampleContext'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -23,12 +24,11 @@ type Tab = 'details' | 'others'
 
 export default function MyLoanDetailScreen() {
   const navigate = useNavigate()
-  const [params] = useSearchParams()
-  // Sample 2 (?v=2) drops the segmented tabs and stacks every section in one scroll.
-  const combined = (params.get('v') ?? '1') === '2'
+  const { sample } = useSample()
+  // Sample 1 → one page (all sections stacked); Sample 2 → 2 segments (Details / Others tabs).
+  const combined = sample === '1'
   const [tab, setTab] = useState<Tab>('details')
-  // Deep-link: arriving with ?pay=1 (e.g. from a payment reminder) opens the Pay Loan sheet.
-  const [payOpen, setPayOpen] = useState(params.get('pay') === '1')
+  const [payOpen, setPayOpen] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>

@@ -50,6 +50,7 @@ const NewMessageScreen = lazy(() => import('../screens/NewMessageScreen'))
 const RequestConsultScreen = lazy(() => import('../screens/consult/RequestConsultScreen'))
 const ConsultSuccessScreen = lazy(() => import('../screens/consult/ConsultSuccessScreen'))
 const DocumentViewerScreen = lazy(() => import('../screens/DocumentViewerScreen'))
+const AdvanceHistoryPreviewScreen = lazy(() => import('../screens/AdvanceHistoryPreviewScreen'))
 const AnnouncementDetailScreen = lazy(() => import('../screens/AnnouncementDetailScreen'))
 const AccountSecurityScreen = lazy(() => import('../screens/settings/AccountSecurityScreen'))
 const NotificationSettingsScreen = lazy(() => import('../screens/settings/NotificationSettingsScreen'))
@@ -125,6 +126,7 @@ export default function AppRouter() {
         <Route path="/create-pin" element={<CreatePinScreen />} />
         <Route path="/confirm-pin" element={<ConfirmPinScreen />} />
         <Route path="/advance" element={<AdvanceAccountScreen />} />
+        <Route path="/advance-history-preview" element={<AdvanceHistoryPreviewScreen />} />
         <Route path="/calculator" element={<CalculatorScreen />} />
         <Route path="/product-detail" element={<ProductDetailScreen />} />
         <Route path="/restructure-info" element={<RestructureInfoScreen />} />

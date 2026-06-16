@@ -103,24 +103,14 @@ function EmptyState({ label, hint, showApplyButtons }: { label: string; hint: st
       <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
       <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.75, maxWidth: 240, lineHeight: 1.5 }}>{hint}</Typography>
       {showApplyButtons && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 3, width: '100%', maxWidth: 280 }}>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={goNonMwl}
-            sx={{ height: 48, borderRadius: '12px', fontSize: 14, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
-          >
-            Apply Non-MWL Loan
-          </Button>
-          <Button
-            variant="outlined"
-            fullWidth
-            onClick={goMwl}
-            sx={{ height: 48, borderRadius: '12px', fontSize: 14, fontWeight: 700, color: BLUE, borderColor: BLUE }}
-          >
-            Apply MWL (Migrant Worker)
-          </Button>
-        </Box>
+        <Button
+          variant="contained"
+          onClick={() => navigate('/all-loan')}
+          endIcon={<Icon name="arrowRight" size={18} />}
+          sx={{ mt: 3, height: 48, px: 4, borderRadius: '12px', fontSize: 15, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
+        >
+          Explore
+        </Button>
       )}
     </Box>
   )

@@ -45,20 +45,37 @@ export default function AdvanceAccountScreen() {
         </Typography>
 
         <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-          {/* Balance + Top-up */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', px: 2.5, py: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5 }}>
-            <Box sx={{ minWidth: 0 }}>
-              <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Balance</Typography>
-              <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.25 }}>$120.00</Typography>
+          {/* Balance + Top-up + Total IN/OUT — one unified card */}
+          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', overflow: 'hidden' }}>
+            {/* Balance row */}
+            <Box sx={{ px: 2.5, py: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5 }}>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Balance</Typography>
+                <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.25 }}>$120.00</Typography>
+              </Box>
+              <Button
+                variant="contained"
+                onClick={() => setTopUpOpen(true)}
+                startIcon={<Icon name="plus" size={18} />}
+                sx={{ height: 48, borderRadius: '12px', pl: '8px', pr: '8px', fontSize: 15, fontWeight: 700, flexShrink: 0 }}
+              >
+                Top-up Advance
+              </Button>
             </Box>
-            <Button
-              variant="contained"
-              onClick={() => setTopUpOpen(true)}
-              startIcon={<Icon name="pay" size={18} />}
-              sx={{ height: 48, borderRadius: '12px', px: 2.5, fontSize: 15, fontWeight: 700, flexShrink: 0 }}
-            >
-              Top-up Advance
-            </Button>
+            {/* Divider */}
+            <Box sx={{ height: '1px', bgcolor: '#ECEFF3', mx: 2.5 }} />
+            {/* Total IN / Total OUT row */}
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ flex: 1, px: 2.5, py: 2 }}>
+                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Total IN</Typography>
+                <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#1A9E5C', letterSpacing: '-0.3px', mt: 0.5 }}>$364.97</Typography>
+              </Box>
+              <Box sx={{ width: '1px', bgcolor: '#ECEFF3', my: 2 }} />
+              <Box sx={{ flex: 1, px: 2.5, py: 2 }}>
+                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Total OUT</Typography>
+                <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.3px', mt: 0.5 }}>$354.94</Typography>
+              </Box>
+            </Box>
           </Box>
 
           {/* Advances payment table */}
@@ -70,7 +87,7 @@ export default function AdvanceAccountScreen() {
               <AdvancesTable onRowClick={() => navigate('/my-loan-detail')} />
             </Box>
             <Typography sx={{ fontSize: 12, color: '#8A94A6', textAlign: 'center', mt: 1.5 }}>
-              Showing 5 of 16 · <Box component="span" sx={{ color: BLUE, fontWeight: 700 }}>Preview</Box> for full view
+              Showing 5 of 16 · <Box component="span" role="button" onClick={() => navigate('/advance-history-preview')} sx={{ color: BLUE, fontWeight: 700, cursor: 'pointer' }}>Preview</Box> for full view
             </Typography>
           </Box>
         </Box>
@@ -169,8 +186,12 @@ function AdvancesTable({ onRowClick }: { onRowClick?: () => void }) {
             sx={{ borderTop: '1px solid #F1F4F8', cursor: onRowClick ? 'pointer' : 'default', '&:active': { bgcolor: '#F7F9FC' } }}
           >
             <Cell>{row.date}</Cell>
-            <Cell strong={row.deposit !== '$0.00'}>{row.deposit}</Cell>
-            <Cell strong={row.pay !== '$0.00'}>{row.pay}</Cell>
+            <Cell color={row.deposit !== '$0.00' ? '#1A9E5C' : undefined} strong={row.deposit !== '$0.00'}>
+              {row.deposit !== '$0.00' ? `+${row.deposit}` : row.deposit}
+            </Cell>
+            <Cell color={row.pay !== '$0.00' ? '#D63B3B' : undefined} strong={row.pay !== '$0.00'}>
+              {row.pay !== '$0.00' ? `-${row.pay}` : row.pay}
+            </Cell>
             <Box component="td" sx={{ textAlign: 'center', px: 0.5, py: 1.5 }}>
               {row.transfer && (
                 <Box component="span" sx={{ display: 'inline-block', fontSize: 11, fontWeight: 700, color: '#2E7D32', bgcolor: '#E6F4EA', borderRadius: '999px', px: 1, py: 0.5, lineHeight: 1.3 }}>
@@ -185,11 +206,11 @@ function AdvancesTable({ onRowClick }: { onRowClick?: () => void }) {
   )
 }
 
-function Cell({ children, strong = false }: { children: ReactNode; strong?: boolean }) {
+function Cell({ children, strong = false, color }: { children: ReactNode; strong?: boolean; color?: string }) {
   return (
     <Box
       component="td"
-      sx={{ fontSize: 13, textAlign: 'center', px: 0.5, py: 1.5, color: strong ? '#0B0F1A' : '#9AA3B2', fontWeight: strong ? 700 : 500 }}
+      sx={{ fontSize: 13, textAlign: 'center', px: 0.5, py: 1.5, color: color ?? (strong ? '#0B0F1A' : '#9AA3B2'), fontWeight: strong ? 700 : 500 }}
     >
       {children}
     </Box>

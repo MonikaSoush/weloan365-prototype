@@ -52,7 +52,11 @@ export const SCREENS: FlowScreen[] = [
     id: 'home',
     name: 'Home',
     section: 'HOME',
-    samples: [{ v: '1', label: 'Sample 1' }],
+    samples: [
+      { v: '1', label: '1 Active + Review' },
+      { v: '2', label: '2 Active + Review' },
+      { v: '3', label: '1 Active Only' },
+    ],
     // Visitor sees the "not yet login" home; signed-in flows see a single "Home".
     flowNames: { 'New User': 'Home', Applicant: 'Home', Borrower: 'Home' },
     // The nav-less Home is the Sample 2 experience only.
@@ -100,10 +104,7 @@ export const SCREENS: FlowScreen[] = [
     id: 'my-loan-detail',
     name: 'Loan Detail',
     section: 'MY LOAN',
-    samples: [
-      { v: '1', label: '2 Segments' },
-      { v: '2', label: 'One Page' },
-    ],
+    samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Applicant', 'Borrower'],
   },
   {
