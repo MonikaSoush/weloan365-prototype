@@ -194,28 +194,6 @@ export default function SignUpScreen() {
             </Box>
           </Box>
 
-          {/* Sign in with QR — secondary action, full-width tonal button */}
-          <Box
-            role="button"
-            onClick={() => navigate('/qr-signin')}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 1,
-              mt: 3,
-              minHeight: 56,
-              borderRadius: '14px',
-              bgcolor: '#EAF1FC',
-              border: `1.5px solid ${BLUE}`,
-              cursor: 'pointer',
-              transition: 'opacity 0.15s, background-color 0.15s',
-              '&:active': { bgcolor: '#DDE9FB', opacity: 0.9 },
-            }}
-          >
-            <Icon name="qrCode" size={22} color={BLUE} />
-            <Typography sx={{ fontSize: 16, fontWeight: 700, color: BLUE }}>Sign in with QR</Typography>
-          </Box>
         </Box>
       </Box>
 
@@ -223,6 +201,14 @@ export default function SignUpScreen() {
         <Button variant="contained" fullWidth onClick={() => navigate('/otp' + nextSuffix(next))} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
           Send code
         </Button>
+        <Box
+          role="button"
+          onClick={() => navigate('/qr-signin')}
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75, mt: 0, py: 3, cursor: 'pointer', '&:active': { opacity: 0.7 } }}
+        >
+          <Icon name="qrCode" size={18} color={MUTED} />
+          <Typography sx={{ fontSize: 14, fontWeight: 600, color: MUTED }}>Sign in with QR</Typography>
+        </Box>
       </Box>
 
       {/* Country picker sheet */}

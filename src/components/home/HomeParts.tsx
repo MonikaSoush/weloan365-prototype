@@ -86,7 +86,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
       ) : (
         /* Tap the profile (avatar + name) to open the Profile screen. */
         <Box
-          onClick={() => navigate(sample === '2' ? '/more' : '/profile')}
+          onClick={() => navigate('/profile')}
           role="button"
           aria-label="Open profile"
           sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
@@ -173,7 +173,7 @@ function MyLoanOfficerCard() {
 
   return (
     <Box>
-      <MoreSectionLabel>MY LOAN OFFICER</MoreSectionLabel>
+      <MoreSectionLabel>MY OFFICER</MoreSectionLabel>
       <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box
           sx={{

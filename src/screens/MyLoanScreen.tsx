@@ -40,9 +40,11 @@ export default function MyLoanScreen() {
         {/* Header */}
         <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton onClick={() => navigate('/home')} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
-              <Icon name="chevronLeft" size={26} color="#0B0F1A" />
-            </IconButton>
+            {sample !== '1' && (
+              <IconButton onClick={() => navigate('/home')} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
+                <Icon name="chevronLeft" size={26} color="#0B0F1A" />
+              </IconButton>
+            )}
             <Box sx={{ flex: 1 }} />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <IconButton onClick={() => navigate('/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
