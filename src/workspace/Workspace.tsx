@@ -13,6 +13,7 @@ const SIDEBAR_W = 272
 // ─── Sample selector — global Sample 1 / Sample 2 segmented control ──────────
 function SampleSelect() {
   const { sample, setSample } = useSample()
+  const navigate = useNavigate()
   return (
     <Box sx={{ mb: 4 }}>
       <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#9AA3B2', mb: 1 }}>
@@ -26,7 +27,7 @@ function SampleSelect() {
           return (
             <Box
               key={s.id}
-              onClick={() => setSample(s.id)}
+              onClick={() => { setSample(s.id); navigate('/flow-select') }}
               role="button"
               sx={{
                 flex: 1,

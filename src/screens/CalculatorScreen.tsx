@@ -106,7 +106,6 @@ export default function CalculatorScreen() {
     }
   }
 
-  const [downloadOpen, setDownloadOpen] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -330,7 +329,7 @@ export default function CalculatorScreen() {
                 />
               </Box>
               <Typography sx={{ fontSize: 14, color: LABEL, textAlign: 'center', py: 1.5 }}>
-                Showing 3 of {term} · <Box component="span" onClick={() => setDownloadOpen(true)} sx={{ color: BLUE, fontWeight: 700, cursor: 'pointer' }}>Download</Box> for full view
+                Showing 3 of {term} · <Box component="span" onClick={() => navigate('/calculator-schedule', { state: { rows, totals: { principal: totalPrincipalPaid, interest: totalInterest, payable: totalPayable }, currency, term } })} sx={{ color: BLUE, fontWeight: 700, cursor: 'pointer' }}>Download</Box> for full view
               </Typography>
             </Box>
           </Box>
@@ -349,15 +348,6 @@ export default function CalculatorScreen() {
         </Button>
       </Box>
 
-      {/* Download preview sheet */}
-      <DownloadSheet
-        open={downloadOpen}
-        onClose={() => setDownloadOpen(false)}
-        rows={rows}
-        totals={{ principal: totalPrincipalPaid, interest: totalInterest, payable: totalPayable }}
-        currency={currency}
-        term={term}
-      />
     </Box>
   )
 }

@@ -94,6 +94,12 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {
+    id: 'calculator-schedule',
+    name: 'Repayment Schedule',
+    section: 'TOOLS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
     id: 'my-loan',
     name: 'My Loans',
     section: 'MY LOAN',

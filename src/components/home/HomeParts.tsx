@@ -962,49 +962,106 @@ export function NewsBanner() {
 // ─────────────────────────────────────────────────────────────────────────────
 // Discover row — Calculator tile + news cards (horizontal scroll)
 // ─────────────────────────────────────────────────────────────────────────────
+type DiscoverNewsItem = { tag: string; title: string; body: string; img: string; detail: string }
+
+const DISCOVER_NEWS_ITEMS: DiscoverNewsItem[] = [
+  {
+    tag: 'NEWS',
+    title: 'Khmer New Year promotion',
+    body: 'Lower micro-loan rates this season — apply by mid-April.',
+    img: BANNERS.bannerKhmerNewYear,
+    detail: 'Celebrate Khmer New Year with reduced micro-loan rates across all branches. Apply before mid-April to lock in the seasonal rate and enjoy faster approval with fewer documents. Talk to our team to see how much you can save.',
+  },
+  {
+    tag: 'NEWS',
+    title: 'Migrant worker support',
+    body: 'Special rates for overseas workers and their families.',
+    img: BANNERS.bannerSupport,
+    detail: 'NongHyup Finance offers dedicated loan packages for migrant workers and their families, with flexible repayment aligned to overseas income. Get help with guarantor setup and remittance-friendly schedules.',
+  },
+  {
+    tag: 'TIPS',
+    title: 'Build your credit score',
+    body: 'Simple habits that help you qualify for a bigger loan.',
+    img: BANNERS.bannerScore,
+    detail: 'Paying on time, keeping balances low, and maintaining a steady income are the habits that build a strong credit profile. A better score unlocks larger limits and lower rates on your next loan.',
+  },
+]
+
 export function DiscoverRow() {
   const navigate = useNavigate()
-  return (
-    <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', pb: 1, mx: -0.5, px: 0.5 }} className="scroll-content">
-      {/* Calculator */}
-      <Box onClick={() => navigate('/calculator')} role="button" aria-label="Loan calculator" sx={{ flexShrink: 0, position: 'relative', width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#0B1A14', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-        <AssetImg
-          src={DISCOVER.calculator}
-          alt=""
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#0B1A14' }} />}
-        />
-        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)' }} />
-        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: '12px' }}>
-          <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.2px' }}>Calculator</Typography>
-          <Icon name="arrowRight" size={18} color="#fff" />
+  const [active, setActive] = useState<DiscoverNewsItem | null>(null)
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null)
+  useEffect(() => { setPortalEl(document.getElementById('phone-canvas')) }, [])
+
+  const sheet = (
+    <>
+      {/* Backdrop */}
+      <Box
+        onClick={() => setActive(null)}
+        sx={{ position: 'absolute', inset: 0, zIndex: 100, bgcolor: 'rgba(11,15,26,0.45)', opacity: active ? 1 : 0, pointerEvents: active ? 'auto' : 'none', transition: 'opacity 0.25s ease' }}
+      />
+      {/* Sheet */}
+      <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 101, bgcolor: '#F5F5F5', borderTopLeftRadius: 20, borderTopRightRadius: 20, transform: active ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1)', maxHeight: '90%', display: 'flex', flexDirection: 'column', boxShadow: '0 -8px 30px rgba(11,15,26,0.18)' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.25, pb: 0.5, flexShrink: 0 }}>
+          <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: '#D6DBE2' }} />
+        </Box>
+        <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
+          <IconButton onClick={() => setActive(null)} aria-label="Close" sx={{ width: 40, height: 40, bgcolor: '#fff', boxShadow: '0 2px 8px rgba(11,15,26,0.12)', '&:hover': { bgcolor: '#fff' } }}>
+            <Icon name="close" size={22} color="#6B7280" />
+          </IconButton>
+        </Box>
+        <Box sx={{ overflowY: 'auto', px: 3, pt: '56px', pb: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+          <Typography sx={{ fontSize: 30, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
+            {active?.title}
+          </Typography>
+          <Box sx={{ borderRadius: '14px', overflow: 'hidden', height: 200 }}>
+            <AssetImg src={active?.img} alt={active?.title} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#2B5BB3' }} />} />
+          </Box>
+          <Typography sx={{ fontSize: 17, color: '#525866', lineHeight: 1.5 }}>{active?.detail}</Typography>
+        </Box>
+        <Box sx={{ flexShrink: 0, display: 'flex', gap: 1.5, px: 3, pt: 1, pb: '54px' }}>
+          <Box role="button" onClick={() => setActive(null)} sx={{ flex: 1, minHeight: 56, borderRadius: '12px', bgcolor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', '&:active': { opacity: 0.7 } }}>
+            <Typography sx={{ fontSize: 18, fontWeight: 600, color: '#0B0F1A' }}>Explore</Typography>
+          </Box>
+          <Box role="button" sx={{ flex: 1, minHeight: 56, borderRadius: '12px', bgcolor: '#275CB2', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+            <Typography sx={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>Call Now</Typography>
+          </Box>
         </Box>
       </Box>
-      {/* News cards */}
-      {([
-        ['Khmer New Year promotion', 'Lower micro-loan rates this season — apply by mid-April.', BANNERS.bannerKhmerNewYear],
-        ['Migrant worker support', 'Special rates for overseas workers and their families.', BANNERS.bannerSupport],
-        ['Build your credit score', 'Simple habits that help you qualify for a bigger loan.', BANNERS.bannerScore],
-      ] as [string, string, string][]).map(([title, body, img], i) => (
-        <Box key={i} role="button" onClick={() => navigate('/announcement')} sx={{ flexShrink: 0, width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', display: 'flex', flexDirection: 'column', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-          <Box sx={{ height: 106, flexShrink: 0 }}>
-            <AssetImg
-              src={img}
-              alt={title}
-              sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />}
-            />
-          </Box>
-          <Box sx={{ p: '12px', display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
-            <Box sx={{ alignSelf: 'flex-start', bgcolor: '#FBF0CE', borderRadius: '6px', px: 0.75, py: '2px' }}>
-              <Typography sx={{ fontSize: 9, fontWeight: 800, color: '#C79200', letterSpacing: '0.5px' }}>NEWS</Typography>
-            </Box>
-            <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{title}</Typography>
-            <Typography sx={{ fontSize: 11, color: '#8A94A6', lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{body}</Typography>
+    </>
+  )
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', gap: 1.5, overflowX: 'auto', pb: 1, mx: -0.5, px: 0.5 }} className="scroll-content">
+        {/* Calculator */}
+        <Box onClick={() => navigate('/calculator')} role="button" aria-label="Loan calculator" sx={{ flexShrink: 0, position: 'relative', width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#0B1A14', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          <AssetImg src={DISCOVER.calculator} alt="" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#0B1A14' }} />} />
+          <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)' }} />
+          <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: '12px' }}>
+            <Typography sx={{ color: '#fff', fontSize: 16, fontWeight: 800, letterSpacing: '-0.2px' }}>Calculator</Typography>
+            <Icon name="arrowRight" size={18} color="#fff" />
           </Box>
         </Box>
-      ))}
-    </Box>
+        {/* News cards */}
+        {DISCOVER_NEWS_ITEMS.map((item) => (
+          <Box key={item.title} role="button" onClick={() => setActive(item)} sx={{ flexShrink: 0, width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', display: 'flex', flexDirection: 'column', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+            <Box sx={{ height: 106, flexShrink: 0 }}>
+              <AssetImg src={item.img} alt={item.title} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />} />
+            </Box>
+            <Box sx={{ p: '12px', display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, minHeight: 0 }}>
+              <Box sx={{ alignSelf: 'flex-start', bgcolor: item.tag === 'TIPS' ? '#E3F7EC' : '#FBF0CE', borderRadius: '6px', px: 0.75, py: '2px' }}>
+                <Typography sx={{ fontSize: 9, fontWeight: 800, color: item.tag === 'TIPS' ? '#1A7F4B' : '#C79200', letterSpacing: '0.5px' }}>{item.tag}</Typography>
+              </Box>
+              <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{item.title}</Typography>
+              <Typography sx={{ fontSize: 11, color: '#8A94A6', lineHeight: 1.3, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{item.body}</Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+      {portalEl ? createPortal(sheet, portalEl) : sheet}
+    </>
   )
 }
 
