@@ -86,7 +86,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
       ) : (
         /* Tap the profile (avatar + name) to open the Profile screen. */
         <Box
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate(sample === '2' ? '/settings' : '/profile')}
           role="button"
           aria-label="Open profile"
           sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
