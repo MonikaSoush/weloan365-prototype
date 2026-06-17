@@ -107,7 +107,6 @@ export default function AppRouter() {
         <Route path="/mwl-review" element={<MwlReviewScreen />} />
         <Route path="/mwl-success" element={<MwlSuccessScreen />} />
         <Route path="/nonmwl-about" element={<RequirePin><MwlAboutScreen nonMwl /></RequirePin>} />
-        <Route path="/nonmwl-loan" element={<MwlLoanScreen nonMwl />} />
         <Route path="/nonmwl-review" element={<MwlReviewScreen nonMwl />} />
         <Route path="/nonmwl-success" element={<MwlSuccessScreen product="Non-MWL Loan" />} />
         <Route path="/staff-loan" element={<RequirePin><StaffLoanScreen /></RequirePin>} />

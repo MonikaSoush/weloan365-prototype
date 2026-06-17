@@ -130,7 +130,11 @@ export default function ProductDetailScreen() {
   // Apply flow per product: Migration Worker Loan → MWL (multi-step); Staff Loan
   // → the single-screen staff form; everything else → the Non-MWL flow.
   const applyPath =
-    name === 'Migration Worker Loan' ? '/mwl-about' : name === 'Staff Loan' ? '/staff-loan' : '/nonmwl-about'
+    name === 'Migration Worker Loan'
+      ? '/mwl-about'
+      : name === 'Staff Loan'
+        ? '/staff-loan'
+        : '/nonmwl-about?product=' + encodeURIComponent(name)
   // Visitors must sign up first; the apply destination is carried via `?next=`
   // so they land on the application after completing sign-up.
   const onApply = () =>

@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import { Icon } from '../components/Icon'
 import CallSheet from '../components/CallSheet'
 import { useFlow } from '../workspace/FlowContext'
+import { getNotices } from '../workspace/notifications'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Notifications — opened from the bell in the greeting header.
@@ -183,6 +184,15 @@ function AllFeed() {
   return (
     <Box>
       <DateLabel>TODAY</DateLabel>
+
+      {/* Runtime notices raised this session (e.g. Staff Loan disbursement) */}
+      {getNotices().map((n, i) => (
+        <NotifCard key={`notice-${i}`}>
+          <CardHead icon="checkCircle" iconBg="#E3F7EC" iconColor={GREEN} time={n.time} />
+          <Typography sx={{ fontSize: 16, fontWeight: 800, color: HEADING, mt: 1.25 }}>{n.title}</Typography>
+          <Typography sx={{ fontSize: 14, color: '#5B6473', lineHeight: 1.5, mt: 0.5 }}>{n.body}</Typography>
+        </NotifCard>
+      ))}
 
       {/* 1. Loan Approved */}
       <NotifCard>

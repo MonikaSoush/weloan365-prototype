@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
 import CallSheet from '../components/CallSheet'
 import { MwlHeader } from './mwl/MwlParts'
+import { addNotice } from '../workspace/notifications'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // In-review application detail — opened from the "In Review" card on My Loans.
@@ -38,6 +40,7 @@ export default function MyLoanReviewDetailScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const [callOpen, setCallOpen] = useState(false)
+  const [disbursed, setDisbursed] = useState(false)
 
   // The detail is parametrised so a freshly-submitted application (e.g. Staff
   // Loan) can show its own figures; defaults keep the existing Housing example.
@@ -50,8 +53,20 @@ export default function MyLoanReviewDetailScreen() {
   // The Staff Loan review has no assigned officer card.
   const isStaff = title === 'Staff Loan'
 
+  // Staff Loan: "Continue" disburses the loan — show the success popup and raise
+  // a disbursement notification (visible in Notifications → All).
+  const disburse = () => {
+    addNotice({
+      kind: 'disbursement',
+      title: `Disbursement successful · ${amount}`,
+      body: `Your Staff Loan (${ref}) has been disbursed to your bank account. Please check your balance.`,
+      time: 'Just now',
+    })
+    setDisbursed(true)
+  }
+
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
         <MwlHeader onBack={() => navigate(-1)} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 0.5 }}>
@@ -200,7 +215,55 @@ export default function MyLoanReviewDetailScreen() {
         </Box>
       </Box>
 
+      {/* Staff Loan: continue the process → disbursement */}
+      {isStaff && (
+        <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={disburse}
+            endIcon={<Icon name="arrowRight" size={18} />}
+            sx={{ height: 54, borderRadius: '14px', fontSize: 16, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
+          >
+            Loan disbursement happen
+          </Button>
+        </Box>
+      )}
+
       <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
+
+      {/* Disbursement success popup */}
+      {disbursed && (
+        <Box sx={{ position: 'absolute', inset: 0, zIndex: 200, bgcolor: 'rgba(11,15,26,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', px: 3 }}>
+          <Box
+            sx={{
+              bgcolor: '#fff', borderRadius: '20px', p: '28px 24px', width: '100%', maxWidth: 320, textAlign: 'center',
+              boxShadow: '0 24px 60px rgba(11,15,26,0.28)',
+              animation: 'ml-pop 0.22s cubic-bezier(0.32,0.72,0,1)',
+              '@keyframes ml-pop': { from: { opacity: 0, transform: 'scale(0.92)' }, to: { opacity: 1, transform: 'scale(1)' } },
+            }}
+          >
+            <Box sx={{ width: 72, height: 72, borderRadius: '50%', bgcolor: '#E6F4EA', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
+              <Box component="img" src="/assets/brand/ico_success.svg" alt="" sx={{ width: 40, height: 40 }} />
+            </Box>
+            <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.3px', mb: 1 }}>
+              Disbursement successful
+            </Typography>
+            <Typography sx={{ fontSize: 14, color: '#6B7280', lineHeight: 1.55, mb: 2.5 }}>
+              Your Staff Loan of <Box component="span" sx={{ fontWeight: 700, color: '#0B0F1A' }}>{amount}</Box> has been disbursed. Please check your bank account.
+            </Typography>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => navigate('/notifications')}
+              endIcon={<Icon name="arrowRight" size={18} />}
+              sx={{ height: 50, borderRadius: '14px', fontSize: 15, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
+            >
+              View notifications
+            </Button>
+          </Box>
+        </Box>
+      )}
     </Box>
   )
 }

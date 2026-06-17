@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -29,8 +29,24 @@ const GUARANTOR = [
 
 export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean } = {}) {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
   const prefix = nonMwl ? '/nonmwl' : '/mwl'
   const [signOpen, setSignOpen] = useState(false)
+
+  // Non-MWL review reads the single-step form values from the URL.
+  const product = params.get('product') ?? 'Small Business Loan'
+  const applicantName = params.get('name') ?? 'Dong Phally'
+  const phoneNum = params.get('phone') ?? '+855 96 234 5678'
+  const branchName = params.get('branch') ?? 'Head Office (Phnom Penh)'
+  const currencyCode = (params.get('currency') ?? 'Dollar') === 'Riel' ? 'KHR' : 'USD'
+  const sym = currencyCode === 'KHR' ? '៛' : '$'
+  const amountStr = params.get('amount') ?? '5,000'
+  // Estimate: constant monthly payment at 0.75%/mo over a 24-month default tenure.
+  const principal = parseFloat(amountStr.replace(/[^0-9.]/g, '')) || 0
+  const RATE = 0.0075
+  const N = 24
+  const estMonthly = principal > 0 ? (principal * RATE * Math.pow(1 + RATE, N)) / (Math.pow(1 + RATE, N) - 1) : 0
+  const estMonthlyStr = sym + estMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawing = useRef(false)
 
@@ -70,11 +86,32 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
-        <MwlHeader onBack={() => navigate(nonMwl ? '/nonmwl-loan' : '/mwl-guarantor')} />
+        <MwlHeader onBack={() => navigate(nonMwl ? '/nonmwl-about' : '/mwl-guarantor')} />
         <Typography sx={{ fontSize: 24, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', px: 3, mt: 0.5, mb: 1.5 }}>
           Review your application
         </Typography>
 
+        {nonMwl ? (
+          <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Section
+              title="APPLICANT"
+              rows={[['Product', product], ['Borrower', applicantName], ['Phone', phoneNum], ['Branch', branchName]]}
+            />
+            <Box>
+              <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6', mb: 1 }}>LOAN REQUEST</Typography>
+              <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+                <Row label="Currency" value={currencyCode} divider />
+                <Row label="Requested Amount" value={`${sym}${amountStr}`} divider />
+                <Row label="Interest Rate" value="0.75% / mo" divider />
+                <Row label="Loan Tenure" value="24 months · 2 yrs" divider />
+                <Row label="Est. Monthly" value={estMonthlyStr} divider={false} accent />
+              </Box>
+              <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 1, px: 0.5 }}>
+                Estimate only · final rate &amp; tenure confirmed at credit assessment
+              </Typography>
+            </Box>
+          </Box>
+        ) : (
         <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Loan request hero */}
           <Box sx={{ position: 'relative', overflow: 'hidden', background: `linear-gradient(135deg, ${BLUE} 0%, #003C99 100%)`, borderRadius: '14px', p: '18px', height: 120, color: '#fff', display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -92,8 +129,9 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
 
           <Section title="CUSTOMER INFO" rows={CUSTOMER} onEdit={() => navigate(`${prefix}-about`)} />
           <Section title="LOAN REQUEST" rows={LOAN} onEdit={() => navigate(`${prefix}-loan`)} />
-          {!nonMwl && <Section title="GUARANTOR INFO" rows={GUARANTOR} onEdit={() => navigate('/mwl-guarantor')} />}
+          <Section title="GUARANTOR INFO" rows={GUARANTOR} onEdit={() => navigate('/mwl-guarantor')} />
         </Box>
+        )}
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
@@ -160,12 +198,12 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
   )
 }
 
-function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onEdit: () => void }) {
+function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onEdit?: () => void }) {
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
         <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6' }}>{title}</Typography>
-        <Typography onClick={onEdit} sx={{ fontSize: 13, fontWeight: 700, color: BLUE, cursor: 'pointer' }}>EDIT</Typography>
+        {onEdit && <Typography onClick={onEdit} sx={{ fontSize: 13, fontWeight: 700, color: BLUE, cursor: 'pointer' }}>EDIT</Typography>}
       </Box>
       <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
         {rows.map(([label, value], i) => (
@@ -176,11 +214,11 @@ function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onE
   )
 }
 
-function Row({ label, value, divider }: { label: string; value: ReactNode; divider: boolean }) {
+function Row({ label, value, divider, accent = false }: { label: string; value: ReactNode; divider: boolean; accent?: boolean }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, px: '14px', py: '12px', borderBottom: divider ? '1px solid #F1F4F8' : 'none' }}>
       <Typography sx={{ fontSize: 14, fontWeight: 500, color: '#6B7280' }}>{label}</Typography>
-      <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A', textAlign: 'right' }}>{value}</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 700, color: accent ? BLUE : '#0B0F1A', textAlign: 'right' }}>{value}</Typography>
     </Box>
   )
 }

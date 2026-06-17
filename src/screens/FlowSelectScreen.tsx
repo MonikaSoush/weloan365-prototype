@@ -6,6 +6,7 @@ import { Icon, IconName } from '../components/Icon'
 import { useFlow, UserFlow } from '../workspace/FlowContext'
 import { usePinGate } from '../workspace/PinGateContext'
 import { clearApplications } from '../workspace/applications'
+import { clearNotices } from '../workspace/notifications'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Flow picker — the very first screen. Choosing a persona sets the user flow
@@ -24,7 +25,7 @@ export default function FlowSelectScreen() {
 
   // Returning to the launch screen starts a fresh run — re-lock the PIN gate
   // and clear any submitted applications so protected areas prompt again.
-  useEffect(() => { lock(); clearApplications() }, [lock])
+  useEffect(() => { lock(); clearApplications(); clearNotices() }, [lock])
 
   const choose = (f: UserFlow) => {
     setFlow(f)

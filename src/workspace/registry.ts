@@ -245,21 +245,14 @@ export const SCREENS: FlowScreen[] = [
   },
   {
     id: 'nonmwl-about',
-    name: '1 · Tell us about you',
-    section: 'APPLY LOAN NON-MWL',
-    samples: [{ v: '1', label: 'Sample 1' }],
-    flows: ['Applicant', 'Borrower'],
-  },
-  {
-    id: 'nonmwl-loan',
-    name: '2 · Loan request',
+    name: '1 · Application',
     section: 'APPLY LOAN NON-MWL',
     samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Applicant', 'Borrower'],
   },
   {
     id: 'nonmwl-review',
-    name: 'Review application',
+    name: '2 · Review application',
     section: 'APPLY LOAN NON-MWL',
     samples: [{ v: '1', label: 'Sample 1' }],
     flows: ['Applicant', 'Borrower'],
