@@ -314,9 +314,20 @@ function ReviewTab() {
       <Box sx={{ mt: 3 }}>
         <SectionHeader muted>History</SectionHeader>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {REQUEST_HISTORY.map((h) => (
-            <RequestRow key={h.sub} icon={iconFor(h.title)} title={h.title} sub={h.sub} status={h.status} />
-          ))}
+          {REQUEST_HISTORY.map((h) => {
+            const ref = h.sub.split(' · ')[0]
+            const isDecision = h.status === REQ_STATUS.notEligible || h.status === REQ_STATUS.rejected || h.status === REQ_STATUS.cancelled
+            return (
+              <RequestRow
+                key={h.sub}
+                icon={iconFor(h.title)}
+                title={h.title}
+                sub={h.sub}
+                status={h.status}
+                onClick={isDecision ? () => navigate(`/loan-decision?ref=${encodeURIComponent(ref)}`) : undefined}
+              />
+            )
+          })}
         </Box>
       </Box>
 

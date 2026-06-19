@@ -125,7 +125,15 @@ export default function ProfileScreen() {
         <CollapsingTitle collapse={collapse} fontSize={30}>Profile</CollapsingTitle>
 
         <Box sx={{ px: 3, pt: 1.5, pb: '44px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <IdentityCard />
+          {/* Personal profile section */}
+          <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 0.5, mb: 1 }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: MUTED }}>
+                PERSONAL PROFILE
+              </Typography>
+            </Box>
+            <IdentityCard />
+          </Box>
 
           {/* Employment details — collapsible */}
           <Box>

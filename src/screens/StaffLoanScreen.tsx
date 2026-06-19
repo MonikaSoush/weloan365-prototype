@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Slider from '@mui/material/Slider'
 import { Icon } from '../components/Icon'
 import { MwlHeader, MwlTitle, GroupLabel, FieldCard, SelectField, PhoneField, DiscardSheet, BLUE } from './mwl/MwlParts'
+import RepaymentEstimate from './mwl/RepaymentEstimate'
 import { addApplication, type LoanApplication } from '../workspace/applications'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -14,12 +14,7 @@ import { addApplication, type LoanApplication } from '../workspace/applications'
 // single Submit goes straight to the result screen.
 // ─────────────────────────────────────────────────────────────────────────────
 const BANKS = ['ABA Bank', 'ACLEDA Bank', 'Canadia Bank', 'Wing Bank', 'PPCBank']
-const TERM_MARKS = [3, 6, 9, 12].map((m) => ({ value: m, label: `${m}m` }))
-const MONTHLY_RATE = 0.01 // 1.0% / month
 const MAX_AMOUNT = '1,000' // suggested ceiling (≈ 2× salary)
-
-const fmtUSD = (n: number) =>
-  '$' + (Number.isFinite(n) ? n : 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 export default function StaffLoanScreen() {
   const navigate = useNavigate()
@@ -44,15 +39,10 @@ export default function StaffLoanScreen() {
   // Holds the just-submitted application while the "under review" popup is shown.
   const [submitted, setSubmitted] = useState<LoanApplication | null>(null)
 
-  // Repayment estimate — constant monthly installment at 1.0%/month over the term.
-  const principal = parseFloat(amount.replace(/[^0-9.]/g, '')) || 0
   // Requested amount can't exceed the suggested maximum.
+  const principal = parseFloat(amount.replace(/[^0-9.]/g, '')) || 0
   const maxAmount = parseFloat(MAX_AMOUNT.replace(/[^0-9.]/g, '')) || 0
   const overMax = principal > maxAmount
-  const monthly =
-    months > 0 ? (principal * MONTHLY_RATE * Math.pow(1 + MONTHLY_RATE, months)) / (Math.pow(1 + MONTHLY_RATE, months) - 1) : 0
-  const totalPayable = monthly * months
-  const totalInterest = totalPayable - principal
 
   // Submit → record the application (so it shows in My Loans → In Review) and
   // show the "under review" confirmation popup.
@@ -128,61 +118,18 @@ export default function StaffLoanScreen() {
                 </Box>
               </Box>
 
-              {/* Repayment term — stepped progress bar (3 / 6 / 9 / 12 months) */}
-              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '16px', pt: '12px', pb: '4px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>
-                    Repayment term<Box component="span" sx={{ color: '#E5484D', ml: 0.4 }}>*</Box>
-                  </Typography>
-                  <Typography sx={{ fontSize: 15, fontWeight: 700, color: '#0B0F1A' }}>{months} months</Typography>
-                </Box>
-                <Box sx={{ px: 0.5 }}>
-                  <Slider
-                    value={months}
-                    onChange={(_, v) => setMonths(v as number)}
-                    step={null}
-                    min={3}
-                    max={12}
-                    marks={TERM_MARKS}
-                    aria-label="Repayment term"
-                    sx={{
-                      color: BLUE,
-                      height: 6,
-                      mt: 1,
-                      '& .MuiSlider-rail': { bgcolor: '#E7ECF2', opacity: 1 },
-                      '& .MuiSlider-thumb': { width: 20, height: 20, boxShadow: '0 0 0 4px rgba(39,92,178,0.15)' },
-                      '& .MuiSlider-mark': { width: 8, height: 8, borderRadius: '50%', bgcolor: '#fff', border: '2px solid #CBD3DF', opacity: 1 },
-                      '& .MuiSlider-markActive': { bgcolor: BLUE, borderColor: BLUE },
-                      '& .MuiSlider-markLabel': { fontSize: 12, fontWeight: 600, color: '#8A94A6' },
-                      '& .MuiSlider-markLabelActive': { color: BLUE, fontWeight: 700 },
-                    }}
-                  />
-                </Box>
-              </Box>
-
-              {/* Estimate — constant monthly repayment, recalculated live */}
-              <Box sx={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid #DCE7FB' }}>
-                {/* Headline monthly payment */}
-                <Box sx={{ bgcolor: '#F4F8FF', px: '16px', py: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Box>
-                    <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: '#5B6473' }}>Estimated monthly payment</Typography>
-                    <Typography sx={{ fontSize: 28, fontWeight: 800, color: BLUE, letterSpacing: '-0.5px', lineHeight: 1.1, mt: 0.25 }}>{fmtUSD(monthly)}</Typography>
-                    <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 0.25 }}>per month · {term}</Typography>
-                  </Box>
-                  <Box sx={{ width: 52, height: 52, borderRadius: '50%', bgcolor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon name="calculator" size={26} color={BLUE} />
-                  </Box>
-                </Box>
-                {/* Breakdown */}
-                <Box sx={{ bgcolor: '#fff', px: '16px', py: '12px', display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <EstRow label="Interest rate" value="1.0% / month" />
-                  <EstRow label="Total interest" value={fmtUSD(totalInterest)} />
-                  <EstRow label="Total payable" value={fmtUSD(totalPayable)} strong />
-                </Box>
-              </Box>
-              <Typography sx={{ fontSize: 11.5, color: '#8A94A6', lineHeight: 1.5, px: 0.5 }}>
-                Estimated on a constant monthly repayment at 1.0%/month. Final figures are confirmed on approval.
-              </Typography>
+              {/* Repayment estimate — shared card (tenure slider + monthly payment + schedule) */}
+              <RepaymentEstimate
+                product="Staff Loan"
+                principal={principal}
+                currency="USD"
+                months={months}
+                onMonthsChange={setMonths}
+                minMonths={3}
+                maxMonths={12}
+                ratePct={1.0}
+                label=""
+              />
             </Box>
           </Box>
 
@@ -261,16 +208,6 @@ export default function StaffLoanScreen() {
           </Box>
         </Box>
       )}
-    </Box>
-  )
-}
-
-// ─── Estimate breakdown row ───────────────────────────────────────────────────
-function EstRow({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Typography sx={{ fontSize: 13.5, color: '#3A4256' }}>{label}</Typography>
-      <Typography sx={{ fontSize: strong ? 15.5 : 14, fontWeight: strong ? 800 : 700, color: strong ? '#0B0F1A' : '#3A4256' }}>{value}</Typography>
     </Box>
   )
 }

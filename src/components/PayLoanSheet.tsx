@@ -32,16 +32,15 @@ const KH = `'Noto Sans Khmer', sans-serif`
 const KHR_RATE = 4100 // 1 USD ≈ 4,100 ៛
 
 export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const FULL_USD = '320.00'
   const [selected, setSelected] = useState<MethodId | null>(null)
-  const [amount, setAmount] = useState('320.00')
+  const [amount, setAmount] = useState('')
   const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
 
-  // The sheet stays mounted (renders null when closed), so reset the choice
-  // each time it re-opens — every visit starts with nothing selected.
   useEffect(() => {
     if (open) {
       setSelected(null)
-      setAmount('320.00')
+      setAmount('')
       setCur('USD')
     }
   }, [open])
@@ -118,16 +117,29 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
               ))}
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, border: '1px solid #E8EAEE', borderRadius: '14px', px: 2, height: 56, mb: 2.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, border: `1.5px solid ${amount ? BLUE : '#E8EAEE'}`, borderRadius: '14px', px: 2, height: 60, mb: 2.5, transition: 'border-color 0.15s' }}>
             <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING }}>{symbol}</Typography>
             <Box
               component="input"
               type="text"
               inputMode="decimal"
+              placeholder="0.00"
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
-              sx={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', bgcolor: 'transparent', fontFamily: 'inherit', fontSize: 22, fontWeight: 800, color: HEADING }}
+              sx={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', bgcolor: 'transparent', fontFamily: 'inherit', fontSize: 22, fontWeight: 800, color: HEADING, '&::placeholder': { color: '#C9D2DE' } }}
             />
+            <Box
+              role="button"
+              onClick={() => {
+                const full = cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD
+                setAmount(full)
+              }}
+              sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', bgcolor: '#EEF3FC', borderRadius: '8px', px: '10px', py: '6px', cursor: 'pointer', '&:active': { bgcolor: '#DCE9FB' } }}
+            >
+              <Typography sx={{ fontSize: 11.5, fontWeight: 700, color: BLUE, whiteSpace: 'nowrap' }}>
+                Fulfill {cur === 'KHR' ? '៛' : '$'}{cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}
+              </Typography>
+            </Box>
           </Box>
 
           <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.7px', color: MUTED, mb: 1 }}>
@@ -146,7 +158,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
                     divider={i < METHODS.length - 1}
                     onSelect={() => setSelected(m.id)}
                   />
-                  {showQr && <KhqrPanel amount={amount} cur={cur} />}
+                  {showQr && <KhqrPanel />}
                 </Box>
               )
             })}
@@ -228,24 +240,18 @@ function Radio({ selected }: { selected: boolean }) {
 }
 
 // ─── KHQR scan-to-pay panel ──────────────────────────────────────────────────
-function KhqrPanel({ amount, cur }: { amount: string; cur: 'USD' | 'KHR' }) {
+function KhqrPanel() {
   return (
     <Box sx={{ px: 2, pb: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
       <Typography sx={{ fontSize: 14, fontWeight: 700, color: HEADING }}>Scan to pay</Typography>
 
-      {/* KHQR card artwork — amount overlaid under the merchant name */}
-      <Box sx={{ position: 'relative', width: 200 }}>
-        <AssetImg
-          src={BANKS.khqrCard}
-          alt="KHQR — NongHyup M.F.I"
-          sx={{ width: 200, height: 'auto', display: 'block' }}
-          fallback={<Box sx={{ width: 200, aspectRatio: '189 / 259', borderRadius: '12px', bgcolor: '#9C1820' }} />}
-        />
-        <Box sx={{ position: 'absolute', top: '23.5%', left: '8%', display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
-          <Typography component="span" sx={{ fontSize: 14, fontWeight: 800, color: '#0B0F1A', lineHeight: 1 }}>{amount || '0'}</Typography>
-          <Typography component="span" sx={{ fontSize: 9.5, fontWeight: 700, color: '#5B6473', lineHeight: 1 }}>{cur}</Typography>
-        </Box>
-      </Box>
+      {/* KHQR card artwork */}
+      <AssetImg
+        src={BANKS.khqrCard}
+        alt="KHQR — NongHyup M.F.I"
+        sx={{ width: 200, height: 'auto', display: 'block' }}
+        fallback={<Box sx={{ width: 200, aspectRatio: '189 / 259', borderRadius: '12px', bgcolor: '#9C1820' }} />}
+      />
 
       {/* Share / Download — generous tap targets (≥44px high) */}
       <Box sx={{ display: 'flex', gap: 1.5, pt: 0.5, width: '100%' }}>

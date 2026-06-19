@@ -1,11 +1,11 @@
-﻿import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+﻿import { ReactNode } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../../components/Icon'
 import { Flag } from '../../components/Flag'
-import { MwlHeader, BottomSheet, BLUE } from './MwlParts'
+import { MwlHeader, BLUE } from './MwlParts'
 
 const CUSTOMER = [
   ['Full Name', 'Sophea Kim'],
@@ -31,8 +31,6 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const prefix = nonMwl ? '/nonmwl' : '/mwl'
-  const [signOpen, setSignOpen] = useState(false)
-
   // Non-MWL review reads the single-step form values from the URL.
   const product = params.get('product') ?? 'Small Business Loan'
   const applicantName = params.get('name') ?? 'Dong Phally'
@@ -49,41 +47,6 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
   const estMonthlyStr = sym + estMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   const years = N / 12
   const tenureLabel = `${N} months${Number.isInteger(years) ? ` · ${years} yr${years > 1 ? 's' : ''}` : ''}`
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const drawing = useRef(false)
-
-  const getPos = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const rect = canvasRef.current!.getBoundingClientRect()
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top }
-  }
-
-  const onPointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current; if (!canvas) return
-    canvas.setPointerCapture(e.pointerId)
-    drawing.current = true
-    const ctx = canvas.getContext('2d')!
-    const { x, y } = getPos(e)
-    ctx.beginPath(); ctx.moveTo(x, y)
-  }, [])
-
-  const onPointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawing.current || !canvasRef.current) return
-    const ctx = canvasRef.current.getContext('2d')!
-    ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0B0F1A'
-    const { x, y } = getPos(e)
-    ctx.lineTo(x, y); ctx.stroke()
-  }, [])
-
-  const onPointerUp = useCallback(() => { drawing.current = false }, [])
-
-  const clearCanvas = useCallback(() => {
-    const canvas = canvasRef.current; if (!canvas) return
-    canvas.getContext('2d')!.clearRect(0, 0, canvas.width, canvas.height)
-  }, [])
-
-  useEffect(() => {
-    if (!signOpen) clearCanvas()
-  }, [signOpen, clearCanvas])
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -137,65 +100,10 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => setSignOpen(true)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
-          Continue
-        </Button>
-      </Box>
-
-      {/* E-Signature bottom sheet */}
-      <BottomSheet open={signOpen} onClose={() => setSignOpen(false)}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Icon name="signature" size={26} color="#0B0F1A" />
-            <Typography sx={{ fontSize: 24, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px' }}>E-Signature</Typography>
-          </Box>
-          <Box
-            component="button"
-            type="button"
-            aria-label="Clear signature"
-            onClick={clearCanvas}
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              minHeight: 40,
-              px: 2,
-              bgcolor: '#fff',
-              border: '1px solid #E2E6EC',
-              borderRadius: '12px',
-              fontFamily: 'inherit',
-              fontSize: 15,
-              fontWeight: 700,
-              color: '#0B0F1A',
-              cursor: 'pointer',
-              boxShadow: '0 1px 2px rgba(16,24,40,0.05)',
-              '&:active': { bgcolor: '#F4F6F9' },
-            }}
-          >
-            Clear
-          </Box>
-        </Box>
-        <Box sx={{ bgcolor: '#ECECEC', borderRadius: '14px', overflow: 'hidden', height: 250, touchAction: 'none' }}>
-          <Box
-            component="canvas"
-            ref={canvasRef}
-            width={600}
-            height={250}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerLeave={onPointerUp}
-            sx={{ display: 'block', width: '100%', height: '100%', cursor: 'crosshair' }}
-          />
-        </Box>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => navigate(`${prefix}-success`)}
-          sx={{ height: 52, borderRadius: '12px', fontSize: 15, fontWeight: 700 }}
-        >
+        <Button variant="contained" fullWidth onClick={() => navigate(`${prefix}-success`)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
           Submit
         </Button>
-      </BottomSheet>
+      </Box>
     </Box>
   )
 }

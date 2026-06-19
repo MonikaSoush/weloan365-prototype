@@ -103,3 +103,27 @@ export function buildSchedule(amount: number, months: number, monthlyRatePct: nu
   const payment = rows[1]?.payment ?? 0
   return { payment, totalPayable, totalInterest: totalPayable - amount, rows }
 }
+
+// Flat-interest with an interest-only grace period (the Migration Worker Loan
+// model): interest is charged flat on the original principal every month; for
+// the first `graceMonths` the borrower pays interest only, then the principal is
+// spread evenly over the remaining months. `payment` is the regular (post-grace)
+// installment. Falls back to a plain constant schedule when there's no grace.
+export function buildGraceSchedule(amount: number, months: number, monthlyRatePct: number, graceMonths: number) {
+  const r = monthlyRatePct / 100
+  const grace = Math.min(Math.max(0, graceMonths), Math.max(0, months - 1))
+  if (grace <= 0) return buildSchedule(amount, months, monthlyRatePct, 'Constant')
+
+  const regularN = months - grace
+  const flatInterest = amount * r
+  const principalPerMonth = amount / regularN
+  const rows: ScheduleRow[] = [{ month: 0, principal: 0, interest: 0, payment: 0, balance: amount }]
+  let balance = amount
+  for (let m = 1; m <= months; m++) {
+    const principal = m <= grace ? 0 : Math.min(principalPerMonth, balance)
+    balance = Math.max(0, balance - principal)
+    rows.push({ month: m, principal, interest: flatInterest, payment: principal + flatInterest, balance })
+  }
+  const totalPayable = rows.reduce((s, row) => s + row.payment, 0)
+  return { payment: principalPerMonth + flatInterest, totalPayable, totalInterest: totalPayable - amount, rows }
+}

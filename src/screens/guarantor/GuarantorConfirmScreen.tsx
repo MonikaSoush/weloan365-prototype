@@ -22,6 +22,7 @@ const TERMS = [
   <>Allow NH to check my credit record with <b>CBC (Credit Bureau Cambodia)</b>.</>,
 ]
 
+
 export default function GuarantorConfirmScreen() {
   const navigate = useNavigate()
   const [uploaded, setUploaded] = useState(false)
@@ -47,8 +48,8 @@ export default function GuarantorConfirmScreen() {
           <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ width: 36, height: 36, bgcolor: '#fff', border: '1px solid #E2E6EC', '&:hover': { bgcolor: '#F2F3F5' } }}>
             <Icon name="arrowLeft" size={18} color="#0B0F1A" />
           </IconButton>
-          <Typography sx={{ flex: 1, textAlign: 'center', fontSize: 16, fontWeight: 800, color: '#0B0F1A' }}>Confirm</Typography>
-          <Box sx={{ width: 36 }} />
+          <Typography sx={{ flex: 1, textAlign: 'center', fontSize: 16, fontWeight: 800, color: '#0B0F1A' }}>Confirm As Guarantor</Typography>
+          <Typography sx={{ width: 36, textAlign: 'right', fontSize: 13, fontWeight: 600, color: '#8A94A6' }}>2 / 2</Typography>
         </Box>
 
         <Box sx={{ px: 3, pt: 2.5, pb: 3 }}>

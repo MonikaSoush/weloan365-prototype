@@ -13,6 +13,7 @@ const MyLoanScreen     = lazy(() => import('../screens/MyLoanScreen'))
 const MyLoanDetailScreen = lazy(() => import('../screens/MyLoanDetailScreen'))
 const CompletedLoanDetailScreen = lazy(() => import('../screens/CompletedLoanDetailScreen'))
 const MyLoanReviewDetailScreen = lazy(() => import('../screens/MyLoanReviewDetailScreen'))
+const LoanDecisionDetailScreen = lazy(() => import('../screens/LoanDecisionDetailScreen'))
 const MwlAboutScreen   = lazy(() => import('../screens/mwl/MwlAboutScreen'))
 const MwlApplyScreen   = lazy(() => import('../screens/mwl/MwlApplyScreen'))
 const MwlSubmittedScreen = lazy(() => import('../screens/mwl/MwlSubmittedScreen'))
@@ -111,6 +112,7 @@ export default function AppRouter() {
         <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
         <Route path="/my-loan-complete" element={<CompletedLoanDetailScreen />} />
         <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
+        <Route path="/loan-decision" element={<LoanDecisionDetailScreen />} />
         <Route path="/mwl-about" element={<RequirePin><MwlApplyScreen /></RequirePin>} />
         <Route path="/mwl-success" element={<MwlSubmittedScreen />} />
         <Route path="/mwl-tracker" element={<MwlTrackerScreen />} />

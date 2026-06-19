@@ -111,7 +111,7 @@ export default function MwlTrackerScreen() {
                   <Fragment key={s.key}>
                     <Box
                       role="button"
-                      onClick={() => setSel(i)}
+                      onClick={() => { setSel(i); if (s.key === 'approve') navigate('/mwl-contract') }}
                       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 70, flexShrink: 0, cursor: 'pointer' }}
                     >
                       <Box

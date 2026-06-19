@@ -12,17 +12,31 @@ import { useFlow } from '../workspace/FlowContext'
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
 
-type Product = { name: string; amount: string; rate: string; img?: string }
+type Product = { name: string; amount: string; rate: string; img?: string; pin?: string; icon?: import('../components/Icon').IconName }
 
 const PRODUCTS: Product[] = [
-  { name: 'Micro Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.microS1 },
-  { name: 'Small Biz Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smallS1 },
-  { name: 'Housing Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.housingS1 },
-  { name: 'SME Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smeS1 },
-  { name: 'Staff Loan', amount: 'USD ≤ 10,000', rate: '1.0%', img: BANNERS.staffLoan },
+  { name: 'Micro Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.microS1, icon: 'sprout' },
+  { name: 'Small Biz Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smallS1, icon: 'store' },
+  { name: 'Housing Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.housingS1, icon: 'globe' },
+  { name: 'SME Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smeS1, icon: 'briefcase' },
+  { name: 'Staff Loan', amount: 'USD ≤ 10,000', rate: '1.0%', img: BANNERS.staffLoan, icon: 'idCard' },
 ]
 
-const MIGRATION: Product = { name: 'Migration Worker Loan', amount: 'USD ≤ 15,000', rate: '1.2%', img: BANNERS.mwlS1 }
+const MIGRATION: Product = { name: 'Migration Worker Loan', amount: 'USD ≤ 15,000', rate: '1.2%', img: BANNERS.mwlS1, icon: 'plane' }
+
+const POPULAR_PRODUCTS: Product[] = [
+  { name: 'Migration Worker Loan', amount: 'USD ≤ 15,000', rate: '0.98%', img: BANNERS.mwlS1, pin: 'Recommended', icon: 'plane' },
+  { name: 'Small Biz Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smallS1, pin: 'Popular', icon: 'store' },
+  { name: 'SME Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.smeS1, pin: 'Growth', icon: 'briefcase' },
+  { name: 'Housing Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.housingS1, pin: 'Special Offer', icon: 'globe' },
+]
+
+const PIN_COLORS: Record<string, string> = {
+  'Recommended': '#F59E0B',
+  'Popular':     '#275CB2',
+  'Growth':      '#16A34A',
+  'Special Offer': '#EA580C',
+}
 
 function ProductCard({ p, height, showRate = false }: { p: Product; height: number; showRate?: boolean }) {
   const navigate = useNavigate()
@@ -46,7 +60,20 @@ function ProductCard({ p, height, showRate = false }: { p: Product; height: numb
         )}
       </Box>
       <Box sx={{ p: '12px' }}>
-        <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING }} noWrap>{p.name}</Typography>
+        {p.pin && (
+          <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '4px', bgcolor: '#F5F6F8', borderRadius: '6px', px: '7px', py: '3px', mb: '6px' }}>
+            <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: PIN_COLORS[p.pin] ?? '#275CB2', flexShrink: 0 }} />
+            <Typography sx={{ fontSize: 10, fontWeight: 700, color: '#0B0F1A', letterSpacing: '0.1px' }}>{p.pin}</Typography>
+          </Box>
+        )}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {p.icon && (
+            <Box sx={{ width: 26, height: 26, borderRadius: '8px', bgcolor: '#EEF3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon name={p.icon} size={14} color="#275CB2" strokeWidth={1.25} />
+            </Box>
+          )}
+          <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING }} noWrap>{p.name}</Typography>
+        </Box>
         <Box sx={{ display: 'inline-flex', mt: 0.75, px: 1.25, py: '4px', bgcolor: '#ECECEC', borderRadius: '8px' }}>
           <Typography sx={{ fontSize: 11, color: '#000' }}>{p.amount}</Typography>
         </Box>
@@ -371,14 +398,11 @@ export default function ProductsScreen() {
             </Box>
 
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-              {/* Popular grid shows the first 4 — the full catalogue lives in "See all". */}
-              {PRODUCTS.slice(0, 4).map((p) => (
+              {POPULAR_PRODUCTS.map((p) => (
                 <ProductCard key={p.name} p={p} height={152} />
               ))}
             </Box>
           </Box>
-
-          <DiscoverSection />
         </Box>
       </Box>
 

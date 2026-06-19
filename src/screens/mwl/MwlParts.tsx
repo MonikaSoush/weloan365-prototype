@@ -24,7 +24,7 @@ export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onB
   }, [])
 
   return (
-    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#fff', px: 3, pt: 3, pb: step ? 1.5 : 1 }}>
+    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, px: 3, pt: 3, pb: step ? 1.5 : 1 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
           <Icon name="chevronLeft" size={26} color="#0B0F1A" />
@@ -104,6 +104,7 @@ export function FieldCard({
   required,
   value,
   trailing,
+  leading,
   onClick,
   onChange,
 }: {
@@ -111,6 +112,7 @@ export function FieldCard({
   required?: boolean
   value: ReactNode
   trailing?: ReactNode
+  leading?: ReactNode
   onClick?: () => void
   onChange?: (v: string) => void
 }) {
@@ -125,10 +127,11 @@ export function FieldCard({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 1,
+        gap: 1.25,
         cursor: onClick && !onChange ? 'pointer' : 'default',
       }}
     >
+      {leading}
       <Box sx={{ minWidth: 0, flex: 1 }}>
         <Label label={label} required={required} />
         {onChange ? (
@@ -157,6 +160,7 @@ export function SelectField({
   value,
   onChange,
   icons,
+  leading,
 }: {
   label: string
   required?: boolean
@@ -165,6 +169,8 @@ export function SelectField({
   onChange: (v: string) => void
   /** Optional leading icon/adornment per option (e.g. a currency symbol). */
   icons?: Record<string, ReactNode>
+  /** Optional fixed leading icon for the field (reference glyph). */
+  leading?: ReactNode
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -187,6 +193,7 @@ export function SelectField({
       <FieldCard
         label={label}
         required={required}
+        leading={leading}
         value={icons ? <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>{icons[value]}{value}</Box> : value}
         onClick={() => setOpen((v) => !v)}
         trailing={
@@ -250,7 +257,7 @@ const COUNTRY_CODES = [
 ]
 
 // ─── Phone field — country code + divider + number ───────────────────────────
-export function PhoneField({ label, code = '+855', number, onNumberChange, onCodeChange }: { label: string; code?: string; number: string; onNumberChange?: (v: string) => void; onCodeChange?: (v: string) => void }) {
+export function PhoneField({ label, code = '+855', number, onNumberChange, onCodeChange, leading }: { label: string; code?: string; number: string; onNumberChange?: (v: string) => void; onCodeChange?: (v: string) => void; leading?: ReactNode }) {
   const [pickerOpen, setPickerOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [portalEl, setPortalEl] = useState<HTMLElement | null>(null)
@@ -330,7 +337,9 @@ export function PhoneField({ label, code = '+855', number, onNumberChange, onCod
 
   return (
     <>
-      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1.25 }}>
+        {leading}
+        <Box sx={{ flex: 1, minWidth: 0 }}>
         <Label label={label} required />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 0.25 }}>
           <Box
@@ -351,6 +360,7 @@ export function PhoneField({ label, code = '+855', number, onNumberChange, onCod
           ) : (
             <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#0B0F1A' }}>{number}</Typography>
           )}
+        </Box>
         </Box>
       </Box>
 

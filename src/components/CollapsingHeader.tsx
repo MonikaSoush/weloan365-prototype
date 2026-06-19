@@ -40,7 +40,7 @@ export function CollapsingHeader({
   right?: ReactNode
 }) {
   return (
-    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#fff', px: 3, pt: 3, pb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, px: 3, pt: 3, pb: 1, display: 'flex', alignItems: 'center', gap: 0.5 }}>
       {onBack && (
         <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
           <Icon name="chevronLeft" size={26} color={HEADING} />

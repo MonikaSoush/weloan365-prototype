@@ -1,4 +1,4 @@
-﻿import { Fragment, ReactNode, useState } from 'react'
+import { Fragment, ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,12 +7,19 @@ import { Icon } from '../../components/Icon'
 import { Flag, type FlagCode } from '../../components/Flag'
 import { AssetImg, asset } from '../../components/home/media'
 import { MwlHeader, MwlTitle, FieldCard, SelectField, PhoneField, BottomSheet, DiscardSheet, BLUE } from './MwlParts'
-import { type Currency } from '../loanCalc'
+import RepaymentEstimate from './RepaymentEstimate'
+import { buildGraceSchedule, money, type Currency } from '../loanCalc'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Migration Worker Loan — 4-step application wizard.
 //   1 Your Loan · 2 About You · 3 Guarantor · 4 Confirm
 // Self-contained: holds all form state and steps through internally.
+//
+// MWL is a flat-interest product with an interest-only grace period: for the
+// first 1–6 months the borrower pays interest only, then principal is spread
+// evenly over the remaining months. The shared RepaymentEstimate card renders
+// the tenure slider, monthly payment (with the interest-only figure) and the
+// full schedule / PDF.
 // ─────────────────────────────────────────────────────────────────────────────
 const GREEN = '#1FA85C'
 const MUTED = '#8A94A6'
@@ -26,7 +33,9 @@ const BRANCHES = ['Khan Toul Kork Branch', 'Phnom Penh Main', 'Chroy Changvar', 
 const CURRENCIES = ['USD — US Dollar', 'KHR — Riel']
 const STATUSES = ['Single', 'Married', 'Widow / Widower']
 const RELATIONSHIPS = ['Spouse (1st)', 'Parent', 'Sibling', 'Relative', 'Friend']
-const MONTHLY_RATE = 0.015 // 1.5% / month
+const GRACE_OPTIONS = ['1 month', '2 months', '3 months', '4 months', '5 months', '6 months']
+const RATE_PCT = 1.5 // 1.5% / month
+const MAX_LOAN = 15000 // maximum loan amount in USD (or KHR equivalent)
 
 const GUARANTOR_STEPS = [
   { title: 'Open SMS Link', desc: 'They receive a secure link by SMS.' },
@@ -39,7 +48,6 @@ export default function MwlApplyScreen() {
   const [step, setStep] = useState(1)
   const [discardOpen, setDiscardOpen] = useState(false)
   const [sheet, setSheet] = useState<{ title: string; img?: string } | null>(null)
-  const [scheduleOpen, setScheduleOpen] = useState(false)
   // Documents start un-uploaded; the user taps to upload each.
   const [docs, setDocs] = useState<Record<string, boolean>>({})
   const upload = (key: string) => setDocs((d) => ({ ...d, [key]: true }))
@@ -49,8 +57,8 @@ export default function MwlApplyScreen() {
   const [branch, setBranch] = useState('Khan Toul Kork Branch')
   const [currency, setCurrency] = useState('USD — US Dollar')
   const [amount, setAmount] = useState('2,000')
-  const [tenure, setTenure] = useState('12 months')
-  const [interestOnly, setInterestOnly] = useState('3 months')
+  const [months, setMonths] = useState(12)
+  const [graceMonths, setGraceMonths] = useState(3)
   // Step 2 — About You
   const [lastName, setLastName] = useState('Sok')
   const [firstName, setFirstName] = useState('Vanna')
@@ -63,30 +71,22 @@ export default function MwlApplyScreen() {
   const [relationship, setRelationship] = useState('Spouse (1st)')
   const [gPhoneCode, setGPhoneCode] = useState('+855')
   const [gPhone, setGPhone] = useState('12 345 678')
+  // Step 4 — Consent
+  const [agree, setAgree] = useState(false)
 
   const sym = currency.startsWith('KHR') ? '៛' : '$'
   const curCode = currency.startsWith('KHR') ? 'KHR' : 'USD'
-  const principal = parseFloat(amount.replace(/[^0-9.]/g, '')) || 0
-  const interestOnlyPay = principal * MONTHLY_RATE
-  // After the interest-only period, principal is spread over the remaining months.
-  const tenureMonths = parseInt(tenure, 10) || 0
-  const graceMonths = parseInt(interestOnly, 10) || 0
-  const regularMonths = Math.max(1, tenureMonths - graceMonths)
-  const principalPerMonth = principal / regularMonths
-  const regularPay = principalPerMonth + interestOnlyPay
-  const destObj = DESTINATIONS.find((d) => d.name === dest)
   const cur = (curCode === 'KHR' ? 'KHR' : 'USD') as Currency
+  const principal = parseFloat(amount.replace(/[^0-9.]/g, '')) || 0
+  const destObj = DESTINATIONS.find((d) => d.name === dest)
 
-  // Flat-interest schedule: interest each month, principal repaid after the grace period.
-  const schedule = Array.from({ length: tenureMonths }, (_, i) => {
-    const m = i + 1
-    const inGrace = m <= graceMonths
-    const prin = inGrace ? 0 : principalPerMonth
-    return { m, inGrace, prin, interest: interestOnlyPay, payment: prin + interestOnlyPay }
-  })
-  const fmt = (v: number) => `${cur === 'KHR' ? '៛' : '$'}${Math.round(v).toLocaleString('en-US')}`
-  const totalInterest = interestOnlyPay * tenureMonths
-  const totalRepayment = principal + totalInterest
+  // Loan amount cap — KHR uses 4,000 rate; compare against USD equivalent.
+  const principalUsd = curCode === 'KHR' ? principal / 4000 : principal
+  const overMax = principal > 0 && principalUsd > MAX_LOAN
+
+  // Flat-interest grace schedule — figures shared with the estimate card.
+  const { payment, totalPayable } = buildGraceSchedule(principal, months, RATE_PCT, graceMonths)
+  const interestOnlyPay = principal * (RATE_PCT / 100)
 
   const back = () => (step > 1 ? setStep(step - 1) : setDiscardOpen(true))
   const next = () => (step < 4 ? setStep(step + 1) : navigate('/mwl-success'))
@@ -123,29 +123,43 @@ export default function MwlApplyScreen() {
               </Box>
               <SelectField label="Nearest Branch" required options={BRANCHES} value={branch} onChange={setBranch} />
               <SelectField label="Currency" required options={CURRENCIES} value={currency} onChange={setCurrency} />
-              <FieldCard label="Loan Amount" required value={amount} onChange={setAmount}
-                trailing={<Typography sx={{ fontSize: 16, fontWeight: 700, color: MUTED }}>{sym}</Typography>} />
-              <SelectField label="Loan term" required options={['12 months', '24 months', '36 months']} value={tenure} onChange={setTenure} />
-              <SelectField label="Interest Only Payment" required options={['3 months', '6 months']} value={interestOnly} onChange={setInterestOnly} />
-              {/* Estimated monthly payment — full breakdown */}
-              <Box sx={{ bgcolor: '#fff', borderRadius: '14px', border: `1px solid ${BLUE}33`, p: '16px' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-                  <Typography sx={{ fontSize: 12.5, color: MUTED }}>Estimated monthly payment</Typography>
-                  <Box role="button" onClick={() => setScheduleOpen(true)} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}>
-                    <Icon name="eye" size={16} color={BLUE} />
-                    <Typography sx={{ fontSize: 13, fontWeight: 700, color: BLUE }}>View schedule</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                <FieldCard label="Loan Amount" required value={amount} onChange={setAmount}
+                  trailing={<Typography sx={{ fontSize: 16, fontWeight: 700, color: MUTED }}>{sym}</Typography>} />
+                {overMax && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, px: 0.5 }}>
+                    <Icon name="alert" size={14} color="#E5484D" />
+                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#E5484D' }}>
+                      Maximum loan amount is $15,000 (or equivalent)
+                    </Typography>
                   </Box>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 0.5 }}>
-                  <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>Interest Only</Typography>
-                  <Typography sx={{ fontSize: 18, fontWeight: 800, color: BLUE }}>{curCode} {Math.round(interestOnlyPay)}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 0.5 }}>
-                  <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>Regular Repayment</Typography>
-                  <Typography sx={{ fontSize: 18, fontWeight: 800, color: BLUE }}>{curCode} {Math.round(regularPay)}</Typography>
-                </Box>
-                <Typography sx={{ fontSize: 11.5, color: MUTED, mt: 0.75 }}>ⓘ Final rate, tenure, &amp; terms are subject to credit approval.</Typography>
+                )}
+                {!overMax && (
+                  <Typography sx={{ fontSize: 12, color: '#8A94A6', px: 0.5 }}>Maximum · $15,000 USD</Typography>
+                )}
               </Box>
+              {/* Interest-only grace period — borrower pays interest only for 1–6 months */}
+              <SelectField
+                label="Interest Only Payment"
+                required
+                options={GRACE_OPTIONS}
+                value={`${graceMonths} month${graceMonths > 1 ? 's' : ''}`}
+                onChange={(v) => setGraceMonths(parseInt(v, 10) || 0)}
+              />
+              {/* Repayment estimate — shared card (tenure slider + monthly payment + interest-only + schedule) */}
+              <RepaymentEstimate
+                product="Migration Worker Loan"
+                principal={principal}
+                currency={cur}
+                months={months}
+                onMonthsChange={setMonths}
+                minMonths={12}
+                maxMonths={36}
+                ratePct={RATE_PCT}
+                graceMonths={graceMonths}
+                label=""
+                scheduleTitle={destObj?.long}
+              />
             </>
           )}
 
@@ -180,27 +194,37 @@ export default function MwlApplyScreen() {
                 <DocRow label="Upload Photo" img={asset('banners/NID.png')} uploaded={!!docs.guarantor} onUpload={() => upload('guarantor')} onView={() => setSheet({ title: "Guarantor's National ID", img: asset('banners/NID.png') })} />
               </Box>
               <Box sx={{ mt: 1 }}>
-                <SubLabel>What Your Guarantor Will Do</SubLabel>
-                <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '18px' }}>
-                  {GUARANTOR_STEPS.map((s, i, arr) => {
-                    const last = i === arr.length - 1
-                    return (
-                      <Box key={s.title} sx={{ display: 'flex', gap: 1.5 }}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-                          <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: '#FBEBC6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography sx={{ fontSize: 13, fontWeight: 800, color: '#B7791F' }}>{i + 1}</Typography>
+                <Box sx={{ bgcolor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '14px', p: '16px' }}>
+                  {/* Header */}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <Box sx={{ width: 22, height: 22, borderRadius: '6px', bgcolor: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name="checkCircle" size={13} color="#fff" />
+                    </Box>
+                    <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#92400E', letterSpacing: '0.1px' }}>What Your Guarantor Will Do</Typography>
+                  </Box>
+
+                  {/* Horizontal stepper */}
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    {GUARANTOR_STEPS.map((s, i) => (
+                      <Fragment key={s.title}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                          <Box sx={{ width: 30, height: 30, borderRadius: '50%', bgcolor: i === 0 ? '#F59E0B' : '#FBEBC6', border: i === 0 ? 'none' : '1.5px solid #F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Typography sx={{ fontSize: 13, fontWeight: 800, color: i === 0 ? '#fff' : '#B7791F' }}>{i + 1}</Typography>
                           </Box>
-                          {!last && <Box sx={{ width: 2, flex: 1, minHeight: 16, bgcolor: '#EFE3C8', my: '4px' }} />}
+                          <Typography sx={{ fontSize: 11, fontWeight: 600, color: '#92400E', textAlign: 'center', mt: 0.75, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{s.title.replace(' ', '\n')}</Typography>
                         </Box>
-                        <Box sx={{ pb: last ? 0 : 1.75, minWidth: 0 }}>
-                          <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2 }}>{s.title}</Typography>
-                          <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: 0.25, lineHeight: 1.4 }}>{s.desc}</Typography>
-                        </Box>
-                      </Box>
-                    )
-                  })}
+                        {i < GUARANTOR_STEPS.length - 1 && (
+                          <Box sx={{ flex: 1, height: 1.5, bgcolor: '#F59E0B', mt: '15px', opacity: 0.4 }} />
+                        )}
+                      </Fragment>
+                    ))}
+                  </Box>
+
+                  {/* Footer note */}
+                  <Typography sx={{ fontSize: 12, color: '#92400E', mt: 2, opacity: 0.8 }}>
+                    They'll get an SMS link after you submit.
+                  </Typography>
                 </Box>
-                <Typography sx={{ fontSize: 12.5, color: BLUE, mt: 1, px: 0.5 }}>They'll get an SMS link after you submit.</Typography>
               </Box>
             </>
           )}
@@ -226,11 +250,28 @@ export default function MwlApplyScreen() {
                 <SubLabel>Indicative Terms</SubLabel>
                 <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px' }}>
                   <SummaryRow label="Interest Rate" value="1.50% / month" first />
-                  <SummaryRow label="Tenure" value={tenure} />
-                  <SummaryRow label="Interest-only" value={interestOnly} />
-                  <SummaryRow label="Est. interest-only" value={`${curCode} ${Math.round(interestOnlyPay)} / mo`} />
+                  <SummaryRow label="Tenure" value={`${months} months`} />
+                  <SummaryRow label="Interest-only" value={`${graceMonths} months`} />
+                  <SummaryRow label="Est. interest-only" value={`${money(interestOnlyPay, cur)} / mo`} />
+                  <SummaryRow label="Est. regular" value={`${money(payment, cur)} / mo`} />
+                  <SummaryRow label="Total repayable" value={money(totalPayable, cur)} />
                 </Box>
                 <Typography sx={{ fontSize: 11.5, color: MUTED, mt: 1, px: 0.5 }}>Indicative only · final terms confirmed at credit assessment.</Typography>
+              </Box>
+
+              {/* CBC + Guarantor consent */}
+              <Box
+                onClick={() => setAgree((v) => !v)}
+                role="checkbox"
+                aria-checked={agree}
+                sx={{ display: 'flex', gap: 1.5, bgcolor: '#fff', border: `1px solid ${agree ? BLUE : '#E8EAEE'}`, borderRadius: '12px', p: '16px', cursor: 'pointer', alignItems: 'flex-start', transition: 'border-color 0.15s', '&:active': { opacity: 0.85 } }}
+              >
+                <Box sx={{ mt: '1px', width: 22, height: 22, borderRadius: '6px', flexShrink: 0, border: `2px solid ${agree ? BLUE : '#CBD3DF'}`, bgcolor: agree ? BLUE : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.12s' }}>
+                  {agree && <Icon name="check" size={14} color="#fff" />}
+                </Box>
+                <Typography sx={{ fontSize: 13.5, color: '#3A4256', lineHeight: 1.55 }}>
+                  By submitting, I consent to NHFC accessing my CBC report and sending a secure consent link to my guarantor in accordance with applicable laws.
+                </Typography>
               </Box>
             </>
           )}
@@ -242,12 +283,14 @@ export default function MwlApplyScreen() {
         <Button
           variant="contained"
           fullWidth
+          disabled={(step === 1 && overMax) || (step === 4 && !agree)}
           onClick={next}
           endIcon={step < 4 ? <Icon name="arrowRight" size={18} /> : undefined}
           sx={{
             height: 54, borderRadius: '14px', fontSize: 16, fontWeight: 700,
             bgcolor: step === 4 ? GREEN : BLUE,
             '&:hover': { bgcolor: step === 4 ? '#1A9150' : '#1F4F9E' },
+            '&.Mui-disabled': { bgcolor: '#C8D2E0', color: '#fff' },
           }}
         >
           {step === 4 ? 'Submit Loan Request' : 'Continue'}
@@ -256,7 +299,7 @@ export default function MwlApplyScreen() {
 
       <DiscardSheet open={discardOpen} onClose={() => setDiscardOpen(false)} onDiscard={() => navigate('/products')} />
 
-      {/* View sample / schedule sheet */}
+      {/* View sample sheet */}
       <BottomSheet open={sheet !== null} onClose={() => setSheet(null)} title={sheet?.title}>
         {sheet?.img ? (
           <Box sx={{ bgcolor: '#EDEDED', borderRadius: '14px', overflow: 'hidden' }}>
@@ -265,76 +308,12 @@ export default function MwlApplyScreen() {
           </Box>
         ) : (
           <Typography sx={{ fontSize: 14, color: '#5B6473', lineHeight: 1.6 }}>
-            During the interest-only period ({interestOnly}) you pay {curCode} {Math.round(interestOnlyPay)} / month.
-            After that, principal + interest is spread over the remaining tenure.
+            Sample document preview.
           </Typography>
         )}
         <Button variant="contained" fullWidth onClick={() => setSheet(null)} sx={{ height: 50, borderRadius: '14px', fontSize: 15, fontWeight: 700 }}>
           Got it
         </Button>
-      </BottomSheet>
-
-      {/* Estimated schedule */}
-      <BottomSheet open={scheduleOpen} onClose={() => setScheduleOpen(false)} title="Estimated Schedule">
-        <Typography sx={{ fontSize: 18, fontWeight: 800, color: '#0B0F1A', mt: -1 }}>{destObj?.long}</Typography>
-        {/* Summary tiles */}
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          {[
-            { icon: 'cash' as const, label: 'Loan', value: `${sym}${amount}` },
-            { icon: 'calendar' as const, label: 'Tenure', value: `${tenureMonths} mo` },
-            { icon: 'clock' as const, label: 'Grace', value: `${graceMonths} mo` },
-          ].map((tile) => (
-            <Box key={tile.label} sx={{ flex: 1, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '12px 8px', textAlign: 'center' }}>
-              <Icon name={tile.icon} size={18} color={BLUE} />
-              <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', mt: 0.5 }}>{tile.value}</Typography>
-              <Typography sx={{ fontSize: 11, color: MUTED }}>{tile.label}</Typography>
-            </Box>
-          ))}
-        </Box>
-        {/* Schedule table */}
-        <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-          <Box component="thead">
-            <Box component="tr">
-              {['#', 'PRINCIPAL', 'INTEREST', 'PAYMENT'].map((h, i) => (
-                <Box component="th" key={h} sx={{ width: i === 0 ? 28 : undefined, fontSize: 11, fontWeight: 700, color: i === 3 ? BLUE : MUTED, textAlign: i === 0 ? 'left' : 'right', pb: 1, borderBottom: '1px solid #EEF0F3' }}>{h}</Box>
-              ))}
-            </Box>
-          </Box>
-          <Box component="tbody">
-            {schedule.map((r) => (
-              <Box component="tr" key={r.m} sx={{ borderBottom: '1px solid #F4F5F7' }}>
-                <Box component="td" sx={{ py: '11px', fontSize: 13, fontWeight: 700, color: r.inGrace ? '#C47F11' : '#0B0F1A' }}>{r.m}</Box>
-                <Box component="td" sx={{ py: '11px', fontSize: 13, textAlign: 'right', color: '#5B6473' }}>{r.inGrace ? '—' : fmt(r.prin)}</Box>
-                <Box component="td" sx={{ py: '11px', fontSize: 13, textAlign: 'right', color: '#5B6473' }}>{fmt(r.interest)}</Box>
-                <Box component="td" sx={{ py: '11px', fontSize: 13, textAlign: 'right', fontWeight: 800, color: '#0B0F1A' }}>{fmt(r.payment)}</Box>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-
-        {/* Grace note */}
-        <Typography sx={{ fontSize: 13, fontWeight: 600, color: '#C47F11' }}>First {graceMonths} months are grace (interest only).</Typography>
-
-        {/* Totals */}
-        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '16px' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography sx={{ fontSize: 14, color: '#3A4256' }}>Total principal</Typography>
-            <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>{fmt(principal)}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-            <Typography sx={{ fontSize: 14, color: '#3A4256' }}>Total interest</Typography>
-            <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A' }}>{fmt(totalInterest)}</Typography>
-          </Box>
-          <Box sx={{ height: '1px', bgcolor: '#E2E6EC', my: 1.5 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography sx={{ fontSize: 16, fontWeight: 800, color: BLUE }}>Total repayment</Typography>
-            <Typography sx={{ fontSize: 20, fontWeight: 800, color: BLUE }}>{fmt(totalRepayment)}</Typography>
-          </Box>
-        </Box>
-
-        <Typography sx={{ fontSize: 11.5, color: MUTED, lineHeight: 1.5, mt: -1 }}>
-          Estimate using a flat 1.5%/month illustration. Final terms confirmed by NH after assessment. Excludes the USD 10 CBC fee and upfront fee.
-        </Typography>
       </BottomSheet>
     </Box>
   )

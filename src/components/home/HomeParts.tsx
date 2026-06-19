@@ -49,7 +49,7 @@ export function SectionLabel({ label, action, onAction }: { label: string; actio
 // ─────────────────────────────────────────────────────────────────────────────
 // Top bar — avatar + "Welcome back, Krong Kampuchea" + chat & bell
 // ─────────────────────────────────────────────────────────────────────────────
-export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = {}) {
+export function HomeTopBar({ secondIcon = 'bell', middle }: { secondIcon?: IconName; middle?: React.ReactNode } = {}) {
   const navigate = useNavigate()
   const { flow } = useFlow()
   // Visitors aren't signed in, so there's no profile to show — display the
@@ -68,7 +68,6 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
         position: 'sticky',
         top: 0,
         zIndex: 10,
-        bgcolor: '#fff',
       }}
     >
       {isVisitor ? (
@@ -105,6 +104,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
           </Box>
         </Box>
       )}
+      {middle}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <IconButton onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/chat') : '/chat')} size="small" sx={{ color: '#1A1A1A', p: '6px' }} aria-label="Messages">
           <Badge badgeContent={isVisitor ? 0 : 2} color="error" sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15 } }}>
@@ -212,6 +212,75 @@ function MyLoanOfficerCard() {
   )
 }
 
+// ─── Discover + Blog grid helpers ────────────────────────────────────────────
+type DiscoverNewsItem = { tag: string; title: string; body: string; img: string; detail: string }
+
+const DISCOVER_NEWS_ITEMS: DiscoverNewsItem[] = [
+  { tag: 'NEWS', title: 'Khmer New Year promotion', body: 'Lower micro-loan rates this season — apply by mid-April.', img: BANNERS.bannerKhmerNewYear, detail: 'Celebrate Khmer New Year with reduced micro-loan rates across all branches. Apply before mid-April to lock in the seasonal rate and enjoy faster approval with fewer documents. Talk to our team to see how much you can save.' },
+  { tag: 'NEWS', title: 'Migrant worker support', body: 'Special rates for overseas workers and their families.', img: BANNERS.bannerSupport, detail: 'NongHyup Finance offers dedicated loan packages for migrant workers and their families, with flexible repayment aligned to overseas income. Get help with guarantor setup and remittance-friendly schedules.' },
+  { tag: 'TIPS', title: 'Build your credit score', body: 'Simple habits that help you qualify for a bigger loan.', img: BANNERS.bannerScore, detail: 'Paying on time, keeping balances low, and maintaining a steady income are the habits that build a strong credit profile. A better score unlocks larger limits and lower rates on your next loan.' },
+]
+
+function DiscoverGrid() {
+  const navigate = useNavigate()
+  const { flow } = useFlow()
+  const isVisitor = flow === 'Visitor'
+
+  const items: { icon: IconName; label: string; bg: string; img?: string; onClick: () => void }[] = [
+    { icon: 'calculator', label: 'Calculator',     bg: '#0B1A14', img: DISCOVER.calculator, onClick: () => navigate('/calculator') },
+    { icon: 'findBranch', label: 'Branch Locator',        bg: '#1C3B6E', onClick: () => navigate('/branch-locator') },
+    { icon: 'gauge',      label: 'Credit Score',           bg: '#14432C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score') },
+    { icon: 'feedback',   label: 'Submit a Complaint',    bg: '#3B1C5C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback') },
+  ]
+
+  return (
+    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+      {items.map((item) => (
+        <Box key={item.label} role="button" onClick={item.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 140, bgcolor: item.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          {item.img && (
+            <AssetImg src={item.img} alt="" sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} fallback={<Box />} />
+          )}
+          <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)' }} />
+          <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end', p: '12px', gap: 0.5 }}>
+            <Icon name={item.icon} size={22} color="rgba(255,255,255,0.9)" />
+            <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{item.label}</Typography>
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+const BLOG_POSTS = [
+  { cat: 'NEWS', title: 'Khmer New Year promotion',     tint: '#275CB2' },
+  { cat: 'TIPS', title: 'How to plan your repayments',  tint: '#1FA85C' },
+  { cat: 'EDU',  title: 'Understanding interest rates', tint: '#7A3FF2' },
+  { cat: 'CSR',  title: 'Supporting rural farmers',     tint: '#E08A1E' },
+]
+
+function BlogGrid() {
+  const navigate = useNavigate()
+  return (
+    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+      {BLOG_POSTS.map((p) => (
+        <Box key={p.title} role="button" onClick={() => navigate('/blogs')} sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          <Box sx={{ height: 96, background: `linear-gradient(135deg, ${p.tint}26, ${p.tint}0D)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="blogs" size={32} color={p.tint} />
+          </Box>
+          <Box sx={{ p: '10px' }}>
+            <Box sx={{ display: 'inline-block', px: 0.75, py: '2px', borderRadius: '6px', mb: 0.5 }}>
+              <Typography sx={{ fontSize: 8.5, fontWeight: 800, letterSpacing: '0.4px', color: p.tint }}>{p.cat}</Typography>
+            </Box>
+            <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.25, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+              {p.title}
+            </Typography>
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared "More" menu body — rendered full-page by the More screen.
 // `greeting` swaps the back-chevron/profile header for the personalized
@@ -229,7 +298,16 @@ export function MoreMenuBody({
   return (
     <Box className="scroll-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#F5F5F5' }}>
       {greeting ? (
-        <HomeTopBar />
+        <HomeTopBar middle={
+          <IconButton
+            size="small"
+            onClick={() => navigate('/app-settings')}
+            sx={{ color: '#1A1A1A', p: '6px', flexShrink: 0 }}
+            aria-label="App settings"
+          >
+            <Icon name="appSettings" size={22} color="#1A1A1A" />
+          </IconButton>
+        } />
       ) : (
         /* Header — back chevron + profile (brand logo for visitors) */
         <Box sx={{ px: 3, pt: 4, pb: 1 }}>
@@ -300,24 +378,26 @@ export function MoreMenuBody({
           </Box>
         )}
 
-        {/* Services */}
-        <Box>
-          <MoreSectionLabel>SUPPORT</MoreSectionLabel>
-          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
-            <MoreRow icon="phone" label="Request a consultation" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult')} />
-            <MoreRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
-            <MoreRow icon="feedback" label="Feedback" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback')} />
-            <MoreRow icon="calculator" label="Calculator" divider onClick={() => navigate('/calculator')} />
-            <MoreRow icon="findBranch" label="Find a Branch" divider onClick={() => navigate('/branch-locator')} />
-            <MoreRow icon="gauge" label="Credit Score" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score')} />
-          </Box>
-        </Box>
-
-        {/* My loan officer — only relevant once a loan flow is underway */}
+        {/* My Officer */}
         {(flow === 'Applicant' || flow === 'Borrower') && <MyLoanOfficerCard />}
 
-        {/* Settings — Account / Notifications / Appearance / About + Sign out */}
-        <SettingsSections />
+        {/* Discover */}
+        <Box>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1.5 }}>DISCOVER</Typography>
+          <DiscoverGrid />
+        </Box>
+
+        {/* Request a consultation */}
+        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
+          <MoreRow icon="phone" label="Request a consultation" onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult')} />
+        </Box>
+
+        {/* Blog Posts */}
+        <Box>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1.5 }}>BLOG POST</Typography>
+          <BlogGrid />
+        </Box>
+
 
         {/* Footer */}
         <Typography sx={{ fontSize: 11.5, color: '#B6BDC8', textAlign: 'center', pt: 1, pb: 1 }}>
@@ -943,32 +1023,6 @@ export function NewsBanner() {
 // ─────────────────────────────────────────────────────────────────────────────
 // Discover row — Calculator tile + news cards (horizontal scroll)
 // ─────────────────────────────────────────────────────────────────────────────
-type DiscoverNewsItem = { tag: string; title: string; body: string; img: string; detail: string }
-
-const DISCOVER_NEWS_ITEMS: DiscoverNewsItem[] = [
-  {
-    tag: 'NEWS',
-    title: 'Khmer New Year promotion',
-    body: 'Lower micro-loan rates this season — apply by mid-April.',
-    img: BANNERS.bannerKhmerNewYear,
-    detail: 'Celebrate Khmer New Year with reduced micro-loan rates across all branches. Apply before mid-April to lock in the seasonal rate and enjoy faster approval with fewer documents. Talk to our team to see how much you can save.',
-  },
-  {
-    tag: 'NEWS',
-    title: 'Migrant worker support',
-    body: 'Special rates for overseas workers and their families.',
-    img: BANNERS.bannerSupport,
-    detail: 'NongHyup Finance offers dedicated loan packages for migrant workers and their families, with flexible repayment aligned to overseas income. Get help with guarantor setup and remittance-friendly schedules.',
-  },
-  {
-    tag: 'TIPS',
-    title: 'Build your credit score',
-    body: 'Simple habits that help you qualify for a bigger loan.',
-    img: BANNERS.bannerScore,
-    detail: 'Paying on time, keeping balances low, and maintaining a steady income are the habits that build a strong credit profile. A better score unlocks larger limits and lower rates on your next loan.',
-  },
-]
-
 export function DiscoverRow() {
   const navigate = useNavigate()
   const [active, setActive] = useState<DiscoverNewsItem | null>(null)

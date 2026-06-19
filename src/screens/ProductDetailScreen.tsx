@@ -1,10 +1,11 @@
-﻿import { ReactNode, useState } from 'react'
+﻿import { Fragment, ReactNode, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon, type IconName } from '../components/Icon'
+import { Flag } from '../components/Flag'
 import { AssetImg, BANNERS } from '../components/home/media'
 import { useFlow } from '../workspace/FlowContext'
 import { BottomSheet } from './mwl/MwlParts'
@@ -67,6 +68,18 @@ const MWL_ELIGIBILITY: [string, string][] = [
   ['Residence', 'Permanent address in NH MFI operating area'],
   ['Income', 'Stable, verifiable source'],
   ['Collateral', 'Not required'],
+]
+
+const MWL_STORY_FEATURES = [
+  { emoji: '✈️', title: 'Before you fly', desc: 'Cover visa, flights, medical checks and agency fees — no collateral needed.' },
+  { emoji: '💰', title: 'While you work', desc: 'Repay gradually from your overseas salary, on a schedule built around your contract.' },
+  { emoji: '🏠', title: 'Family at home', desc: 'Keep loved ones supported the whole time you are away.' },
+]
+
+const MWL_DESTINATIONS = [
+  { flag: 'kr' as const, name: 'Korea', sub: 'EPS · most active' },
+  { flag: 'jp' as const, name: 'Japan', sub: 'SSW / Intern' },
+  { flag: 'sg' as const, name: 'Singapore', sub: 'Work Permit' },
 ]
 
 const ELIGIBILITY: [string, string][] = [
@@ -216,151 +229,162 @@ export default function ProductDetailScreen() {
         onScroll={(e) => setScrolled((e.target as HTMLDivElement).scrollTop > 220)}
       >
         {/* ── Hero header ─────────────────────────────────────────────── */}
-        <Box sx={{ position: 'relative', height: 300, overflow: 'hidden' }}>
+        <Box sx={{ position: 'relative', height: isMwl ? 320 : 300, overflow: 'hidden' }}>
           <AssetImg
             src={hero}
             alt={name}
             sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             fallback={<Box sx={{ position: 'absolute', inset: 0, bgcolor: '#4279B3' }} />}
           />
-          {/* bottom gradient so the action pills stay legible */}
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 120,
-              background: 'linear-gradient(to bottom, rgba(66,121,179,0) 0%, #4279B3 60%)',
-            }}
-          />
+          {/* bottom gradient */}
+          <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: isMwl ? 180 : 120, background: 'linear-gradient(to bottom, rgba(30,58,120,0) 0%, #1E3A78 70%)' }} />
 
           {/* Back button */}
-          <Box
-            onClick={() => navigate(-1)}
-            role="button"
-            aria-label="Back"
-            sx={{
-              position: 'absolute',
-              top: 16,
-              left: 16,
-              width: 48,
-              height: 48,
-              borderRadius: '50%',
-              bgcolor: 'rgba(0,0,0,0.4)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
+          <Box onClick={() => navigate(-1)} role="button" aria-label="Back" sx={{ position: 'absolute', top: 16, left: 16, width: 44, height: 44, borderRadius: '50%', bgcolor: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
             <Icon name="chevronLeft" size={24} color="#fff" />
           </Box>
 
-          {/* Chat / Call pills */}
-          <Box sx={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', gap: 1 }}>
-            <HeroPill icon="message" label="Chat" onClick={onChat} />
-            <HeroPill icon="phone" label="Call" onClick={() => setCallOpen(true)} />
-          </Box>
+          {isMwl ? (
+            /* MWL: play button + borrower story tag + person info */
+            <>
+              <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -70%)', width: 56, height: 56, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.25)', border: '2px solid rgba(255,255,255,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                <Box sx={{ width: 0, height: 0, borderTop: '10px solid transparent', borderBottom: '10px solid transparent', borderLeft: '17px solid #fff', ml: '3px' }} />
+              </Box>
+              <Box sx={{ position: 'absolute', bottom: 72, left: 16 }}>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center', bgcolor: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)', borderRadius: '999px', px: '10px', py: '4px', mb: 1 }}>
+                  <Typography sx={{ fontSize: 10.5, fontWeight: 700, color: '#fff', letterSpacing: '0.8px' }}>REAL BORROWER STORY</Typography>
+                </Box>
+                <Typography sx={{ fontSize: 26, fontWeight: 900, color: '#fff', letterSpacing: '-0.5px', lineHeight: 1.1 }}>Sokha Phon, 26</Typography>
+                <Typography sx={{ fontSize: 13.5, color: 'rgba(255,255,255,0.85)', mt: 0.25 }}>Factory technician · Ansan, South Korea</Typography>
+              </Box>
+            </>
+          ) : (
+            /* Non-MWL: chat / call pills */
+            <Box sx={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', gap: 1 }}>
+              <HeroPill icon="message" label="Chat" onClick={onChat} />
+              <HeroPill icon="phone" label="Call" onClick={() => setCallOpen(true)} />
+            </Box>
+          )}
         </Box>
 
         {/* ── Body ────────────────────────────────────────────────────── */}
-        <Box sx={{ px: 3, py: '16px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
-          {/* What it's for */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
-            <SectionLabel>What it's for</SectionLabel>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              {USES.map((u) => (
-                <Box key={u} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CheckBadge />
-                  <Typography sx={{ fontSize: 14, color: '#525252' }}>{u}</Typography>
-                </Box>
-              ))}
+        {isMwl ? (
+          /* ── MWL story layout ───────────────────────────────────────── */
+          <Box sx={{ bgcolor: '#fff', display: 'flex', flexDirection: 'column' }}>
+            {/* Quote */}
+            <Box sx={{ px: '24px', pt: '28px', pb: '20px' }}>
+              <Typography sx={{ fontSize: 42, fontWeight: 900, color: BRAND, lineHeight: 0.6, mb: 0.5, fontFamily: 'Georgia, serif' }}>"</Typography>
+              <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.45, letterSpacing: '-0.2px' }}>
+                The loan paid for my visa and flight before I earned a single won. Two years later it's repaid, and I send money home every month.
+              </Typography>
             </Box>
-          </Box>
 
-          {/* Calculate / Request Consult */}
-          <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
-            <ToolButton
-              icon="calculator"
-              label="Calculate"
-              onClick={() =>
-                navigate(
-                  '/calculator?product=' +
-                    encodeURIComponent(
-                      name === 'SME Loan'
-                        ? 'Small & Medium Enterprise Loan'
-                        : name === 'Migration Worker Loan'
-                          ? 'Migrant Worker Loan'
-                          : name,
-                    ),
-                )
-              }
-              sx={{ width: 132, flexShrink: 0 }}
-            />
-            <ToolButton
-              icon="clock"
-              label="Request Consult"
-              onClick={() => navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult')}
-              sx={{ flex: 1 }}
-            />
-          </Box>
-
-          {/* Spec cards */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-              <SectionLabel>Key features</SectionLabel>
-              <SpecCard rows={features} />
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-              <SectionLabel>Eligibility</SectionLabel>
-              <SpecCard rows={eligibility} />
-            </Box>
-          </Box>
-
-          {/* Required documents — hidden for the Staff Loan */}
-          {!isStaff && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <SectionLabel>Required Documents</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
-              {DOCUMENTS.map((d, i) => (
-                <Box
-                  key={d}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1.5,
-                    px: '14px',
-                    py: '12px',
-                    borderBottom: i < DOCUMENTS.length - 1 ? '1px solid #F0F0F0' : 'none',
-                  }}
-                >
-                  <Icon name="appPolicy" size={22} color="#171717" />
-                  <Typography sx={{ flex: 1, fontSize: 13, fontWeight: 600, color: VALUE }}>{d}</Typography>
-                  <Box
-                    role="button"
-                    aria-label={`Preview ${d}`}
-                    onClick={() => setPreviewDoc(d)}
-                    sx={{
-                      flexShrink: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      minHeight: 32,
-                      px: '8px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.15s ease',
-                      '&:active': { bgcolor: 'rgba(39,92,178,0.08)' },
-                    }}
-                  >
-                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: BRAND }}>Preview</Typography>
+            {/* 3 story features */}
+            <Box sx={{ px: '24px', py: '8px', display: 'flex', flexDirection: 'column' }}>
+              {MWL_STORY_FEATURES.map((f, i) => (
+                <Fragment key={f.title}>
+                  <Box sx={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                      <Box sx={{ width: 48, height: 48, borderRadius: '14px', bgcolor: '#F2F4F7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+                        {f.emoji}
+                      </Box>
+                      {i < MWL_STORY_FEATURES.length - 1 && (
+                        <Box sx={{ width: 2, height: 28, bgcolor: '#E2E6EC', my: '6px', borderRadius: 1 }} />
+                      )}
+                    </Box>
+                    <Box sx={{ pt: '8px', pb: i < MWL_STORY_FEATURES.length - 1 ? '0px' : '8px' }}>
+                      <Typography sx={{ fontSize: 15, fontWeight: 700, color: '#0B0F1A' }}>{f.title}</Typography>
+                      <Typography sx={{ fontSize: 13.5, color: '#6B7280', mt: '3px', lineHeight: 1.5 }}>{f.desc}</Typography>
+                    </Box>
                   </Box>
-                </Box>
+                </Fragment>
               ))}
             </Box>
+
+            {/* Destination selector */}
+            <Box sx={{ px: '24px', pt: '20px', pb: '24px', borderTop: '1px solid #F0F0F0', mt: '12px' }}>
+              <Box sx={{ display: 'flex', gap: '10px' }}>
+                {MWL_DESTINATIONS.map((d) => (
+                  <Box key={d.name} sx={{ flex: 1, border: '1.5px solid #E8EAEE', borderRadius: '14px', p: '12px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                    <Flag code={d.flag} size={30} rect />
+                    <Typography sx={{ fontSize: 13, fontWeight: 800, color: '#0B0F1A' }}>{d.name}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
           </Box>
-          )}
-        </Box>
+        ) : (
+          /* ── Standard loan body ─────────────────────────────────────── */
+          <Box sx={{ px: 3, py: '16px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
+            {/* What it's for */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+              <SectionLabel>What it's for</SectionLabel>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {USES.map((u) => (
+                  <Box key={u} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CheckBadge />
+                    <Typography sx={{ fontSize: 14, color: '#525252' }}>{u}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            {/* Calculate / Request Consult */}
+            <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+              <ToolButton
+                icon="calculator"
+                label="Calculate"
+                onClick={() =>
+                  navigate(
+                    '/calculator?product=' +
+                      encodeURIComponent(
+                        name === 'SME Loan'
+                          ? 'Small & Medium Enterprise Loan'
+                          : name,
+                      ),
+                  )
+                }
+                sx={{ width: 132, flexShrink: 0 }}
+              />
+              <ToolButton
+                icon="clock"
+                label="Request Consult"
+                onClick={() => navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult')}
+                sx={{ flex: 1 }}
+              />
+            </Box>
+
+            {/* Spec cards */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                <SectionLabel>Key features</SectionLabel>
+                <SpecCard rows={features} />
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                <SectionLabel>Eligibility</SectionLabel>
+                <SpecCard rows={eligibility} />
+              </Box>
+            </Box>
+
+            {/* Required documents — hidden for the Staff Loan */}
+            {!isStaff && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <SectionLabel>Required Documents</SectionLabel>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
+                {DOCUMENTS.map((d, i) => (
+                  <Box key={d} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: '14px', py: '12px', borderBottom: i < DOCUMENTS.length - 1 ? '1px solid #F0F0F0' : 'none' }}>
+                    <Icon name="appPolicy" size={22} color="#171717" />
+                    <Typography sx={{ flex: 1, fontSize: 13, fontWeight: 600, color: VALUE }}>{d}</Typography>
+                    <Box role="button" aria-label={`Preview ${d}`} onClick={() => setPreviewDoc(d)} sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', minHeight: 32, px: '8px', borderRadius: '8px', cursor: 'pointer', '&:active': { bgcolor: 'rgba(39,92,178,0.08)' } }}>
+                      <Typography sx={{ fontSize: 12, fontWeight: 600, color: BRAND }}>Preview</Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+            )}
+          </Box>
+        )}
       </Box>
 
       {/* ── Footer CTA ─────────────────────────────────────────────────── */}
@@ -372,7 +396,7 @@ export default function ProductDetailScreen() {
           onClick={onApply}
           sx={{ minHeight: 48, borderRadius: '8px', fontSize: 16, fontWeight: 600, bgcolor: BRAND, '&:hover': { bgcolor: '#1F4F9E' } }}
         >
-          Apply this loan
+          {isMwl ? 'Start my application' : 'Apply this loan'}
         </Button>
       </Box>
 

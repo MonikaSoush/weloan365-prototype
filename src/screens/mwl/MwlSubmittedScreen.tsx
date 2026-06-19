@@ -57,34 +57,38 @@ export default function MwlSubmittedScreen() {
   }
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#fff' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         <Box sx={{ px: 3, pt: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 'calc(100% + 150px)', boxSizing: 'border-box' }}>
-          {/* Status */}
-          <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Icon name="checkCircle" size={20} color={GREEN} />
-              <Typography sx={{ fontSize: 17, fontWeight: 800, color: '#0B0F1A' }}>{done ? 'Application Received' : 'Submitted · Pending Guarantor Confirmation'}</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.75, mt: 0.5, pl: '28px' }}>
-              <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: BLUE }}>Reference: MWL-2026-160781</Typography>
-              <Typography sx={{ fontSize: 12, color: MUTED }}>just now</Typography>
-            </Box>
-          </Box>
-
-          {/* Mascot illustration — reserved space */}
-          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          {/* Mascot illustration */}
+          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', overflow: 'hidden', height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <AssetImg
               src={asset(done ? 'illustrations/mascot_done.png' : 'illustrations/mascot_waiting.png')}
               alt=""
               sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
               fallback={
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, color: '#C9D2DE' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
                   <Icon name="image" size={44} color="#C9D2DE" />
                   <Typography sx={{ fontSize: 12, color: '#B4BCC9' }}>{done ? 'mascot_done.png' : 'mascot_waiting.png'}</Typography>
                 </Box>
               }
             />
+          </Box>
+
+          {/* Status card — separate from mascot */}
+          <Box sx={{ bgcolor: '#fff', border: `1.5px solid ${done ? '#BFE6CF' : '#C9D8F5'}`, borderRadius: '16px', px: '18px', py: '16px', display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Box sx={{ width: 44, height: 44, borderRadius: '50%', bgcolor: done ? '#EAF7EF' : '#EEF3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon name="checkCircle" size={22} color={done ? GREEN : BLUE} />
+            </Box>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography sx={{ fontSize: 14.5, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.2px', lineHeight: 1.3 }}>
+                {done ? 'Application Received' : 'Submitted · Pending Guarantor Confirmation'}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.3 }}>
+                <Typography sx={{ fontSize: 12.5, fontWeight: 700, color: BLUE }}>Reference: MWL-2026-160781</Typography>
+                <Typography sx={{ fontSize: 11.5, color: MUTED }}>just now</Typography>
+              </Box>
+            </Box>
           </Box>
 
           {/* Guarantor SMS sent */}
@@ -180,7 +184,7 @@ export default function MwlSubmittedScreen() {
       </Box>
 
       {/* Bottom actions */}
-      <Box sx={{ flexShrink: 0, px: 3, pt: 1.5, pb: '40px', bgcolor: '#F5F5F5', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+      <Box sx={{ flexShrink: 0, px: 3, pt: 1.5, pb: '40px', bgcolor: '#fff', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
         <Button variant="contained" fullWidth onClick={trackApplication} sx={{ height: 54, borderRadius: '14px', fontSize: 16, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}>
           Track My Application
         </Button>
