@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -80,7 +80,7 @@ export default function TermsPrivacyScreen() {
           </Box>
 
           {/* Sections */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5, mt: 2 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2.5, mt: 2 }}>
             {SECTIONS[tab].map((s, i) => (
               <Box key={s.n} sx={{ mt: i === 0 ? 0 : 2.5 }}>
                 <Typography sx={{ fontSize: 15, fontWeight: 800, color: HEADING }}>

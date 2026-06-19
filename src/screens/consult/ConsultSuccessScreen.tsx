@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -32,7 +32,7 @@ export default function ConsultSuccessScreen() {
         </Box>
 
         {/* Booking card */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, bgcolor: '#fff', borderRadius: '16px', p: '16px', mt: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: '16px', mt: 4 }}>
           {/* Date tile */}
           <Box sx={{ width: 64, flexShrink: 0, bgcolor: '#E6F4EA', borderRadius: '12px', py: 1.25, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography sx={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.5px', color: GREEN }}>FRI</Typography>

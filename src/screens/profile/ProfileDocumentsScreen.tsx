@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -27,7 +27,7 @@ function DocRow({
   onCapture: () => void
 }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '12px', display: 'flex', alignItems: 'center', gap: 1.5 }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '12px', display: 'flex', alignItems: 'center', gap: 1.5 }}>
       <Box sx={{ width: 52, height: 52, borderRadius: '10px', bgcolor: done ? '#EAF6EE' : '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <Icon name={thumb} size={24} color={done ? GREEN : MUTED} />
       </Box>

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -79,7 +79,7 @@ export default function CreditScoreScreen() {
         ) : (
         <Box sx={{ px: 3, pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Score card */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '18px', pt: 3, pb: 2.5, px: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '18px', pt: 3, pb: 2.5, px: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Gauge score={SCORE} color={band.color} label={band.label} />
 
             {/* Delta + updated */}
@@ -95,7 +95,7 @@ export default function CreditScoreScreen() {
           </Box>
 
           {/* Range bar */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2.5 }}>
             <Typography sx={{ fontSize: 13, fontWeight: 700, color: HEADING, mb: 1.5 }}>Where you stand</Typography>
             <RangeBar score={SCORE} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
@@ -109,7 +109,7 @@ export default function CreditScoreScreen() {
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1 }}>
               WHAT AFFECTS YOUR SCORE
             </Typography>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', overflow: 'hidden' }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden' }}>
               {FACTORS.map((f, i) => (
                 <Box key={f.label} sx={{ display: 'flex', alignItems: 'center', gap: 1.75, px: '14px', py: '13px', borderBottom: i < FACTORS.length - 1 ? '1px solid #F1F4F8' : 'none' }}>
                   <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#F1F4F8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -132,7 +132,7 @@ export default function CreditScoreScreen() {
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1 }}>
               6-MONTH HISTORY
             </Typography>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2.5 }}>
               <HistoryChart data={HISTORY} color={band.color} />
             </Box>
           </Box>
@@ -152,7 +152,7 @@ export default function CreditScoreScreen() {
 function EmptyState({ onApply }: { onApply: () => void }) {
   return (
     <Box sx={{ px: 3, pt: 1, display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ bgcolor: '#fff', borderRadius: '18px', px: 3, py: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '18px', px: 3, py: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: '#EEF3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
           <Icon name="gauge" size={38} color="#9FB6DC" />
         </Box>
@@ -174,7 +174,7 @@ function EmptyState({ onApply }: { onApply: () => void }) {
       <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1, mt: 1 }}>
         HOW TO BUILD YOUR SCORE
       </Typography>
-      <Box sx={{ bgcolor: '#fff', borderRadius: '14px', overflow: 'hidden' }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden' }}>
         {[
           { icon: 'pay' as IconName, label: 'Take out a loan', detail: 'Apply and get approved for your first loan' },
           { icon: 'checkCircle' as IconName, label: 'Pay on time', detail: 'On-time repayments are the biggest factor' },

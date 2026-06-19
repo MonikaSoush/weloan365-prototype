@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -84,7 +84,7 @@ export default function BlogsScreen() {
                     key={p.id}
                     role="button"
                     onClick={() => {}}
-                    sx={{ bgcolor: '#fff', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
+                    sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}
                   >
                     {/* Thumbnail */}
                     <Box sx={{ height: 130, background: `linear-gradient(135deg, ${p.tint}26, ${p.tint}0D)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

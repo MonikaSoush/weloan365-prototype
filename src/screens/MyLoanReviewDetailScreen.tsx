@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -91,7 +91,7 @@ export default function MyLoanReviewDetailScreen() {
           </Box>
 
           {/* Request amount card */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2.5 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2.5 }}>
             <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.6px', color: LABEL }}>REQUEST AMOUNT</Typography>
             <Typography sx={{ fontSize: 38, fontWeight: 800, color: HEADING, letterSpacing: '-1px', lineHeight: 1.1, mt: 0.5 }}>{amount}</Typography>
             <Box sx={{ height: '1px', bgcolor: '#F0F0F0', my: 1.75 }} />
@@ -116,7 +116,7 @@ export default function MyLoanReviewDetailScreen() {
           {!isStaff && (
           <Box>
             <SectionLabel>My Officer</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2.5, display: 'flex', alignItems: 'center', gap: 1.5, mt: 1.25 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2.5, display: 'flex', alignItems: 'center', gap: 1.5, mt: 1.25 }}>
               <Box
                 sx={{
                   width: 36,
@@ -170,7 +170,7 @@ export default function MyLoanReviewDetailScreen() {
         <Box sx={{ position: 'absolute', inset: 0, zIndex: 200, bgcolor: 'rgba(11,15,26,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', px: 3 }}>
           <Box
             sx={{
-              bgcolor: '#fff', borderRadius: '20px', p: '28px 24px', width: '100%', maxWidth: 320, textAlign: 'center',
+              bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '20px', p: '28px 24px', width: '100%', maxWidth: 320, textAlign: 'center',
               boxShadow: '0 24px 60px rgba(11,15,26,0.28)',
               animation: 'ml-pop 0.22s cubic-bezier(0.32,0.72,0,1)',
               '@keyframes ml-pop': { from: { opacity: 0, transform: 'scale(0.92)' }, to: { opacity: 1, transform: 'scale(1)' } },

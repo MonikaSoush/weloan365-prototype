@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
@@ -208,7 +208,7 @@ export default function RequestConsultScreen() {
           {/* Select Branch */}
           <Box
             onClick={() => setSheet('branch')}
-            sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 4, cursor: 'pointer' }}
+            sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 4, cursor: 'pointer' }}
           >
             <FieldLabel label="Select Branch" required />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.25 }}>
@@ -221,7 +221,7 @@ export default function RequestConsultScreen() {
           <Box sx={{ display: 'flex', gap: 1.5, mt: 2 }}>
             <Box
               onClick={() => setSheet('date')}
-              sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0, cursor: 'pointer' }}
+              sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0, cursor: 'pointer' }}
             >
               <FieldLabel label="Date" required />
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.25 }}>
@@ -231,7 +231,7 @@ export default function RequestConsultScreen() {
             </Box>
             <Box
               onClick={() => setSheet('time')}
-              sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0, cursor: 'pointer' }}
+              sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0, cursor: 'pointer' }}
             >
               <FieldLabel label="Time" required />
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.25 }}>
@@ -242,7 +242,7 @@ export default function RequestConsultScreen() {
           </Box>
 
           {/* Comment */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', py: '16px', mt: 2 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', py: '16px', mt: 2 }}>
             <Box
               component="textarea"
               rows={3}

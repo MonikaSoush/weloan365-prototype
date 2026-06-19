@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -129,7 +129,7 @@ export default function StaffLoanScreen() {
               </Box>
 
               {/* Repayment term — stepped progress bar (3 / 6 / 9 / 12 months) */}
-              <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: '16px', pt: '12px', pb: '4px' }}>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '16px', pt: '12px', pb: '4px' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>
                     Repayment term<Box component="span" sx={{ color: '#E5484D', ml: 0.4 }}>*</Box>
@@ -193,7 +193,7 @@ export default function StaffLoanScreen() {
               onClick={() => setAgree((v) => !v)}
               role="checkbox"
               aria-checked={agree}
-              sx={{ display: 'flex', gap: 1.5, bgcolor: '#fff', borderRadius: '12px', p: '16px', cursor: 'pointer', alignItems: 'flex-start', '&:active': { opacity: 0.85 } }}
+              sx={{ display: 'flex', gap: 1.5, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '16px', cursor: 'pointer', alignItems: 'flex-start', '&:active': { opacity: 0.85 } }}
             >
               <Box sx={{ mt: '1px', width: 22, height: 22, borderRadius: '6px', flexShrink: 0, border: `2px solid ${agree ? BLUE : '#CBD3DF'}`, bgcolor: agree ? BLUE : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.12s' }}>
                 {agree && <Icon name="check" size={14} color="#fff" />}

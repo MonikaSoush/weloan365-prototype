@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+﻿import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -34,7 +34,7 @@ function IdentityCard() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <Box sx={{ position: 'relative', flexShrink: 0 }}>
           <Box sx={{ width: 126, height: 126, borderRadius: '14px', overflow: 'hidden', bgcolor: '#EDF1F6' }}>

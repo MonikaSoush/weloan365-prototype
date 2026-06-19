@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -62,7 +62,7 @@ export default function AppSettingsScreen() {
           <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1 }}>
             NOTIFICATIONS
           </Typography>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
             <ToggleRow icon="bellOff" label="Payment reminders" sub="3 days before payment due" divider checked={paymentReminders} onToggle={setPaymentReminders} />
             <ToggleRow icon="bell" label="Promotions & news" sub="Offers and updates" divider checked={promotions} onToggle={setPromotions} />
             <ToggleRow icon="message" label="Chat notifications" sub="New messages from support" checked={chatNotifs} onToggle={setChatNotifs} />

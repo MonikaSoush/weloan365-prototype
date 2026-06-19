@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -21,7 +21,7 @@ export default function RestructureConsentScreen() {
 
         <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Consent text card */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: '16px', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '16px', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6' }}>CONSENT — V3.2</Typography>
             <Typography sx={{ fontSize: 14, color: '#3A4256', lineHeight: 1.6 }}>
               I, <B>Mr. Sok Dara</B> (NID 010 203 040), authorize <B>NHFC</B> to retrieve my credit information from
@@ -43,7 +43,7 @@ export default function RestructureConsentScreen() {
             <Box
               onClick={() => setAgreed((v) => !v)}
               role="button"
-              sx={{ bgcolor: '#fff', borderRadius: '12px', p: '16px', display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}
+              sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '16px', display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }}
             >
               <Box
                 sx={{

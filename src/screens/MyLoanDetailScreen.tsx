@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+﻿import { ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -56,7 +56,7 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
       </Box>
 
       {/* Overview card — donut + legend + progress + meta */}
-      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Donut />
           <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -72,7 +72,7 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
             <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: LABEL }}>8 of 24 paid</Typography>
             <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: '#000' }}>33% completed</Typography>
           </Box>
-          <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#F5F5F5', overflow: 'hidden' }}>
+          <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#fff', overflow: 'hidden' }}>
             <Box sx={{ height: '100%', width: '33%', bgcolor: OUTSTANDING, borderRadius: '999px' }} />
           </Box>
         </Box>
@@ -86,7 +86,7 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
       </Box>
 
       {/* Next payment due card */}
-      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 3, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 3, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <Icon name="clock" size={16} color="#000" />
           <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#000' }}>Next payment due</Typography>
@@ -99,8 +99,8 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
           <Button
             variant="contained"
             onClick={onPay}
-            startIcon={<Icon name="cash" size={16} />}
-            sx={{ height: 38, minWidth: 0, borderRadius: '9px', px: '12px', py: '10px', fontSize: 13, fontWeight: 500, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
+            startIcon={<Icon name="cash" size={18} />}
+            sx={{ height: 48, minWidth: 0, borderRadius: '12px', px: '20px', fontSize: 15, fontWeight: 700, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
           >
             Pay Now
           </Button>
@@ -181,11 +181,11 @@ const PAY_ROWS: PayRow[] = [
 const PAY_HEAD = ['រ.ល', 'កាលបរិច្ឆេទ', 'ប្រាក់ដើម', 'ផ្សេងៗ', 'ប្រាក់សរុប']
 // Fixed column widths — keep numeric columns tight so the last column has
 // room for the amount + status badge (otherwise the badge gets clipped).
-const PAY_W: (number | undefined)[] = [28, 66, 62, 46, undefined]
+const PAY_W: string[] = ['9%', '21%', '19%', '15%', '36%']
 
 function PaymentTable() {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
       <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
         <Box component="thead">
           <Box component="tr" sx={{ bgcolor: '#FAFAFA' }}>
@@ -198,7 +198,7 @@ function PaymentTable() {
                   fontSize: 10,
                   fontWeight: 600,
                   color: LABEL,
-                  textAlign: i === 0 ? 'center' : 'left',
+                  textAlign: i === 0 ? 'center' : i === 1 ? 'left' : 'right',
                   px: i === 0 ? 0.5 : i === PAY_HEAD.length - 1 ? '10px' : '8px',
                   py: '12px',
                   borderBottom: '1px solid #F0F0F0',
@@ -223,16 +223,16 @@ function PaymentTable() {
                 <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : '#000', whiteSpace: 'nowrap' }}>
                   {row.date}
                 </Box>
-                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
+                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, textAlign: 'right', color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
                   {row.principal}
                 </Box>
-                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
+                <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, textAlign: 'right', color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
                   {row.other}
                 </Box>
                 <Box component="td" sx={{ px: '10px', py: '8px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>{row.total}</Typography>
-                    {row.badge && <StatusBadge text={row.badge.text} tone={row.badge.tone} />}
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, flexWrap: 'nowrap' }}>
+                    <Typography sx={{ fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap', color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>{row.total}</Typography>
+                    {row.badge && <Box sx={{ flexShrink: 0 }}><StatusBadge text={row.badge.text} tone={row.badge.tone} /></Box>}
                   </Box>
                 </Box>
               </Box>
@@ -264,7 +264,7 @@ function OthersTab() {
       {/* Loan service requests */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
         <SectionLabel>Loan Service Requests</SectionLabel>
-        <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
           <ServiceRow icon="cash" title="Payoff Request" subtitle="Notify NHFC of intent to fully settle" divider onClick={() => navigate('/early-payoff')} />
           <ServiceRow
             icon="restructure"
@@ -278,18 +278,21 @@ function OthersTab() {
       {/* My documents */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
         <SectionLabel>My Documents</SectionLabel>
-        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: 2, columnGap: 1 }}>
-          <DocTile label="Payment Schedule" kind="schedule" />
-          <DocTile label="Loan Contract" kind="pdf" />
-          <DocTile label="Guarantee Contract" kind="image" />
-          <DocTile label="Disbursement Receipt" kind="image" />
+        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '14px' }}>
+          {DOCS.map((d, i) => (
+            <DocRow key={d.title} {...d} last={i === DOCS.length - 1} />
+          ))}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25, pl: 0.5 }}>
+          <Icon name="accountSecurity" size={14} color="#9AA3B2" />
+          <Typography sx={{ fontSize: 11.5, color: '#9AA3B2' }}>Official NH documents. Downloads are watermarked with retrieval date.</Typography>
         </Box>
       </Box>
 
       {/* My officer */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
         <SectionLabel>My Officer</SectionLabel>
-        <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Box
             sx={{
               width: 36,
@@ -353,33 +356,40 @@ function ServiceRow({ icon, title, subtitle, divider, onClick }: { icon: 'cash' 
   )
 }
 
-function DocTile({ label, kind }: { label: string; kind: 'schedule' | 'pdf' | 'image' }) {
+const DOCS: { title: string; sub: string; size: string }[] = [
+  { title: 'Payment Schedule', sub: 'Original 24-installment schedule', size: 'PDF · 48 KB' },
+  { title: 'Loan Contract', sub: 'Signed Small Biz Loan agreement', size: 'PDF · 124 KB' },
+  { title: '1st Restructured Contract', sub: 'Approved 12 May 2026 · Grace period 3 months', size: 'PDF · 96 KB' },
+  { title: 'Hypothec Contract', sub: 'Collateral agreement · Secured loan', size: 'PDF · 89 KB' },
+  { title: 'Guarantee Contract', sub: 'Guarantor agreement · Third party security', size: 'PDF · 76 KB' },
+]
+
+function DocRow({ title, sub, size, last }: { title: string; sub: string; size: string; last?: boolean }) {
   const navigate = useNavigate()
-  const openDoc = () => navigate('/document-view?name=' + encodeURIComponent(label))
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-      <Box
-        role="button"
-        onClick={openDoc}
-        sx={{
-          position: 'relative',
-          width: 83,
-          height: 65,
-          borderRadius: '9px',
-          border: '1px solid rgba(0,0,0,0.1)',
-          bgcolor: '#fff',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-        }}
-      >
-        <DocThumb kind={kind} />
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: '14px', borderBottom: last ? 'none' : '1px solid #F0F0F0' }}>
+      {/* Document-page thumbnail (old preview style) */}
+      <Box sx={{ width: 40, height: 50, borderRadius: '6px', border: '1px solid #E2E6EC', bgcolor: '#fff', flexShrink: 0, p: '7px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Box key={i} sx={{ display: 'flex', gap: '3px' }}>
+            <Box sx={{ flex: 1, height: 3, bgcolor: '#E2E6EC', borderRadius: '1px' }} />
+            <Box sx={{ width: 8, height: 3, bgcolor: '#EDEFF2', borderRadius: '1px' }} />
+          </Box>
+        ))}
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-        <Typography sx={{ fontSize: 12, fontWeight: 500, color: VALUE, textAlign: 'center' }} noWrap>{label}</Typography>
-        <Typography role="button" onClick={openDoc} sx={{ fontSize: 12, fontWeight: 500, color: ACCENT, cursor: 'pointer' }}>Preview</Typography>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontSize: 14, fontWeight: 700, color: VALUE }} noWrap>{title}</Typography>
+        <Typography sx={{ fontSize: 12, color: LABEL, lineHeight: 1.4 }}>{sub}</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 0.5, flexShrink: 0 }}>
+        <Typography sx={{ fontSize: 11, color: LABEL }}>{size}</Typography>
+        <Box role="button" onClick={() => navigate('/document-view?name=' + encodeURIComponent(title))} sx={{ display: 'flex', alignItems: 'center', gap: 0.4, bgcolor: '#EEF3FC', borderRadius: '999px', px: 1, py: 0.4, cursor: 'pointer', '&:active': { opacity: 0.7 } }}>
+          <Box component="svg" viewBox="0 0 24 24" fill="none" stroke={ACCENT} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" sx={{ width: 13, height: 13 }}>
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </Box>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, color: ACCENT }}>View</Typography>
+        </Box>
       </Box>
     </Box>
   )

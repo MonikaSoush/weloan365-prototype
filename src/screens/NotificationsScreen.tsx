@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -48,7 +48,7 @@ export default function NotificationsScreen() {
         onScroll={(e: React.UIEvent<HTMLDivElement>) => setScrolled(e.currentTarget.scrollTop > 50)}
       >
         {/* Header */}
-        <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: 1 }}>
+        <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#fff', px: 3, pt: 3, pb: 1 }}>
           {/* Back row — compact title fades in when scrolled */}
           <Box sx={{ display: 'flex', alignItems: 'center', height: 40 }}>
             <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ ml: -1, color: HEADING }}>
@@ -144,7 +144,7 @@ function DateLabel({ children }: { children: string }) {
 
 function NotifCard({ children }: { children: React.ReactNode }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '12px', mb: 1.5 }}>{children}</Box>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '12px', mb: 1.5 }}>{children}</Box>
   )
 }
 
@@ -442,7 +442,7 @@ function ReceiptSheet({ open, onClose }: { open: boolean; onClose: () => void })
           right: 0,
           bottom: 0,
           zIndex: 101,
-          bgcolor: '#F5F5F5',
+          bgcolor: '#fff',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           transform: open ? 'translateY(0)' : 'translateY(100%)',
@@ -472,7 +472,7 @@ function ReceiptSheet({ open, onClose }: { open: boolean; onClose: () => void })
           </Box>
 
           <ReceiptSectionLabel>SMALL BUSINESS LOAN</ReceiptSectionLabel>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: 2, mt: 1 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: 2, mt: 1 }}>
             <ReceiptRow label="Principal" value="$300.00" bold />
             <ReceiptRow label="Interest" value="$20.00" bold />
             <ReceiptRow label="Late fee" value="—" />
@@ -482,7 +482,7 @@ function ReceiptSheet({ open, onClose }: { open: boolean; onClose: () => void })
           </Box>
 
           <ReceiptSectionLabel>TRANSACTION</ReceiptSectionLabel>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: 2, mt: 1, mb: 1 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: 2, mt: 1, mb: 1 }}>
             <ReceiptRow label="Sender" value="Sothea Mao (ACLEDA Bank) 000 0000 0000" bold align />
             <ReceiptRow label="Reference" value="TXN-2026-0319-8842" bold />
             <ReceiptRow label="Date" value="16 Mar 2026 · 12:22 PM" bold />
@@ -579,7 +579,7 @@ function AnnouncementsFeed() {
           key={a.title}
           role="button"
           onClick={() => navigate('/announcement?i=' + i)}
-          sx={{ bgcolor: '#fff', borderRadius: '14px', overflow: 'hidden', mb: 2, cursor: 'pointer', '&:active': { opacity: 0.95 } }}
+          sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden', mb: 2, cursor: 'pointer', '&:active': { opacity: 0.95 } }}
         >
           <Box sx={{ height: 150, bgcolor: '#DCE9FB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Typography sx={{ fontSize: 17, fontWeight: 800, letterSpacing: '1px', color: BLUE }}>THUMBNAIL</Typography>

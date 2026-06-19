@@ -1,4 +1,4 @@
-// ╔═══════════════════════════════════════════════════════════════════════════╗
+﻿// ╔═══════════════════════════════════════════════════════════════════════════╗
 // ║  HOME PARTS — shared building blocks for the "Home – new customer" samples ║
 // ║                                                                           ║
 // ║  Uses the real WeLoan365 assets under /public/assets when present, and    ║
@@ -68,7 +68,7 @@ export function HomeTopBar({ secondIcon = 'bell' }: { secondIcon?: IconName } = 
         position: 'sticky',
         top: 0,
         zIndex: 10,
-        bgcolor: '#F5F5F5',
+        bgcolor: '#fff',
       }}
     >
       {isVisitor ? (
@@ -172,7 +172,7 @@ function MyLoanOfficerCard() {
   return (
     <Box>
       <MoreSectionLabel>MY OFFICER</MoreSectionLabel>
-      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box
           sx={{
             width: 44,
@@ -303,7 +303,7 @@ export function MoreMenuBody({
         {/* Services */}
         <Box>
           <MoreSectionLabel>SUPPORT</MoreSectionLabel>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
             <MoreRow icon="phone" label="Request a consultation" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult')} />
             <MoreRow icon="blogs" label="Blogs & Education" divider onClick={() => navigate('/blogs')} />
             <MoreRow icon="feedback" label="Feedback" divider onClick={() => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback')} />
@@ -801,7 +801,7 @@ export function ProductScroller() {
           key={name}
           role="button"
           onClick={() => navigate(`/product-detail?p=${encodeURIComponent(name)}`)}
-          sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}
+          sx={{ width: 158, flexShrink: 0, borderRadius: '12px', overflow: 'hidden', bgcolor: '#F5F5F5', border: '1px solid #ECEFF3', cursor: 'pointer', '&:active': { transform: 'scale(0.98)' }, transition: 'transform 0.12s' }}
         >
           <Box sx={{ position: 'relative', height: 106 }}>
             <AssetImg
@@ -983,7 +983,7 @@ export function DiscoverRow() {
         sx={{ position: 'absolute', inset: 0, zIndex: 100, bgcolor: 'rgba(11,15,26,0.45)', opacity: active ? 1 : 0, pointerEvents: active ? 'auto' : 'none', transition: 'opacity 0.25s ease' }}
       />
       {/* Sheet */}
-      <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 101, bgcolor: '#F5F5F5', borderTopLeftRadius: 20, borderTopRightRadius: 20, transform: active ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1)', maxHeight: '90%', display: 'flex', flexDirection: 'column', boxShadow: '0 -8px 30px rgba(11,15,26,0.18)' }}>
+      <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 101, bgcolor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, transform: active ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1)', maxHeight: '90%', display: 'flex', flexDirection: 'column', boxShadow: '0 -8px 30px rgba(11,15,26,0.18)' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.25, pb: 0.5, flexShrink: 0 }}>
           <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: '#D6DBE2' }} />
         </Box>
@@ -1027,7 +1027,7 @@ export function DiscoverRow() {
         </Box>
         {/* News cards */}
         {DISCOVER_NEWS_ITEMS.map((item) => (
-          <Box key={item.title} role="button" onClick={() => setActive(item)} sx={{ flexShrink: 0, width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#fff', border: '1px solid #ECEFF3', display: 'flex', flexDirection: 'column', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          <Box key={item.title} role="button" onClick={() => setActive(item)} sx={{ flexShrink: 0, width: 152, height: 218, borderRadius: '14px', overflow: 'hidden', bgcolor: '#F5F5F5', border: '1px solid #ECEFF3', display: 'flex', flexDirection: 'column', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
             <Box sx={{ height: 106, flexShrink: 0 }}>
               <AssetImg src={item.img} alt={item.title} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#E7ECF2' }} />} />
             </Box>
@@ -1056,7 +1056,7 @@ export function Card({ children, sx, onClick }: { children: ReactNode; sx?: obje
       sx={{
         bgcolor: '#fff',
         borderRadius: '16px',
-        border: 'none',
+        border: '1px solid #E8EAEE',
         boxShadow: 'none',
         p: 2.5,
         ...sx,

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+﻿import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -101,7 +101,7 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
             />
             <Box>
               <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6', mb: 1 }}>LOAN REQUEST</Typography>
-              <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
                 <Row label="Currency" value={currencyCode} divider />
                 <Row label="Requested Amount" value={`${sym}${amountStr}`} divider />
                 <Row label="Interest Rate" value="0.75% / mo" divider />
@@ -207,7 +207,7 @@ function Section({ title, rows, onEdit }: { title: string; rows: string[][]; onE
         <Typography sx={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.5px', color: '#8A94A6' }}>{title}</Typography>
         {onEdit && <Typography onClick={onEdit} sx={{ fontSize: 13, fontWeight: 700, color: BLUE, cursor: 'pointer' }}>EDIT</Typography>}
       </Box>
-      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
         {rows.map(([label, value], i) => (
           <Row key={label} label={label} value={value} divider={i < rows.length - 1} />
         ))}

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+﻿import { useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -73,7 +73,7 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
                 ? 'REQUEST AMOUNT ៛400K – ៛59,500K'
                 : `REQUEST AMOUNT $${MIN_AMOUNT.toLocaleString('en-US')} – $${MAX_AMOUNT.toLocaleString('en-US')}`}
             </GroupLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
               <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Amount</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1, minWidth: 0 }}>
@@ -132,7 +132,7 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
           {/* Payment estimate (term slider) */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             <SectionLabel>Payment estimate</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{MIN_MONTHS} months</Typography>
                 <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{MAX_MONTHS} months</Typography>
@@ -180,7 +180,7 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
 
           {/* Loan term + interest */}
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <Box sx={{ width: 171, flexShrink: 0, bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+            <Box sx={{ width: 171, flexShrink: 0, bgcolor: '#F5F5F5', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
               <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Loan term</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#000' }}>{months}</Typography>
@@ -203,7 +203,7 @@ export default function MwlLoanScreen({ nonMwl = false }: { nonMwl?: boolean } =
           <SelectField label="Repayment method" options={REPAYMENT_METHODS} value={method} onChange={setMethod} />
 
           {/* Monthly payment summary */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: '26px' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: '26px' }}>
             <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: LABEL, textTransform: 'uppercase' }}>
               Monthly payment
             </Typography>

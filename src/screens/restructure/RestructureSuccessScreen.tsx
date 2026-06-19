@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Icon } from '../../components/Icon'
+import { AssetImg, asset } from '../../components/home/media'
 import { useHomePath } from '../../workspace/useHomePath'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -15,11 +16,16 @@ export default function RestructureSuccessScreen() {
   const home = useHomePath()
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#fff' }}>
       <Box className="scroll-content" sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', px: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <Box sx={{ width: 96, height: 96, borderRadius: '50%', bgcolor: '#E6F4EA', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
-            <Icon name="checkCircle" size={52} color={GREEN} strokeWidth={2} />
+          <Box sx={{ height: 200, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1, overflow: 'hidden' }}>
+            <AssetImg
+              src={asset('illustrations/mascot_done.png')}
+              alt=""
+              sx={{ height: '100%', width: '100%', objectFit: 'contain' }}
+              fallback={<Icon name="checkCircle" size={52} color={GREEN} strokeWidth={2} />}
+            />
           </Box>
           <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mb: 1 }}>
             Request submitted!
@@ -31,7 +37,7 @@ export default function RestructureSuccessScreen() {
         </Box>
 
         {/* Reference card */}
-        <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '18px', mt: 3 }}>
+        <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '18px', mt: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6' }}>REFERENCE</Typography>
             <Box sx={{ bgcolor: '#FBEBC6', borderRadius: '999px', px: '9px', py: '3px' }}>
@@ -62,7 +68,7 @@ export default function RestructureSuccessScreen() {
         </Box>
       </Box>
 
-      <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
+      <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#fff' }}>
         <Button
           variant="contained"
           fullWidth

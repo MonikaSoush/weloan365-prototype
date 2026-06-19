@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+﻿import { ReactNode, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -48,6 +48,25 @@ const STAFF_FEATURES: [string, string][] = [
   ['Loan size', 'Up to 2× salary'],
   ['Interest', '1.0%'],
   ['Repayment', 'Constant'],
+]
+
+// Migration Worker Loan — full key-features list (ordered).
+const MWL_FEATURES: [string, string][] = [
+  ['Loan size', 'Up to $15,000'],
+  ['Interest Rate', 'From 0.98% / month'],
+  ['Loan term', 'Up to 36 months'],
+  ['Loan Fee', '3.00% of approved amount'],
+  ['CBC Fee', 'USD 10.00 (non-refundable)'],
+  ['Purpose', 'Overseas employment-related expenses'],
+  ['Repayment', 'Periodic principal + interest'],
+]
+
+// Migration Worker Loan is unsecured — no collateral required.
+const MWL_ELIGIBILITY: [string, string][] = [
+  ['Age', '18 – 65 years old'],
+  ['Residence', 'Permanent address in NH MFI operating area'],
+  ['Income', 'Stable, verifiable source'],
+  ['Collateral', 'Not required'],
 ]
 
 const ELIGIBILITY: [string, string][] = [
@@ -126,7 +145,9 @@ export default function ProductDetailScreen() {
   const name = params.get('p') ?? 'SME Loan'
   const hero = HERO_BY_NAME[name] ?? BANNERS.smeS1
   const isStaff = name === 'Staff Loan'
-  const features = isStaff ? STAFF_FEATURES : KEY_FEATURES
+  const isMwl = name === 'Migration Worker Loan'
+  const features = isStaff ? STAFF_FEATURES : isMwl ? MWL_FEATURES : KEY_FEATURES
+  const eligibility = isMwl ? MWL_ELIGIBILITY : ELIGIBILITY
   // Apply flow per product: Migration Worker Loan → MWL (multi-step); Staff Loan
   // → the single-screen staff form; everything else → the Non-MWL flow.
   const applyPath =
@@ -293,7 +314,7 @@ export default function ProductDetailScreen() {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
               <SectionLabel>Eligibility</SectionLabel>
-              <SpecCard rows={ELIGIBILITY} />
+              <SpecCard rows={eligibility} />
             </Box>
           </Box>
 
@@ -301,7 +322,7 @@ export default function ProductDetailScreen() {
           {!isStaff && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <SectionLabel>Required Documents</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
               {DOCUMENTS.map((d, i) => (
                 <Box
                   key={d}
@@ -378,7 +399,7 @@ function DocPreviewSheet({ doc, onClose }: { doc: string | null; onClose: () => 
       </Typography>
 
       {/* Sample document mockup */}
-      <Box sx={{ bgcolor: '#F5F5F5', borderRadius: '16px', py: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.25 }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', py: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.25 }}>
         <SamplePage icon={detail.icon} title={doc ?? 'Document'} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           <Icon name="info" size={15} color={LABEL} />
@@ -518,7 +539,7 @@ function CheckBadge() {
 
 function SpecCard({ rows }: { rows: [string, string][] }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: '13px' }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '13px' }}>
       {rows.map(([k, v], i) => (
         <Box
           key={k}

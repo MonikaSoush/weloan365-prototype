@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -44,7 +44,7 @@ export default function RestructureConditionsScreen() {
           </Box>
 
           {/* Unpaid obligation */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: '16px' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '16px' }}>
             <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A', mb: 1.25 }}>Unpaid obligation</Typography>
             <KeyValue label="Interest" value="$120.00" />
             <KeyValue label="Monthly fee" value="$15.00" />
@@ -74,7 +74,7 @@ export default function RestructureConditionsScreen() {
           </Box>
 
           {/* New payment estimate */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: '16px' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '16px' }}>
             <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#0B0F1A', mb: 1.25 }}>New payment estimate</Typography>
             <KeyValue label="During grace (1–3 mo)" value="$23.76/mo" bold />
             <KeyValue label="After grace (4–12 mo)" value="$248.40/mo" bold />
@@ -97,7 +97,7 @@ export default function RestructureConditionsScreen() {
           {showTable && (
             <Box>
               <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1 }}>REPAYMENT PREVIEW</Typography>
-              <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
                 <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                   <Box component="thead">
                     <Box component="tr">

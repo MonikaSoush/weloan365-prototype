@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -29,14 +29,31 @@ const METHODS: Method[] = [
 
 const KH = `'Noto Sans Khmer', sans-serif`
 
+const KHR_RATE = 4100 // 1 USD ≈ 4,100 ៛
+
 export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [selected, setSelected] = useState<MethodId | null>(null)
+  const [amount, setAmount] = useState('320.00')
+  const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
 
   // The sheet stays mounted (renders null when closed), so reset the choice
   // each time it re-opens — every visit starts with nothing selected.
   useEffect(() => {
-    if (open) setSelected(null)
+    if (open) {
+      setSelected(null)
+      setAmount('320.00')
+      setCur('USD')
+    }
   }, [open])
+
+  // Switching currency converts the current amount at the demo rate.
+  const switchCur = (next: 'USD' | 'KHR') => {
+    if (next === cur) return
+    const n = parseFloat(amount.replace(/,/g, '')) || 0
+    setAmount(next === 'KHR' ? Math.round(n * KHR_RATE).toLocaleString('en-US') : (n / KHR_RATE).toFixed(2))
+    setCur(next)
+  }
+  const symbol = cur === 'USD' ? '$' : '៛'
 
   if (!open) return null
 
@@ -58,7 +75,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
       <Box
         sx={{
           position: 'relative',
-          bgcolor: '#F5F5F5',
+          bgcolor: '#fff',
           borderTopLeftRadius: '22px',
           borderTopRightRadius: '22px',
           maxHeight: '92%',
@@ -83,11 +100,41 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
 
         {/* Scrollable body */}
         <Box sx={{ px: 3, pt: 1, pb: 2, overflowY: 'auto', scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
+          {/* Amount */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+            <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.7px', color: MUTED }}>
+              AMOUNT
+            </Typography>
+            <Box sx={{ display: 'flex', bgcolor: '#EFF1F4', borderRadius: '999px', p: '3px' }}>
+              {(['USD', 'KHR'] as const).map((c) => (
+                <Box
+                  key={c}
+                  role="button"
+                  onClick={() => switchCur(c)}
+                  sx={{ minWidth: 30, textAlign: 'center', px: 1.25, py: '4px', borderRadius: '999px', cursor: 'pointer', bgcolor: cur === c ? '#fff' : 'transparent', boxShadow: cur === c ? '0 1px 3px rgba(0,0,0,0.12)' : 'none' }}
+                >
+                  <Typography sx={{ fontSize: 14, fontWeight: 800, color: cur === c ? HEADING : MUTED }}>{c === 'USD' ? '$' : '៛'}</Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, border: '1px solid #E8EAEE', borderRadius: '14px', px: 2, height: 56, mb: 2.5 }}>
+            <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING }}>{symbol}</Typography>
+            <Box
+              component="input"
+              type="text"
+              inputMode="decimal"
+              value={amount}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
+              sx={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', bgcolor: 'transparent', fontFamily: 'inherit', fontSize: 22, fontWeight: 800, color: HEADING }}
+            />
+          </Box>
+
           <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.7px', color: MUTED, mb: 1 }}>
             PAYMENT METHOD
           </Typography>
 
-          <Box sx={{ bgcolor: '#fff', borderRadius: '14px', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden' }}>
             {METHODS.map((m, i) => {
               const isSelected = selected === m.id
               const showQr = m.id === 'khqr' && isSelected
@@ -99,7 +146,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
                     divider={i < METHODS.length - 1}
                     onSelect={() => setSelected(m.id)}
                   />
-                  {showQr && <KhqrPanel />}
+                  {showQr && <KhqrPanel amount={amount} cur={cur} />}
                 </Box>
               )
             })}
@@ -107,7 +154,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
         </Box>
 
         {/* Footer */}
-        <Box sx={{ px: 3, pt: 1.5, pb: '34px', bgcolor: '#F5F5F5' }}>
+        <Box sx={{ px: 3, pt: 1.5, pb: '34px', bgcolor: '#fff' }}>
           <Button
             variant="contained"
             fullWidth
@@ -124,7 +171,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
               '&.Mui-disabled': { bgcolor: '#A9C3EC', color: '#fff' },
             }}
           >
-            Pay Now
+            {amount ? `Pay ${symbol}${amount}` : 'Pay Now'}
           </Button>
         </Box>
       </Box>
@@ -181,18 +228,24 @@ function Radio({ selected }: { selected: boolean }) {
 }
 
 // ─── KHQR scan-to-pay panel ──────────────────────────────────────────────────
-function KhqrPanel() {
+function KhqrPanel({ amount, cur }: { amount: string; cur: 'USD' | 'KHR' }) {
   return (
     <Box sx={{ px: 2, pb: 2.5, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5 }}>
       <Typography sx={{ fontSize: 14, fontWeight: 700, color: HEADING }}>Scan to pay</Typography>
 
-      {/* KHQR card artwork */}
-      <AssetImg
-        src={BANKS.khqrCard}
-        alt="KHQR — NongHyup M.F.I"
-        sx={{ width: 200, height: 'auto', display: 'block' }}
-        fallback={<Box sx={{ width: 200, aspectRatio: '189 / 259', borderRadius: '12px', bgcolor: '#9C1820' }} />}
-      />
+      {/* KHQR card artwork — amount overlaid under the merchant name */}
+      <Box sx={{ position: 'relative', width: 200 }}>
+        <AssetImg
+          src={BANKS.khqrCard}
+          alt="KHQR — NongHyup M.F.I"
+          sx={{ width: 200, height: 'auto', display: 'block' }}
+          fallback={<Box sx={{ width: 200, aspectRatio: '189 / 259', borderRadius: '12px', bgcolor: '#9C1820' }} />}
+        />
+        <Box sx={{ position: 'absolute', top: '23.5%', left: '8%', display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
+          <Typography component="span" sx={{ fontSize: 14, fontWeight: 800, color: '#0B0F1A', lineHeight: 1 }}>{amount || '0'}</Typography>
+          <Typography component="span" sx={{ fontSize: 9.5, fontWeight: 700, color: '#5B6473', lineHeight: 1 }}>{cur}</Typography>
+        </Box>
+      </Box>
 
       {/* Share / Download — generous tap targets (≥44px high) */}
       <Box sx={{ display: 'flex', gap: 1.5, pt: 0.5, width: '100%' }}>

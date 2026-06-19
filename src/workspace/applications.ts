@@ -14,6 +14,11 @@ export interface LoanApplication {
   rate: string // e.g. "1.0%/mo"
   ref: string
   on: string // requested-on date, e.g. "17 Jun 2026"
+  track?: boolean // open the visual Application Tracker instead of the review detail
+}
+
+export function hasApplication(ref: string): boolean {
+  return applications.some((a) => a.ref === ref)
 }
 
 let applications: LoanApplication[] = []

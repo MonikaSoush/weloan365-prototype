@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+﻿import { useState, type ReactNode } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -166,7 +166,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
           {/* Loan request — Non-MWL captures the amount on this same step */}
           {nonMwl && (
             <Box>
-              <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
                 <Typography sx={{ fontSize: 12, color: '#8A94A6', lineHeight: '16px' }}>Amount</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#8A94A6' }}>{currency === 'Riel' ? '៛' : '$'}</Typography>
@@ -191,7 +191,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
               {showTable && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 1.5 }}>
                   {/* Term — snap-to-stop slider (range depends on the product) */}
-                  <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '16px' }}>
+                  <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '16px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: '#737373', textTransform: 'uppercase' }}>Loan term</Typography>
                       <Typography sx={{ fontSize: 15, fontWeight: 700, color: '#0B0F1A' }}>{months} months</Typography>
@@ -221,7 +221,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
                     </Box>
                   </Box>
                   {/* Monthly payment summary */}
-                  <Box sx={{ bgcolor: '#fff', borderRadius: '14px', p: '18px' }}>
+                  <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', p: '18px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: '#737373', textTransform: 'uppercase' }}>Monthly payment</Typography>
                       <Box sx={{ bgcolor: '#EEF3FC', borderRadius: '999px', px: 1.25, py: '3px' }}>
@@ -244,7 +244,7 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
                     </Box>
                   </Box>
                   {/* Repayment preview (first 3 months) */}
-                  <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+                  <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
                     <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                       <Box component="thead">
                         <Box component="tr">
@@ -330,8 +330,8 @@ export default function MwlAboutScreen({ nonMwl = false }: { nonMwl?: boolean } 
 
 function DocRow({ label, img, canShare, onPreview }: { label: string; img?: string; canShare?: boolean; onPreview: () => void }) {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: 1.5, minHeight: 80, display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <Box sx={{ width: 56, height: 56, borderRadius: '10px', bgcolor: '#F5F5F5', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: 1.5, minHeight: 80, display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <Box sx={{ width: 56, height: 56, borderRadius: '10px', bgcolor: '#fff', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <AssetImg
           src={img}
           alt={label}

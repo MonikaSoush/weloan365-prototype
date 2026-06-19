@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -38,9 +38,9 @@ export default function AdvanceHistoryPreviewScreen() {
   const navigate = useNavigate()
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#fff' }}>
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       {/* Header */}
-      <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.5, pt: 3, pb: 1.5, bgcolor: '#fff', borderBottom: '1px solid #EDEFF2' }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.5, pt: 3, pb: 1.5, bgcolor: '#F5F5F5', borderBottom: '1px solid #EDEFF2' }}>
         <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: HEADING }}>
           <Icon name="chevronLeft" size={26} color={HEADING} />
         </IconButton>

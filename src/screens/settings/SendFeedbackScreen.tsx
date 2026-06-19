@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -111,7 +111,7 @@ export default function SendFeedbackScreen() {
       </Box>
 
       {/* Footer CTA */}
-      <Box sx={{ px: 3, pt: 2, pb: '44px', bgcolor: '#F5F5F5' }}>
+      <Box sx={{ px: 3, pt: 2, pb: '44px', bgcolor: '#fff' }}>
         <Button
           fullWidth
           onClick={() => navigate('/feedback-history')}

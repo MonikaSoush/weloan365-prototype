@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom'
+﻿import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -51,31 +51,79 @@ const ROWS: Row[] = [
 ]
 const TOTAL: Row = ['', 'Total', '3,000.00', '745.60', '149.12', '0.00', '3,894.72', '']
 const HEAD = ['No', 'Installment Date', 'Principal', 'Interest', 'Admin Fee', 'Unpaid Int', 'Total Amount', 'Loan Outstanding']
-const COL_W = [30, 96, 70, 66, 64, 60, 86, 96]
+const COL_W = [20, 52, 44, 42, 40, 38, 50, 52]
+
+// ─── Contract documents (Loan / Hypothec / Guarantee / Restructured) ──────────
+type ContractDef = {
+  title: string
+  ref: string
+  note?: { tone: 'warn' | 'info'; text: string }
+  sections: { label: string; rows: [string, string][] }[]
+}
+const CONTRACTS: Record<string, ContractDef> = {
+  'Loan Contract': {
+    title: 'Loan Contract',
+    ref: 'Ref: 026-01285956 · Issued: 01 Jan 2024',
+    sections: [
+      { label: 'PARTIES', rows: [['Lender', 'NH Loans Co., Ltd.'], ['Borrower', 'Dong Phally'], ['Loan product', 'Small Biz Loan']] },
+      { label: 'LOAN TERMS', rows: [['Loan amount', '$4,900.00'], ['Interest rate', '1.2% / mo'], ['Tenure', '24 months']] },
+    ],
+  },
+  '1st Restructured Contract': {
+    title: '1st Restructured Contract',
+    ref: 'Ref: 026-01285956-RST · Issued: 12 May 2026',
+    note: { tone: 'info', text: 'Approved restructuring of your existing loan. The new repayment terms below replace the original ones.' },
+    sections: [
+      { label: 'NEW TERMS', rows: [['Loan amount', '$2,000.00'], ['Interest rate', '1.5% / mo'], ['Tenure', '12 months'], ['Grace period', '3 months']] },
+    ],
+  },
+  'Hypothec Contract': {
+    title: 'Hypothec Contract',
+    ref: 'Ref: 026-01285956-HYP · Issued: 01 Jan 2024',
+    note: { tone: 'warn', text: 'This document describes the asset pledged as collateral for this loan.' },
+    sections: [
+      { label: 'COLLATERAL', rows: [['Asset type', 'Land title'], ['Title number', 'PP-2023-004512'], ['Location', 'Khan Toul Kork, PP']] },
+    ],
+  },
+  'Guarantee Contract': {
+    title: 'Guarantee Contract',
+    ref: 'Ref: 026-01285956-GUA · Issued: 01 Jan 2024',
+    note: { tone: 'info', text: 'A guarantor has agreed to be responsible for repaying this loan if you are unable to.' },
+    sections: [
+      { label: 'GUARANTEE TERMS', rows: [['Guarantor', 'Kim Dara'], ['Guaranteed amount', '$4,900.00']] },
+    ],
+  },
+}
 
 export default function DocumentViewerScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
-  const title = (params.get('name') ?? 'Actual Payment') + '.pdf'
+  const name = params.get('name') ?? 'Actual Payment'
+  const contract = CONTRACTS[name]
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#fff' }}>
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       {/* Header */}
-      <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.5, pt: 3, pb: 1.5, bgcolor: '#fff', borderBottom: '1px solid #EDEFF2' }}>
+      <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.5, pt: 3, pb: 1.5, bgcolor: '#F5F5F5', borderBottom: '1px solid #EDEFF2' }}>
         <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: HEADING }}>
           <Icon name="chevronLeft" size={26} color={HEADING} />
         </IconButton>
-        <Typography noWrap sx={{ flex: 1, textAlign: 'center', fontSize: 20, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>
-          {title}
+        <Typography noWrap sx={{ flex: 1, textAlign: 'center', fontSize: 18, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>
+          {name}
         </Typography>
-        <Typography role="button" sx={{ flexShrink: 0, fontSize: 16, fontWeight: 700, color: BLUE, px: 1, cursor: 'pointer' }}>
-          Save
-        </Typography>
+        <IconButton aria-label="Download" sx={{ color: BLUE }}>
+          <Icon name="download" size={22} color={BLUE} />
+        </IconButton>
       </Box>
 
-      {/* Document body */}
+      {contract ? (
+        <Box className="scroll-content" sx={{ flex: 1, overflow: 'auto', bgcolor: '#F5F5F5', p: 2 }}>
+          <ContractView c={contract} />
+        </Box>
+      ) : (
+      /* Document body — repayment schedule */
       <Box className="scroll-content" sx={{ flex: 1, overflow: 'auto', bgcolor: '#fff' }}>
-        <Box sx={{ minWidth: 720, px: 2.5, py: 3 }}>
+        <Box sx={{ px: 1.5, py: 3 }}>
           {/* Title block */}
           <Box sx={{ textAlign: 'center', mb: 2.5 }}>
             <Typography sx={{ fontSize: 17, fontWeight: 700, color: BRAND, fontFamily: 'Georgia, serif' }}>
@@ -132,6 +180,68 @@ export default function DocumentViewerScreen() {
           </Box>
         </Box>
       </Box>
+      )}
+    </Box>
+  )
+}
+
+function ContractView({ c }: { c: ContractDef }) {
+  return (
+    <Box sx={{ position: 'relative', bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: '24px 22px', overflow: 'hidden' }}>
+      {/* Watermark */}
+      <Typography sx={{ position: 'absolute', top: '46%', left: '50%', transform: 'translate(-50%, -50%) rotate(-28deg)', fontSize: 46, fontWeight: 900, color: 'rgba(39,92,178,0.07)', letterSpacing: 4, whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+        NH LOANS
+      </Typography>
+
+      {/* Issuer */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+        <Box component="svg" viewBox="0 0 24 24" fill="none" stroke={BLUE} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" sx={{ width: 26, height: 26, flexShrink: 0 }}>
+          <line x1="3" x2="21" y1="22" y2="22" />
+          <line x1="6" x2="6" y1="18" y2="11" />
+          <line x1="10" x2="10" y1="18" y2="11" />
+          <line x1="14" x2="14" y1="18" y2="11" />
+          <line x1="18" x2="18" y1="18" y2="11" />
+          <polygon points="12 2 20 7 4 7" />
+        </Box>
+        <Box>
+          <Typography sx={{ fontSize: 16, fontWeight: 800, color: HEADING }}>NH Loans</Typography>
+          <Typography sx={{ fontSize: 11.5, color: '#8A94A6' }}>Licensed Microfinance Institution</Typography>
+        </Box>
+      </Box>
+      <Box sx={{ height: 3, bgcolor: BLUE, borderRadius: '2px', mt: 1.5, mb: 2.5 }} />
+
+      {/* Title */}
+      <Typography sx={{ fontSize: 24, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>{c.title}</Typography>
+      <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 0.25 }}>{c.ref}</Typography>
+
+      {/* Note */}
+      {c.note && (
+        <Box sx={{ display: 'flex', gap: 1, bgcolor: c.note.tone === 'warn' ? '#FBF6EC' : '#EFE7FB', borderRadius: '12px', p: '12px 14px', mt: 2.5 }}>
+          <Box sx={{ mt: '1px' }}><Icon name="info" size={16} color={c.note.tone === 'warn' ? '#C47F11' : '#7A4DD6'} /></Box>
+          <Typography sx={{ fontSize: 12.5, color: c.note.tone === 'warn' ? '#7A5A12' : '#5B4A8A', lineHeight: 1.5 }}>{c.note.text}</Typography>
+        </Box>
+      )}
+
+      {/* Sections */}
+      {c.sections.map((s) => (
+        <Box key={s.label} sx={{ mt: 3 }}>
+          <Typography sx={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.5px', color: BLUE, mb: 0.5 }}>{s.label}</Typography>
+          <Box sx={{ borderTop: '1px solid #ECEFF3' }}>
+            {s.rows.map(([k, v]) => (
+              <Box key={k} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, py: '10px', borderBottom: '1px solid #F2F4F7' }}>
+                <Typography sx={{ fontSize: 13.5, color: '#8A94A6', flexShrink: 0 }}>{k}</Typography>
+                <Typography sx={{ fontSize: 14, fontWeight: 800, color: HEADING, textAlign: 'right' }}>{v}</Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      ))}
+
+      {/* Footer */}
+      <Box sx={{ mt: 3, pt: 2, borderTop: '1px solid #ECEFF3', textAlign: 'center' }}>
+        <Typography sx={{ fontSize: 11, color: '#9AA3B2' }}>NH Loans Co., Ltd. · Phnom Penh, Cambodia</Typography>
+        <Typography sx={{ fontSize: 11, color: '#9AA3B2', mt: 0.25 }}>Retrieved 26 May 2026.</Typography>
+      </Box>
     </Box>
   )
 }
@@ -153,13 +263,13 @@ function Cell({ children, w, head, bold, align = 'left', last }: { children: Rea
       sx={{
         width: w,
         flexShrink: 0,
-        px: '6px',
+        px: '3px',
         py: '5px',
         borderRight: last ? 'none' : `1px solid ${BORDER}`,
         textAlign: align,
       }}
     >
-      <Typography sx={{ fontSize: 10.5, fontWeight: head || bold ? 700 : 400, color: head ? HEAD_ORANGE : HEADING, lineHeight: 1.3 }}>
+      <Typography sx={{ fontSize: 8.5, fontWeight: head || bold ? 700 : 400, color: head ? HEAD_ORANGE : HEADING, lineHeight: 1.3 }}>
         {children}
       </Typography>
     </Box>

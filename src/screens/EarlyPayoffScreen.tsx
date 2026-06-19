@@ -1,13 +1,16 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import { Icon } from '../components/Icon'
 import { MwlHeader, MwlTitle, BLUE } from './mwl/MwlParts'
 
 const HEADING = '#0B0F1A'
 const LABEL = '#8A94A6'
 const VALUE = '#171717'
+
+const REASONS = ['Loan fully repaid ahead of schedule', 'Sale of collateral asset', 'Refinancing with another institution', 'Other']
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Early payoff — full settlement breakdown + comment, requests a payoff letter.
@@ -33,7 +36,9 @@ function BreakdownRow({ label, value }: Row) {
 
 export default function EarlyPayoffScreen() {
   const navigate = useNavigate()
-  const [comment, setComment] = useState('')
+  const [payoffDate, setPayoffDate] = useState('')
+  const [reason, setReason] = useState('')
+  const [agreed, setAgreed] = useState(false)
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -42,8 +47,19 @@ export default function EarlyPayoffScreen() {
         <MwlTitle>Early payoff</MwlTitle>
 
         <Box sx={{ px: 3, pb: 3, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Notice-only warning */}
+          <Box sx={{ display: 'flex', gap: 1.25, bgcolor: '#FBF3DD', borderRadius: '12px', p: '14px 16px' }}>
+            <Box sx={{ mt: '1px' }}><Icon name="alert" size={18} color="#C47F11" /></Box>
+            <Box sx={{ flex: 1 }}>
+              <Typography sx={{ fontSize: 13.5, fontWeight: 800, color: '#7A5A12' }}>This serves a notice only</Typography>
+              <Typography sx={{ fontSize: 12.5, color: '#7A5A12', lineHeight: 1.5, mt: 0.5 }}>
+                The <Box component="span" sx={{ fontWeight: 800 }}>actual payoff is completed at the branch</Box>. Your branch calculates the precise payoff amount, any lock-in penalty, and releases your collateral from the vault. This form simply tells NH you intend to pay off.
+              </Typography>
+            </Box>
+          </Box>
+
           {/* Total repay amount + breakdown */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: '18px' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '18px' }}>
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: LABEL }}>
               TOTAL REPAY AMOUNT
             </Typography>
@@ -58,28 +74,45 @@ export default function EarlyPayoffScreen() {
             ))}
           </Box>
 
-          {/* Comment */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: '16px' }}>
+          {/* Notice details */}
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: '18px' }}>
+            <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: LABEL, mb: 1.5 }}>NOTICE DETAILS</Typography>
+
+            <Typography sx={{ fontSize: 14, fontWeight: 700, color: HEADING }}>Intended Payoff Date</Typography>
             <Box
-              component="textarea"
-              value={comment}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}
-              placeholder="Enter your comment"
-              rows={4}
-              sx={{
-                width: '100%',
-                border: 'none',
-                outline: 'none',
-                resize: 'none',
-                bgcolor: 'transparent',
-                fontFamily: 'inherit',
-                fontSize: 15,
-                color: HEADING,
-                lineHeight: 1.5,
-                p: 0,
-                '&::placeholder': { color: '#A8B0BD' },
-              }}
+              component="input"
+              type="date"
+              value={payoffDate}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPayoffDate(e.target.value)}
+              sx={{ width: '100%', boxSizing: 'border-box', mt: 0.75, height: 46, borderRadius: '10px', border: '1px solid #E2E6EC', px: 1.5, fontFamily: 'inherit', fontSize: 15, color: HEADING, outline: 'none', bgcolor: '#fff', '&:focus': { borderColor: BLUE } }}
             />
+
+            <Typography sx={{ fontSize: 14, fontWeight: 700, color: HEADING, mt: 2 }}>Reason</Typography>
+            <Box
+              component="select"
+              value={reason}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setReason(e.target.value)}
+              sx={{ width: '100%', boxSizing: 'border-box', mt: 0.75, height: 46, borderRadius: '10px', border: '1px solid #E2E6EC', px: 1.5, fontFamily: 'inherit', fontSize: 15, color: reason ? HEADING : '#A8B0BD', outline: 'none', bgcolor: '#fff', '&:focus': { borderColor: BLUE } }}
+            >
+              <option value="">Select reason…</option>
+              {REASONS.map((r) => (
+                <option key={r} value={r} style={{ color: HEADING }}>{r}</option>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Confirmation */}
+          <Box
+            role="button"
+            onClick={() => setAgreed((a) => !a)}
+            sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start', bgcolor: '#F4F6F9', borderRadius: '12px', p: '14px 16px', cursor: 'pointer' }}
+          >
+            <Box sx={{ width: 22, height: 22, borderRadius: '6px', flexShrink: 0, mt: '1px', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: agreed ? BLUE : '#fff', border: agreed ? 'none' : '1.5px solid #C9D2DE', transition: 'background-color 0.15s' }}>
+              {agreed && <Icon name="check" size={15} color="#fff" />}
+            </Box>
+            <Typography sx={{ fontSize: 13, color: '#5B6473', lineHeight: 1.5 }}>
+              I confirm this is my genuine intent to fully repay this loan, and I understand the final payoff amount, any penalty, and collateral release are completed at the branch.
+            </Typography>
           </Box>
         </Box>
       </Box>
@@ -88,10 +121,11 @@ export default function EarlyPayoffScreen() {
         <Button
           variant="contained"
           fullWidth
-          onClick={() => navigate('/early-payoff-pin')}
-          sx={{ height: 48, borderRadius: '12px', fontSize: 14, fontWeight: 700, bgcolor: BLUE }}
+          disabled={!agreed}
+          onClick={() => navigate('/early-payoff-success')}
+          sx={{ height: 48, borderRadius: '12px', fontSize: 14, fontWeight: 700, bgcolor: BLUE, '&.Mui-disabled': { bgcolor: '#B9C3D2', color: '#fff' } }}
         >
-          Request payoff letter
+          Submit Notice
         </Button>
       </Box>
     </Box>

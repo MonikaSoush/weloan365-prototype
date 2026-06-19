@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -128,7 +128,7 @@ export default function BranchLocatorScreen() {
           <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1, mt: 1 }}>
             NEARBY BRANCHES
           </Typography>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
             {filtered.map((b, i) => {
               const active = b.name === selected.name
               return (

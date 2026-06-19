@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -24,7 +24,7 @@ function SectionLabel({ children }: { children: string }) {
 }
 
 function Card({ children }: { children: React.ReactNode }) {
-  return <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>{children}</Box>
+  return <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>{children}</Box>
 }
 
 function Row({

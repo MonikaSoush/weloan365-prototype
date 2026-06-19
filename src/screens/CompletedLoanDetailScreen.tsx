@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+﻿import { ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -40,7 +40,7 @@ export default function CompletedLoanDetailScreen() {
           </Box>
 
           {/* Overview card — donut + legend + progress + meta */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Donut />
               <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -56,7 +56,7 @@ export default function CompletedLoanDetailScreen() {
                 <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: LABEL }}>24 of 24 paid</Typography>
                 <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: '#000' }}>100% completed</Typography>
               </Box>
-              <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#F5F5F5', overflow: 'hidden' }}>
+              <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#fff', overflow: 'hidden' }}>
                 <Box sx={{ height: '100%', width: '100%', bgcolor: GREEN, borderRadius: '999px' }} />
               </Box>
             </Box>
@@ -72,7 +72,7 @@ export default function CompletedLoanDetailScreen() {
           {/* Repayment breakdown */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             <SectionLabel>Repayment Breakdown</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
               <BreakdownRow label="Principal repaid" value="$1,650.00" divider />
               <BreakdownRow label="Interest paid" value="$142.50" divider />
               <BreakdownRow label="Fees" value="$7.50" divider />
@@ -106,7 +106,7 @@ export default function CompletedLoanDetailScreen() {
           {/* My officer */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             <SectionLabel>My Officer</SectionLabel>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <Box
                 sx={{
                   width: 36,
@@ -211,7 +211,7 @@ const COL_WIDTH: (number | undefined)[] = [28, 56, 52, 44, undefined]
 
 function PaymentTable() {
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+    <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
       <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
         <Box component="thead">
           <Box component="tr" sx={{ bgcolor: '#FAFAFA' }}>

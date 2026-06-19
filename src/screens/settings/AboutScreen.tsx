@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon, type IconName } from '../../components/Icon'
@@ -37,13 +37,13 @@ export default function AboutScreen() {
 
         <Box sx={{ px: 3, pb: 5 }}>
           {/* Brand header */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 3, textAlign: 'center', mt: 1 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 3, textAlign: 'center', mt: 1 }}>
             <Box component="img" src="/assets/brand/header_logo.svg" alt="NongHyup Finance" sx={{ height: 30, width: 'auto', display: 'inline-block', objectFit: 'contain' }} />
             <Typography sx={{ fontSize: 12.5, color: MUTED, mt: 1.25 }}>Microfinance Institution · Est. 2017</Typography>
           </Box>
 
           {/* Mission / vision */}
-          <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.5, mt: 2 }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2.5, mt: 2 }}>
             <Typography sx={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.7px', color: BLUE }}>MISSION</Typography>
             <Typography sx={{ fontSize: 14, color: '#3A4256', lineHeight: 1.55, mt: 0.75 }}>
               To expand access to fair and reliable financial services that empower individuals and small businesses across Cambodia to grow with confidence.
@@ -58,7 +58,7 @@ export default function AboutScreen() {
           <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', px: 0.5, py: 1, mt: 1 }}>
             CONTACT
           </Typography>
-          <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
             {CONTACTS.map((c, i) => (
               <Box key={c.value} sx={{ display: 'flex', alignItems: 'center', gap: 2, px: '14px', py: '12px', borderBottom: i < CONTACTS.length - 1 ? '1px solid #F1F4F8' : 'none' }}>
                 <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#F1F4F8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

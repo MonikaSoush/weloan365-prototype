@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -15,7 +15,7 @@ const MUTED = '#8A94A6'
 const BLUE = '#275CB2'
 
 function Card({ children }: { children: React.ReactNode }) {
-  return <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>{children}</Box>
+  return <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>{children}</Box>
 }
 
 function ToggleRow({

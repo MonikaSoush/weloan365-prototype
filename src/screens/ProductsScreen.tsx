@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -229,7 +229,7 @@ function NewsSheet({ item, onClose }: { item: NewsItem | null; onClose: () => vo
           right: 0,
           bottom: 0,
           zIndex: 101,
-          bgcolor: '#F5F5F5',
+          bgcolor: '#fff',
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           transform: open ? 'translateY(0)' : 'translateY(100%)',
@@ -312,7 +312,7 @@ function ProductsTopBar() {
         position: 'sticky',
         top: 0,
         zIndex: 10,
-        bgcolor: '#F5F5F5',
+        bgcolor: '#fff',
       }}
     >
       <Box

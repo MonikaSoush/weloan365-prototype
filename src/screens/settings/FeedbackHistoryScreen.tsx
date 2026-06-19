@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon } from '../../components/Icon'
@@ -51,7 +51,7 @@ export default function FeedbackHistoryScreen() {
 
         <Box sx={{ px: 3, pb: 5, pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
           {ENTRIES.map((e) => (
-            <Box key={e.id} sx={{ bgcolor: '#fff', borderRadius: '16px', p: 2.25 }}>
+            <Box key={e.id} sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2.25 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'inline-block', fontSize: 11, fontWeight: 700, px: 1, py: 0.25, borderRadius: 1, color: BLUE, bgcolor: '#EAF1FB' }}>{e.category}</Box>
                 <Typography sx={{ fontSize: 12, color: MUTED }}>{e.date}, {e.time}</Typography>

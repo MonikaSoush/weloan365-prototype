@@ -14,8 +14,18 @@ const MyLoanDetailScreen = lazy(() => import('../screens/MyLoanDetailScreen'))
 const CompletedLoanDetailScreen = lazy(() => import('../screens/CompletedLoanDetailScreen'))
 const MyLoanReviewDetailScreen = lazy(() => import('../screens/MyLoanReviewDetailScreen'))
 const MwlAboutScreen   = lazy(() => import('../screens/mwl/MwlAboutScreen'))
-const MwlLoanScreen    = lazy(() => import('../screens/mwl/MwlLoanScreen'))
-const MwlGuarantorScreen = lazy(() => import('../screens/mwl/MwlGuarantorScreen'))
+const MwlApplyScreen   = lazy(() => import('../screens/mwl/MwlApplyScreen'))
+const MwlSubmittedScreen = lazy(() => import('../screens/mwl/MwlSubmittedScreen'))
+const MwlTrackerScreen = lazy(() => import('../screens/mwl/MwlTrackerScreen'))
+const MwlContractScreen = lazy(() => import('../screens/mwl/MwlContractScreen'))
+const MwlSignReviewScreen = lazy(() => import('../screens/mwl/MwlSignReviewScreen'))
+const MwlContractDocScreen = lazy(() => import('../screens/mwl/MwlContractDocScreen'))
+const MwlSignScreen = lazy(() => import('../screens/mwl/MwlSignScreen'))
+const GuarantorSmsScreen = lazy(() => import('../screens/guarantor/GuarantorSmsScreen'))
+const GuarantorWebScreen = lazy(() => import('../screens/guarantor/GuarantorWebScreen'))
+const GuarantorReviewScreen = lazy(() => import('../screens/guarantor/GuarantorReviewScreen'))
+const GuarantorConfirmScreen = lazy(() => import('../screens/guarantor/GuarantorConfirmScreen'))
+const GuarantorConfirmedScreen = lazy(() => import('../screens/guarantor/GuarantorConfirmedScreen'))
 const MwlReviewScreen  = lazy(() => import('../screens/mwl/MwlReviewScreen'))
 const MwlSuccessScreen = lazy(() => import('../screens/mwl/MwlSuccessScreen'))
 const MoreScreen       = lazy(() => import('../screens/samples/MoreScreen'))
@@ -101,11 +111,18 @@ export default function AppRouter() {
         <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
         <Route path="/my-loan-complete" element={<CompletedLoanDetailScreen />} />
         <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
-        <Route path="/mwl-about" element={<RequirePin><MwlAboutScreen /></RequirePin>} />
-        <Route path="/mwl-loan" element={<MwlLoanScreen />} />
-        <Route path="/mwl-guarantor" element={<MwlGuarantorScreen />} />
-        <Route path="/mwl-review" element={<MwlReviewScreen />} />
-        <Route path="/mwl-success" element={<MwlSuccessScreen />} />
+        <Route path="/mwl-about" element={<RequirePin><MwlApplyScreen /></RequirePin>} />
+        <Route path="/mwl-success" element={<MwlSubmittedScreen />} />
+        <Route path="/mwl-tracker" element={<MwlTrackerScreen />} />
+        <Route path="/mwl-contract" element={<MwlContractScreen />} />
+        <Route path="/mwl-sign-review" element={<MwlSignReviewScreen />} />
+        <Route path="/mwl-contract-doc" element={<MwlContractDocScreen />} />
+        <Route path="/mwl-sign" element={<MwlSignScreen />} />
+        <Route path="/guarantor-sms" element={<GuarantorSmsScreen />} />
+        <Route path="/guarantor-web" element={<GuarantorWebScreen />} />
+        <Route path="/guarantor-review" element={<GuarantorReviewScreen />} />
+        <Route path="/guarantor-confirm" element={<GuarantorConfirmScreen />} />
+        <Route path="/guarantor-confirmed" element={<GuarantorConfirmedScreen />} />
         <Route path="/nonmwl-about" element={<RequirePin><MwlAboutScreen nonMwl /></RequirePin>} />
         <Route path="/nonmwl-review" element={<MwlReviewScreen nonMwl />} />
         <Route path="/nonmwl-success" element={<MwlSuccessScreen product="Non-MWL Loan" />} />

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+﻿import { ReactNode, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -83,7 +83,7 @@ export default function AdvanceAccountScreen() {
             <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1 }}>
               HISTORY
             </Typography>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden' }}>
               <AdvancesTable onRowClick={() => navigate('/my-loan-detail')} />
             </Box>
             <Typography sx={{ fontSize: 12, color: '#8A94A6', textAlign: 'center', mt: 1.5 }}>
@@ -223,7 +223,7 @@ function LogoTile({ logo, alt }: { logo: string; alt: string }) {
       component="img"
       src={logo}
       alt={alt}
-      sx={{ width: 44, height: 44, borderRadius: '12px', flexShrink: 0, display: 'block', objectFit: 'cover', bgcolor: '#fff', border: '1px solid #F1F4F8' }}
+      sx={{ width: 44, height: 44, borderRadius: '12px', flexShrink: 0, display: 'block', objectFit: 'cover', bgcolor: '#F5F5F5', border: '1px solid #F1F4F8' }}
     />
   )
 }

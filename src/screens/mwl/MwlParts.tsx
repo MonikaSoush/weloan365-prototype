@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react'
+﻿import { ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
@@ -24,7 +24,7 @@ export function MwlHeader({ onBack, step, totalSteps = 3, kebab = false }: { onB
   }, [])
 
   return (
-    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#F5F5F5', px: 3, pt: 3, pb: step ? 1.5 : 1 }}>
+    <Box sx={{ position: 'sticky', top: 0, zIndex: 10, bgcolor: '#fff', px: 3, pt: 3, pb: step ? 1.5 : 1 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <IconButton onClick={onBack} aria-label="Back" sx={{ ml: -1, color: '#0B0F1A' }}>
           <Icon name="chevronLeft" size={26} color="#0B0F1A" />
@@ -196,7 +196,7 @@ export function SelectField({
         }
       />
       {open && (
-        <Box sx={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 30, bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 6px 20px rgba(11,15,26,0.12)' }}>
+        <Box sx={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 30, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 6px 20px rgba(11,15,26,0.12)' }}>
           {options.map((o, i) => {
             const active = o === value
             return (
@@ -330,7 +330,7 @@ export function PhoneField({ label, code = '+855', number, onNumberChange, onCod
 
   return (
     <>
-      <Box sx={{ bgcolor: '#fff', borderRadius: '12px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Label label={label} required />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 0.25 }}>
           <Box
@@ -477,7 +477,7 @@ export function MwlFooter({
           variant="outlined"
           onClick={onPrev}
           startIcon={<Icon name="arrowLeft" size={16} />}
-          sx={{ height: 48, borderRadius: '12px', px: '16px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif', color: '#0B0F1A', border: 'none', bgcolor: '#fff', '&:hover': { border: 'none', bgcolor: '#F5F5F5' } }}
+          sx={{ height: 48, borderRadius: '12px', px: '16px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif', color: '#0B0F1A', border: 'none', bgcolor: '#fff', '&:hover': { border: 'none', bgcolor: '#fff' } }}
         >
           Previous
         </Button>

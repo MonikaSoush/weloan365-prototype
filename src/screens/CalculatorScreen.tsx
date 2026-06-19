@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+﻿import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -123,7 +123,7 @@ export default function CalculatorScreen() {
             <IconSelect label="Loan product" options={LOAN_PRODUCTS} value={loanProduct} onChange={setLoanProduct} locked={!!lockedProduct} />
 
             {/* Amount */}
-            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
               <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>
                 {currency === 'KHR' ? 'Amount ៛400K ~ ៛1,200M' : `Amount $${MIN_AMOUNT.toLocaleString('en-US')} ~ $${maxAmount.toLocaleString('en-US')}`}
               </Typography>
@@ -170,7 +170,7 @@ export default function CalculatorScreen() {
             {/* Payment estimate (term slider) */}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <SectionLabel>Payment estimate</SectionLabel>
-              <Box sx={{ bgcolor: '#fff', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? `${Math.max(1, Math.round(minMonths / 12))} year` : `${minMonths} months`}</Typography>
                   <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#525252' }}>{termUnit === 'Year' ? `${Math.round(maxMonths / 12)} years` : `${maxMonths} months`}</Typography>
@@ -218,7 +218,7 @@ export default function CalculatorScreen() {
 
             {/* Loan term + Monthly interest */}
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Box sx={{ width: 171, flexShrink: 0, bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
+              <Box sx={{ width: 171, flexShrink: 0, bgcolor: '#F5F5F5', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0.5 }}>
                 <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: '16px' }}>Loan term</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Box
@@ -293,7 +293,7 @@ export default function CalculatorScreen() {
             />
 
             {/* Monthly payment summary */}
-            <Box sx={{ bgcolor: '#fff', borderRadius: '16px', p: '26px' }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: '26px' }}>
               <Typography sx={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.6px', color: LABEL, textTransform: 'uppercase' }}>
                 Monthly payment
               </Typography>
@@ -392,7 +392,7 @@ function IconSelect({
         }
       />
       {open && !locked && (
-        <Box sx={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 30, bgcolor: '#fff', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 6px 20px rgba(11,15,26,0.12)' }}>
+        <Box sx={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 30, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 6px 20px rgba(11,15,26,0.12)' }}>
           {options.map((p, i) => {
             const active = p.name === value
             return (

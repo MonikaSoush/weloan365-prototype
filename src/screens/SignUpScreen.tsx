@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -144,7 +144,7 @@ export default function SignUpScreen() {
           <Box
             role="button"
             onClick={() => setCountrySheetOpen(true)}
-            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, mt: 3.5, cursor: 'pointer' }}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, mt: 3.5, cursor: 'pointer' }}
           >
             <Flag code={selectedCountry.flag} size={34} />
             <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -156,7 +156,7 @@ export default function SignUpScreen() {
 
           {/* Code + Phone Number */}
           <Box sx={{ display: 'flex', gap: 1.5, mt: 2 }}>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flexShrink: 0, width: 94 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flexShrink: 0, width: 94 }}>
               <FieldLabel label="Code" />
               <Box
                 component="input"
@@ -169,7 +169,7 @@ export default function SignUpScreen() {
                 sx={{ mt: 0.25, width: '100%', border: 'none', outline: 'none', bgcolor: 'transparent', fontSize: 16, fontWeight: 700, color: '#0B0F1A', fontFamily: 'inherit', p: 0 }}
               />
             </Box>
-            <Box sx={{ bgcolor: '#fff', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', px: '16px', minHeight: 60, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
               <FieldLabel label="Phone Number" />
               <Box
                 component="input"
