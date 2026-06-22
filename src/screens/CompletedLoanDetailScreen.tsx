@@ -2,6 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
 import CallSheet from '../components/CallSheet'
 import { MwlHeader } from './mwl/MwlParts'
@@ -44,9 +45,9 @@ export default function CompletedLoanDetailScreen() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Donut />
               <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <LegendRow color="#D9D9D9" label="Total" value="$8,640" />
-                <LegendRow color={PAID} label="Paid" value="$3,860" />
-                <LegendRow color={GREEN} label="Outstanding" value="$4,780" />
+                <LegendRow color="#D9D9D9" label="Loan Amount" value="$4,500.00" />
+                <LegendRow color={GREEN}   label="Total Paid"  value="$1,800.00" />
+                <LegendRow color={PAID}    label="Outstanding" value="$0.00" />
               </Box>
             </Box>
 
@@ -54,18 +55,18 @@ export default function CompletedLoanDetailScreen() {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: LABEL }}>24 of 24 paid</Typography>
-                <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: '#000' }}>100% completed</Typography>
+                <Typography sx={{ fontSize: 12.5, fontWeight: 600, color: GREEN }}>100% completed</Typography>
               </Box>
-              <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#fff', overflow: 'hidden' }}>
+              <Box sx={{ height: 6, borderRadius: '999px', bgcolor: '#EDEFF3', overflow: 'hidden' }}>
                 <Box sx={{ height: '100%', width: '100%', bgcolor: GREEN, borderRadius: '999px' }} />
               </Box>
             </Box>
 
             {/* Meta row */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #F0F0F0', pt: 1.5 }}>
-              <MetaCol label="Next Due" value="12 Feb 2026" />
-              <MetaCol label="Due Amount" value="$270.00" />
-              <MetaCol label="Rate" value="1.20%/mo" />
+              <MetaCol label="Closed On"   value="08 Feb 2026" />
+              <MetaCol label="Term"        value="24 months" />
+              <MetaCol label="Rate"        value="1.20%/mo" />
             </Box>
           </Box>
 
@@ -80,26 +81,39 @@ export default function CompletedLoanDetailScreen() {
                 <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1F8A4C' }}>Total paid</Typography>
                 <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#1F8A4C' }}>$1,800.00</Typography>
               </Box>
+              <Box
+                onClick={() => navigate('/settlement-certificate')}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: '14px', borderTop: '1px solid #F0F0F0', cursor: 'pointer', '&:active': { opacity: 0.7 } }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Icon name="download" size={16} color={GREEN} />
+                  <Typography sx={{ fontSize: 14, fontWeight: 700, color: GREEN }}>Download Certificate</Typography>
+                </Box>
+                <Icon name="chevronRight" size={16} color={GREEN} />
+              </Box>
             </Box>
           </Box>
 
           {/* Repayment schedule */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
-            <SectionLabel>Repayment Schedule</SectionLabel>
+            <SectionLabel>History Repayment Schedule</SectionLabel>
             <PaymentTable />
             <Typography sx={{ fontSize: 11, color: LABEL, textAlign: 'center', mt: 0.5 }}>
-              Showing 3 of 6 · <Box component="span" sx={{ color: ACCENT, fontWeight: 700 }}>Download</Box> for full view
+              Showing 3 of 6 · <Box component="span" onClick={() => navigate('/repayment-schedule-detail')} sx={{ color: ACCENT, fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}>Download</Box> for full view
             </Typography>
           </Box>
 
           {/* My documents */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             <SectionLabel>My Documents</SectionLabel>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: 2, columnGap: 1 }}>
-              <DocTile label="Payment Schedule" kind="schedule" />
-              <DocTile label="Loan Contract" kind="pdf" />
-              <DocTile label="Guarantee Contract" kind="image" />
-              <DocTile label="Disbursement Receipt" kind="image" />
+            <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '14px' }}>
+              {COMPLETED_DOCS.map((d, i) => (
+                <CompletedDocRow key={d.title} {...d} last={i === COMPLETED_DOCS.length - 1} onNavigate={() => navigate(`/document-view?name=${encodeURIComponent(d.title)}`)} />
+              ))}
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25, pl: 0.5 }}>
+              <Icon name="accountSecurity" size={14} color="#9AA3B2" />
+              <Typography sx={{ fontSize: 11.5, color: '#9AA3B2' }}>Official NH documents. Downloads are watermarked with retrieval date.</Typography>
             </Box>
           </Box>
 
@@ -143,6 +157,7 @@ export default function CompletedLoanDetailScreen() {
           </Box>
         </Box>
       </Box>
+
 
       <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
@@ -283,60 +298,39 @@ function SectionLabel({ children }: { children: ReactNode }) {
   )
 }
 
-function DocTile({ label, kind }: { label: string; kind: 'schedule' | 'pdf' | 'image' }) {
-  const navigate = useNavigate()
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-      <Box
-        sx={{
-          position: 'relative',
-          width: 83,
-          height: 65,
-          borderRadius: '9px',
-          border: '1px solid rgba(0,0,0,0.1)',
-          bgcolor: '#fff',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <DocThumb kind={kind} />
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-        <Typography sx={{ fontSize: 12, fontWeight: 500, color: VALUE, textAlign: 'center' }} noWrap>{label}</Typography>
-        <Typography
-          role="button"
-          aria-label={`Preview ${label}`}
-          onClick={() => navigate(`/document-view?name=${encodeURIComponent(label)}`)}
-          sx={{ fontSize: 12, fontWeight: 500, color: ACCENT, cursor: 'pointer' }}
-        >
-          Preview
-        </Typography>
-      </Box>
-    </Box>
-  )
-}
+const COMPLETED_DOCS = [
+  { title: 'Payment Schedule',   sub: 'Original 24-installment schedule',       size: 'PDF · 48 KB' },
+  { title: 'Loan Contract',      sub: 'Signed Small Business Loan agreement',   size: 'PDF · 124 KB' },
+  { title: 'Guarantee Contract', sub: 'Guarantor agreement · Third party security', size: 'PDF · 76 KB' },
+  { title: 'Disbursement Receipt', sub: 'Proof of loan disbursement',           size: 'PDF · 32 KB' },
+]
 
-function DocThumb({ kind }: { kind: 'schedule' | 'pdf' | 'image' }) {
-  if (kind === 'schedule') {
-    return (
-      <Box sx={{ width: '100%', height: '100%', p: '6px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+function CompletedDocRow({ title, sub, size, last, onNavigate }: { title: string; sub: string; size: string; last?: boolean; onNavigate: () => void }) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: '14px', borderBottom: last ? 'none' : '1px solid #F0F0F0' }}>
+      {/* Document thumbnail */}
+      <Box sx={{ width: 40, height: 50, borderRadius: '6px', border: '1px solid #E2E6EC', bgcolor: '#fff', flexShrink: 0, p: '7px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
         {Array.from({ length: 5 }).map((_, i) => (
           <Box key={i} sx={{ display: 'flex', gap: '3px' }}>
-            <Box sx={{ flex: 1, height: 4, bgcolor: '#E2E6EC', borderRadius: '1px' }} />
-            <Box sx={{ width: 14, height: 4, bgcolor: '#EDEFF2', borderRadius: '1px' }} />
+            <Box sx={{ flex: 1, height: 3, bgcolor: '#E2E6EC', borderRadius: '1px' }} />
+            <Box sx={{ width: 8, height: 3, bgcolor: '#EDEFF2', borderRadius: '1px' }} />
           </Box>
         ))}
       </Box>
-    )
-  }
-  if (kind === 'pdf') {
-    return (
-      <Box sx={{ position: 'relative', width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name="appPolicy" size={22} color="#E0524E" />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography sx={{ fontSize: 14, fontWeight: 700, color: VALUE }} noWrap>{title}</Typography>
+        <Typography sx={{ fontSize: 12, color: LABEL, lineHeight: 1.4 }}>{sub}</Typography>
       </Box>
-    )
-  }
-  return <Icon name="image" size={22} color="#A1D7FF" />
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 0.5, flexShrink: 0 }}>
+        <Typography sx={{ fontSize: 11, color: LABEL }}>{size}</Typography>
+        <Box role="button" onClick={onNavigate} sx={{ display: 'flex', alignItems: 'center', gap: 0.4, bgcolor: '#EEF3FC', borderRadius: '999px', px: 1, py: 0.4, cursor: 'pointer', '&:active': { opacity: 0.7 } }}>
+          <Box component="svg" viewBox="0 0 24 24" fill="none" stroke={ACCENT} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" sx={{ width: 13, height: 13 }}>
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </Box>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, color: ACCENT }}>View</Typography>
+        </Box>
+      </Box>
+    </Box>
+  )
 }

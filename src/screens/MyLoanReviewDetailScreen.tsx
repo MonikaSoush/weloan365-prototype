@@ -66,7 +66,7 @@ export default function MyLoanReviewDetailScreen() {
       <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
         {/* Header */}
         <Box sx={{ px: 1, pt: 1 }}>
-          <IconButton onClick={() => navigate(-1)} aria-label="Back" sx={{ color: HEADING }}>
+          <IconButton onClick={() => navigate('/my-loan?tab=review')} aria-label="Back" sx={{ color: HEADING }}>
             <Icon name="chevronLeft" size={26} color={HEADING} />
           </IconButton>
         </Box>

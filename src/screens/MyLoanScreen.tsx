@@ -95,6 +95,7 @@ export default function MyLoanScreen() {
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
                       <Typography sx={{ fontSize: 22, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2 }}>$320.00</Typography>
+                      <Typography sx={{ fontSize: 22, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2 }}>៛1,312,000</Typography>
                       <Typography sx={{ fontSize: 11, color: '#8A94A6' }}>Due 16 May · in 9 days</Typography>
                     </Box>
                     <Button
@@ -247,50 +248,53 @@ function ActiveLoanCard({ title, icon, status, restructured }: { title: string; 
   const navigate = useNavigate()
   return (
     <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer', p: '16px' }}>
-      {/* Header: icon + title/subtitle + status chips */}
-      <Box sx={{ display: 'flex', gap: 1.5 }}>
-        <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <Icon name={icon} size={22} color={BLUE} />
-        </Box>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-            <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
-            <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
-              {restructured && <StatusChip label="1st Restructured" color="#7A4DD6" bg="#EFE7FB" />}
-              <StatusChip label="Active" color="#1FA85C" bg="#DCF5E6" />
-            </Box>
+      {/* Main content */}
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        {/* Header: icon + title/subtitle + status chips + chevron */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Icon name={icon} size={22} color={BLUE} />
           </Box>
-          <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: '2px' }}>USD · 24-month term</Typography>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+              <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
+              <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
+                {restructured && <StatusChip label="1st Restructured" color="#7A4DD6" bg="#EFE7FB" />}
+                <StatusChip label="Active" color="#1FA85C" bg="#DCF5E6" />
+              </Box>
+            </Box>
+            <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: '2px' }}>USD · 24-month term</Typography>
+          </Box>
+          <Icon name="chevronRight" size={18} color="#C9D2DE" />
+        </Box>
+
+        {/* Progress */}
+        <Box sx={{ mt: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
+            <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>8 of 24 paid</Typography>
+            <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#3A4256' }}>33%</Typography>
+          </Box>
+          <Box sx={{ height: 6, borderRadius: 3, bgcolor: '#E7ECF2', overflow: 'hidden' }}>
+            <Box sx={{ height: '100%', width: '33%', bgcolor: BLUE, borderRadius: 3 }} />
+          </Box>
+        </Box>
+
+        {/* Status banner */}
+        {status && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, px: 1.5, py: 1, borderRadius: 2, bgcolor: status === 'overdue' ? '#FFF1E6' : '#F5F5F5' }}>
+            <Icon name="alert" size={16} color={status === 'overdue' ? '#E8770B' : '#8A94A6'} />
+            <Typography sx={{ fontSize: 12, fontWeight: 600, color: status === 'overdue' ? '#E8770B' : '#8A94A6' }}>
+              {status === 'overdue' ? 'This loan is overdue, penalty may charge' : 'This loan is under review for restructuring'}
+            </Typography>
+          </Box>
+        )}
+
+        {/* Footer: next due + amount left */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
+          <Typography sx={{ fontSize: 12.5, color: '#8A94A6' }}>Next due · 20 May</Typography>
+          <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A' }}>$4,500.00 left</Typography>
         </Box>
       </Box>
-
-      {/* Progress */}
-      <Box sx={{ mt: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
-          <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>8 of 24 paid</Typography>
-          <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#3A4256' }}>33%</Typography>
-        </Box>
-        <Box sx={{ height: 6, borderRadius: 3, bgcolor: '#E7ECF2', overflow: 'hidden' }}>
-          <Box sx={{ height: '100%', width: '33%', bgcolor: BLUE, borderRadius: 3 }} />
-        </Box>
-      </Box>
-
-      {/* Status banner */}
-      {status && (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, px: 1.5, py: 1, borderRadius: 2, bgcolor: status === 'overdue' ? '#FFF1E6' : '#F5F5F5' }}>
-          <Icon name="alert" size={16} color={status === 'overdue' ? '#E8770B' : '#8A94A6'} />
-          <Typography sx={{ fontSize: 12, fontWeight: 600, color: status === 'overdue' ? '#E8770B' : '#8A94A6' }}>
-            {status === 'overdue' ? 'This loan is overdue, penalty may charge' : 'This loan is under review for restructuring'}
-          </Typography>
-        </Box>
-      )}
-
-      {/* Footer: next due + amount left */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
-        <Typography sx={{ fontSize: 12.5, color: '#8A94A6' }}>Next due · 20 May</Typography>
-        <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A' }}>$4,500.00 left</Typography>
-      </Box>
-
     </Card>
   )
 }
@@ -416,31 +420,45 @@ function ReviewTab() {
 // ─── Complete tab ────────────────────────────────────────────────────────────
 function CompletedCard({ title, amount, term, rate, lastPaid }: { title: string; amount: string; term: string; rate: string; lastPaid: string }) {
   const navigate = useNavigate()
+  const iconMap: Record<string, 'store' | 'home' | 'sprout' | 'cash'> = {
+    'Small Business Loan': 'store',
+    'Housing Loan': 'home',
+    'Micro Loan': 'sprout',
+  }
+  const icon = iconMap[title] ?? 'cash'
   return (
-    <Card onClick={() => navigate('/my-loan-complete')} sx={{ cursor: 'pointer', p: '18px' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{title}</Typography>
-        <StatusChip label="Paid Off" color="#1FA85C" bg="#DCF5E6" />
+    <Card onClick={() => navigate('/my-loan-complete')} sx={{ cursor: 'pointer', p: '16px' }}>
+      {/* Header: icon + title + status chip */}
+      <Box sx={{ display: 'flex', gap: 1.5 }}>
+        <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Icon name={icon} size={22} color={BLUE} />
+        </Box>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
+            <StatusChip label="Paid Off" color="#1FA85C" bg="#DCF5E6" />
+          </Box>
+          <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: '2px' }}>USD · {term} term</Typography>
+        </Box>
       </Box>
 
-      <Box sx={{ bgcolor: '#F7F7F8', border: 'none', borderRadius: '10px', px: 2, py: 1.5, mt: 2 }}>
-        <Typography sx={{ fontSize: 11, color: '#8A94A6', fontWeight: 600 }}>Requested amount</Typography>
-        <Typography sx={{ fontSize: 19, fontWeight: 800, color: '#0B0F1A', mt: 0.25 }}>{amount}</Typography>
+      {/* Progress — 100% complete */}
+      <Box sx={{ mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
+          <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>{term} · fully paid</Typography>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#1FA85C' }}>100%</Typography>
+        </Box>
+        <Box sx={{ height: 6, borderRadius: 3, bgcolor: '#E7ECF2', overflow: 'hidden' }}>
+          <Box sx={{ height: '100%', width: '100%', bgcolor: '#1FA85C', borderRadius: 3 }} />
+        </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 1.5, mt: 2 }}>
-        <StatBox label="Term" value={term} />
-        <StatBox label="Rate" value={rate} />
-      </Box>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2.5 }}>
+      {/* Footer */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
           <Icon name="clock" size={14} color="#8A94A6" />
-          <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Last Paid on {lastPaid}</Typography>
+          <Typography sx={{ fontSize: 12.5, color: '#8A94A6' }}>Last Paid on {lastPaid}</Typography>
         </Box>
-        <Button variant="outlined" onClick={(e) => { e.stopPropagation(); navigate('/my-loan-complete') }} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 40, borderRadius: '10px', px: 2.5, fontSize: 14 }}>
-          View Details
-        </Button>
       </Box>
     </Card>
   )

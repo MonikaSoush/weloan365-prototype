@@ -1,9 +1,10 @@
-﻿import { Fragment, ReactNode, useState } from 'react'
+﻿import { Fragment, ReactNode, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
+import CircularProgress from '@mui/material/CircularProgress'
 import { Icon, type IconName } from '../components/Icon'
 import { Flag } from '../components/Flag'
 import { AssetImg, BANNERS } from '../components/home/media'
@@ -231,14 +232,21 @@ export default function ProductDetailScreen() {
         : '/nonmwl-about?product=' + encodeURIComponent(name)
   // Visitors must sign up first; the apply destination is carried via `?next=`
   // so they land on the application after completing sign-up.
-  const onApply = () =>
-    navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
+  const onApply = () => {
+    if (isMwl) {
+      navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
+    } else {
+      setStaffSheetOpen(true)
+    }
+  }
 
   // Compact header fades in once the hero image has scrolled mostly out of view.
   const [scrolled, setScrolled] = useState(false)
   const [callOpen, setCallOpen] = useState(false)
   // Required-documents preview: holds the doc name whose sheet is open.
   const [previewDoc, setPreviewDoc] = useState<string | null>(null)
+  // Staff verification sheet
+  const [staffSheetOpen, setStaffSheetOpen] = useState(false)
 
   // Chat opens the support conversation (visitors sign up first).
   const onChat = () =>
@@ -455,7 +463,193 @@ export default function ProductDetailScreen() {
 
       {/* ── Required-document preview sheet ────────────────────────────── */}
       <DocPreviewSheet doc={previewDoc} onClose={() => setPreviewDoc(null)} />
+
+      {/* ── Staff verification sheet ────────────────────────────────────── */}
+      <StaffVerifySheet open={staffSheetOpen} onClose={() => setStaffSheetOpen(false)} />
     </Box>
+  )
+}
+
+// ─── Staff ID verification sheet ─────────────────────────────────────────────
+const NH_ID_RE = /^NH-\d{9}$/
+
+const MOCK_STAFF: Record<string, { name: string; initials: string; role: string; branch: string }> = {
+  'NH-000000001': { name: 'Sophea Kim',    initials: 'SK', role: 'Credit Officer',  branch: 'Riverside Branch' },
+  'NH-123456789': { name: 'Dara Chann',    initials: 'DC', role: 'Senior Loan Officer', branch: 'Toul Kork Branch' },
+}
+const DEFAULT_STAFF = { name: 'Sophea Kim', initials: 'SK', role: 'Credit Officer', branch: 'Riverside Branch' }
+
+type StaffProfile = { name: string; initials: string; role: string; branch: string }
+
+function StaffVerifySheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const navigate = useNavigate()
+  const [staffId, setStaffId] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [profile, setProfile] = useState<StaffProfile | null>(null)
+  const [error, setError] = useState('')
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const isValidFormat = NH_ID_RE.test(staffId)
+
+  const handleClose = () => {
+    setStaffId('')
+    setLoading(false)
+    setProfile(null)
+    setError('')
+    onClose()
+  }
+
+  const handleVerify = () => {
+    if (!isValidFormat) { setError('Enter a valid Staff ID (e.g. NH-000000000)'); return }
+    setError('')
+    setLoading(true)
+    timerRef.current = setTimeout(() => {
+      setLoading(false)
+      setProfile(MOCK_STAFF[staffId] ?? DEFAULT_STAFF)
+    }, 1600)
+  }
+
+  const handleSubmit = () => {
+    handleClose()
+    navigate('/staff-loan')
+  }
+
+  return (
+    <BottomSheet open={open} onClose={handleClose}>
+      {/* Header row */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+        <Typography sx={{ fontSize: 22, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.3px' }}>
+          Are you an NH Staff?
+        </Typography>
+        <IconButton size="small" onClick={handleClose} sx={{ color: '#9AA3B2' }}>
+          <Icon name="close" size={20} color="#9AA3B2" />
+        </IconButton>
+      </Box>
+      <Typography sx={{ fontSize: 14, color: '#6B7280', mb: 2 }}>
+        Enter your Staff ID to verify and access the Staff Loan application.
+      </Typography>
+
+      {/* Staff ID input */}
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+        <Box sx={{ flex: 1 }}>
+          <Box
+            component="input"
+            value={staffId}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setStaffId(e.target.value.toUpperCase())
+              setProfile(null)
+              setError('')
+            }}
+            placeholder="NH-000000000"
+            disabled={loading || !!profile}
+            sx={{
+              width: '100%',
+              height: 48,
+              border: error ? '1.5px solid #E53935' : profile ? '1.5px solid #1FA85C' : '1.5px solid #D1D5DB',
+              borderRadius: '10px',
+              px: '14px',
+              fontSize: 15,
+              fontWeight: 600,
+              color: '#0B0F1A',
+              outline: 'none',
+              bgcolor: profile ? '#F0FBF4' : '#fff',
+              fontFamily: 'inherit',
+              letterSpacing: '0.5px',
+              '&:focus': { borderColor: profile ? '#1FA85C' : '#275CB2' },
+              '&:disabled': { bgcolor: '#F5F5F5', color: '#9AA3B2' },
+              boxSizing: 'border-box',
+            }}
+          />
+          {error && (
+            <Typography sx={{ fontSize: 12, color: '#E53935', mt: 0.5 }}>{error}</Typography>
+          )}
+          {!error && !profile && (
+            <Typography sx={{ fontSize: 12, color: '#9AA3B2', mt: 0.5 }}>Format: NH-000000000</Typography>
+          )}
+        </Box>
+        {!profile && (
+          <Button
+            variant="contained"
+            onClick={handleVerify}
+            disabled={loading || staffId.length < 3}
+            sx={{
+              height: 48,
+              px: 2.5,
+              borderRadius: '10px',
+              fontSize: 14,
+              fontWeight: 700,
+              bgcolor: BRAND,
+              '&:hover': { bgcolor: '#1F4F9E' },
+              flexShrink: 0,
+              minWidth: 90,
+            }}
+          >
+            {loading ? <CircularProgress size={18} sx={{ color: '#fff' }} /> : 'Verify'}
+          </Button>
+        )}
+      </Box>
+
+      {/* Loading state */}
+      {loading && (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, bgcolor: '#F0F4FF', borderRadius: '10px', px: 2, py: 1.5, mt: 1 }}>
+          <CircularProgress size={16} sx={{ color: BRAND }} />
+          <Typography sx={{ fontSize: 13, color: BRAND, fontWeight: 600 }}>Verifying Staff ID…</Typography>
+        </Box>
+      )}
+
+      {/* Matched staff profile */}
+      {profile && (
+        <Box
+          sx={{
+            bgcolor: '#fff',
+            border: '1.5px solid #1FA85C',
+            borderRadius: '14px',
+            p: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            mt: 1,
+            animation: 'staffPop 0.22s cubic-bezier(0.32,0.72,0,1)',
+            '@keyframes staffPop': { from: { opacity: 0, transform: 'scale(0.95)' }, to: { opacity: 1, transform: 'scale(1)' } },
+          }}
+        >
+          <Box sx={{ width: 46, height: 46, borderRadius: '50%', bgcolor: '#E7F0FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Typography sx={{ fontSize: 15, fontWeight: 800, color: BRAND }}>{profile.initials}</Typography>
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+              <Typography sx={{ fontSize: 15, fontWeight: 700, color: '#0B0F1A' }}>{profile.name}</Typography>
+              <Box sx={{ bgcolor: '#DCF5E6', borderRadius: '999px', px: '7px', py: '1px' }}>
+                <Typography sx={{ fontSize: 10.5, fontWeight: 700, color: '#1FA85C' }}>Verified ✓</Typography>
+              </Box>
+            </Box>
+            <Typography sx={{ fontSize: 12.5, color: '#6B7280', mt: 0.25 }}>{profile.role} · {profile.branch}</Typography>
+            <Typography sx={{ fontSize: 11.5, color: '#9AA3B2', mt: 0.25, fontFamily: 'monospace', letterSpacing: '0.3px' }}>{staffId}</Typography>
+          </Box>
+        </Box>
+      )}
+
+      {/* Submit CTA — shown once verified */}
+      {profile && (
+        <Button
+          variant="contained"
+          fullWidth
+          endIcon={<Icon name="arrowRight" size={18} color="#fff" />}
+          onClick={handleSubmit}
+          sx={{
+            height: 52,
+            borderRadius: '12px',
+            fontSize: 15,
+            fontWeight: 700,
+            bgcolor: BRAND,
+            '&:hover': { bgcolor: '#1F4F9E' },
+            mt: 1,
+          }}
+        >
+          Continue to Staff Loan Application
+        </Button>
+      )}
+    </BottomSheet>
   )
 }
 

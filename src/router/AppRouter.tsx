@@ -48,6 +48,8 @@ const RestructureInfoScreen = lazy(() => import('../screens/restructure/Restruct
 const RestructureConditionsScreen = lazy(() => import('../screens/restructure/RestructureConditionsScreen'))
 const RestructureConsentScreen = lazy(() => import('../screens/restructure/RestructureConsentScreen'))
 const RestructureSuccessScreen = lazy(() => import('../screens/restructure/RestructureSuccessScreen'))
+const SettlementCertificateScreen = lazy(() => import('../screens/SettlementCertificateScreen'))
+const RepaymentScheduleDetailScreen = lazy(() => import('../screens/RepaymentScheduleDetailScreen'))
 const SettingsScreen   = lazy(() => import('../screens/SettingsScreen'))
 const NotificationsScreen = lazy(() => import('../screens/NotificationsScreen'))
 const CreditScoreScreen = lazy(() => import('../screens/CreditScoreScreen'))
@@ -112,6 +114,8 @@ export default function AppRouter() {
         <Route path="/my-loan" element={<RequirePin><MyLoanScreen /></RequirePin>} />
         <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
         <Route path="/my-loan-complete" element={<CompletedLoanDetailScreen />} />
+        <Route path="/settlement-certificate" element={<SettlementCertificateScreen />} />
+        <Route path="/repayment-schedule-detail" element={<RepaymentScheduleDetailScreen />} />
         <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
         <Route path="/loan-decision" element={<LoanDecisionDetailScreen />} />
         <Route path="/mwl-about" element={<RequirePin><MwlApplyScreen /></RequirePin>} />

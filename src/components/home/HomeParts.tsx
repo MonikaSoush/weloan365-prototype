@@ -476,10 +476,10 @@ export function OutstandingDonut({ pct = 60, centerText, blurred = false }: { pc
       >
         <Typography
           sx={{
-            fontSize: 13,
+            fontSize: 18,
             color: '#0B0F1A',
             fontWeight: 800,
-            lineHeight: 1.2,
+            lineHeight: 1.1,
             filter: blurred ? 'blur(5px)' : 'none',
             userSelect: blurred ? 'none' : 'auto',
           }}
@@ -515,36 +515,37 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }
     <Card>
       <CurrencyToggle value={cur} onChange={setCur} />
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 3 }}>
-        <OutstandingDonut pct={55} centerText={totalShort} blurred={hidden} />
+        <OutstandingDonut pct={55} centerText="55%" blurred={hidden} />
         <Box sx={{ flex: 1, ml: '34px' }}>
           <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6' }}>
             TOTAL OUTSTANDING
           </Typography>
-          {/* Total amount + show/hide eye at the end */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
+          {/* Total amount */}
+          <Box sx={{ mt: 0.5 }}>
             <Typography
               sx={{
-                fontSize: 26,
+                fontSize: 20,
                 fontWeight: 800,
                 color: '#0B0F1A',
                 letterSpacing: '-0.5px',
                 lineHeight: 1.2,
-                filter: hidden ? 'blur(8px)' : 'none',
-                userSelect: hidden ? 'none' : 'auto',
-                transition: 'filter 0.15s',
               }}
             >
               {total}
             </Typography>
-            <IconButton
-              size="small"
-              onClick={() => setHidden((v) => !v)}
-              aria-label={hidden ? 'Show amount' : 'Hide amount'}
-              sx={{ p: 0.25, color: BLUE }}
-            >
-              {hidden ? <Icon name="eyeOff" size={18} /> : <Icon name="eye" size={18} />}
-            </IconButton>
           </Box>
+          {/* KHR/USD secondary amount — same currency denomination, not a rate conversion */}
+          <Typography
+            sx={{
+              fontSize: 20,
+              fontWeight: 800,
+              color: '#0B0F1A',
+              letterSpacing: '-0.5px',
+              lineHeight: 1.2,
+            }}
+          >
+            {isKHR ? '$4,780.00' : '៛19,598,000'}
+          </Typography>
           <Box
             onClick={() => setExpanded((v) => !v)}
             role="button"
@@ -631,11 +632,14 @@ export function AdvanceCard({ amount = '$320.00' }: { amount?: string } = {}) {
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>Advance</Typography>
         <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: 0.25, lineHeight: 1.3 }}>
-          Payment that not reach cut off time
+          Reserved for loan repayment
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-        <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A' }}>{amount}</Typography>
+        <Box sx={{ textAlign: 'right' }}>
+          <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>{amount}</Typography>
+          <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>៛1,312,000</Typography>
+        </Box>
         <Icon name="chevronRight" size={20} color="#8A94A6" />
       </Box>
     </Card>

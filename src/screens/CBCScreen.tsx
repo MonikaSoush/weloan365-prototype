@@ -295,7 +295,7 @@ function CBCContent({ onContinue }: { onContinue: () => void }) {
 // ─── Intro alert sheet ────────────────────────────────────────────────────────
 function IntroAlert({ onContinue, onCancel }: { onContinue: () => void; onCancel: () => void }) {
   return (
-    <Box sx={{ position: 'fixed', inset: 0, zIndex: 1300, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', bgcolor: 'rgba(0,0,0,0.45)' }}>
+    <Box sx={{ position: 'absolute', inset: 0, zIndex: 1300, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', bgcolor: 'rgba(0,0,0,0.45)' }}>
       <Box sx={{ width: '100%', maxWidth: 480, bgcolor: '#fff', borderTopLeftRadius: '24px', borderTopRightRadius: '24px', p: 3, pb: 4 }}>
         <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: '#E0E4EA', mx: 'auto', mb: 3 }} />
 
