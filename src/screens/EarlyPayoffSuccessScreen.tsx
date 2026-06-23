@@ -15,7 +15,7 @@ export default function EarlyPayoffSuccessScreen() {
   const navigate = useNavigate()
 
   return (
-    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#fff' }}>
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', px: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           {/* Mascot */}
@@ -45,7 +45,7 @@ export default function EarlyPayoffSuccessScreen() {
         </Box>
       </Box>
 
-      <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
+      <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#fff' }}>
         <Button
           variant="contained"
           fullWidth

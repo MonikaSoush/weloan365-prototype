@@ -205,6 +205,37 @@ export default function MyLoanReviewDetailScreen() {
               </Box>
             </Box>
           )}
+
+          {/* Head Office contact */}
+          <Box>
+            <SectionLabel>HEAD OFFICE</SectionLabel>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              {[
+                { icon: 'phone',         label: 'Call'      },
+                { icon: 'feedback',      label: 'Messenger' },
+                { icon: 'send',          label: 'Telegram'  },
+              ].map(({ icon, label }) => (
+                <Button
+                  key={label}
+                  variant="outlined"
+                  startIcon={<Icon name={icon as any} size={16} color={BLUE} />}
+                  sx={{
+                    flex: 1,
+                    height: 44,
+                    borderRadius: '10px',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: BLUE,
+                    borderColor: '#C6D8F8',
+                    textTransform: 'none',
+                    '&:hover': { bgcolor: '#EEF3FC', borderColor: BLUE },
+                  }}
+                >
+                  {label}
+                </Button>
+              ))}
+            </Box>
+          </Box>
         </Box>
       </Box>
 

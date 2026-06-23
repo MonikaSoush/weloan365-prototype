@@ -556,22 +556,22 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false, 
               <Icon name="chevronRight" size={18} />
             </Box>
           </Box>
-        </Box>
-      </Box>
 
-      {/* Paid / Left legend */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1.5 }}>
-        {[
-          { dot: BLUE,     label: 'Paid',  usd: '≈ $3,860',   khr: '≈ ៛15,826,000' },
-          { dot: '#E7ECF2', label: 'Left', usd: '≈ $4,780',   khr: '≈ ៛19,598,000' },
-        ].map((r) => (
-          <Box key={r.label} sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: r.dot, border: r.dot === '#E7ECF2' ? '1.5px solid #C9D2DE' : 'none', flexShrink: 0 }} />
-            <Typography sx={{ fontSize: 11.5, color: '#8A94A6' }}>
-              {r.label} <Box component="span" sx={{ fontWeight: 700, color: '#3A4256' }}>{isKHR ? r.khr : r.usd}</Box>
-            </Typography>
+          {/* Paid / Left legend — aligned under View summary */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
+            {[
+              { dot: BLUE,      label: 'Paid', usd: '≈ $3,860',     khr: '≈ ៛15,826,000' },
+              { dot: '#E7ECF2', label: 'Left', usd: '≈ $4,780',     khr: '≈ ៛19,598,000' },
+            ].map((r) => (
+              <Box key={r.label} sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: r.dot, border: r.dot === '#E7ECF2' ? '1.5px solid #C9D2DE' : 'none', flexShrink: 0 }} />
+                <Typography sx={{ fontSize: 11.5, color: '#8A94A6' }}>
+                  {r.label} <Box component="span" sx={{ fontWeight: 700, color: '#3A4256' }}>{isKHR ? r.khr : r.usd}</Box>
+                </Typography>
+              </Box>
+            ))}
           </Box>
-        ))}
+        </Box>
       </Box>
 
       {/* Next payment row */}
@@ -667,6 +667,7 @@ export function AdvanceCard({ amount = '$320.00' }: { amount?: string } = {}) {
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
         <Box sx={{ textAlign: 'right' }}>
+          <Typography sx={{ fontSize: 11, fontWeight: 700, color: '#8A94A6', letterSpacing: '0.5px', mb: 0.25 }}>BALANCE</Typography>
           <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>{amount}</Typography>
           <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A', lineHeight: 1.2 }}>៛1,312,000</Typography>
         </Box>

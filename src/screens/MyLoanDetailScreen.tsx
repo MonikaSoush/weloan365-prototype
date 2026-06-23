@@ -23,29 +23,32 @@ export default function MyLoanDetailScreen() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [payOpen, setPayOpen] = useState(false)
+  const [infoOpen, setInfoOpen] = useState(false)
   const overdue = searchParams.get('overdue') === 'true'
+  const product = searchParams.get('product') ?? 'Small Business Loan'
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
         <MwlHeader onBack={() => navigate(-1)} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 1 }}>
-          Small Business Loan
+          {product}
         </Typography>
 
         <Box sx={{ px: 3, pt: 2.5, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-          <DetailsTab onPay={() => setPayOpen(true)} overdue={overdue} />
+          <DetailsTab onPay={() => setPayOpen(true)} overdue={overdue} onInfo={() => setInfoOpen(true)} />
           <OthersTab />
         </Box>
       </Box>
 
-      <PayLoanSheet open={payOpen} onClose={() => setPayOpen(false)} />
+      <PayLoanSheet open={payOpen} onClose={() => setPayOpen(false)} overdue={overdue} />
+      <ProductFeaturesSheet open={infoOpen} onClose={() => setInfoOpen(false)} product={product} />
     </Box>
   )
 }
 
 // ─── DETAILS tab ─────────────────────────────────────────────────────────────
-function DetailsTab({ onPay, overdue }: { onPay: () => void; overdue: boolean }) {
+function DetailsTab({ onPay, overdue, onInfo }: { onPay: () => void; overdue: boolean; onInfo: () => void }) {
   const navigate = useNavigate()
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -61,6 +64,13 @@ function DetailsTab({ onPay, overdue }: { onPay: () => void; overdue: boolean })
           </Box>
         )}
         <Typography sx={{ fontSize: 13, fontWeight: 600, color: LABEL, letterSpacing: '0.65px' }}>NH-2026-04821</Typography>
+        <Box
+          role="button"
+          onClick={onInfo}
+          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', opacity: 0.85, '&:active': { opacity: 0.5 } }}
+        >
+          <Icon name="info" size={16} color={ACCENT} strokeWidth={1.6} />
+        </Box>
       </Box>
 
       {/* Overview card — donut + legend + progress + meta */}
@@ -92,33 +102,32 @@ function DetailsTab({ onPay, overdue }: { onPay: () => void; overdue: boolean })
       </Box>
 
       {/* Next payment due card */}
-      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 3, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <Icon name="clock" size={16} color="#000" />
-          <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#000' }}>Next payment due</Typography>
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 3 }}>
+        {/* Top row: label + penalty */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.75 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Icon name="clock" size={16} color="#000" />
+            <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#000' }}>Next payment due</Typography>
+          </Box>
+          {overdue && (
+            <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#E07A1A' }}>+$5.00 Penalty</Typography>
+          )}
         </Box>
+        {/* Bottom row: amount + due date | Pay now button */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
-            <Typography sx={{ fontSize: 22, fontWeight: 700, color: VALUE, lineHeight: 1.2 }}>$320.00</Typography>
-            {overdue && <Typography sx={{ fontSize: 12, color: '#C2870F', fontWeight: 600, mt: 0.25 }}>+ $45.00 penalty</Typography>}
-            <Typography sx={{ fontSize: 11, color: LABEL, mt: 0.25 }}>Due 16 May · in 9 days</Typography>
+            <Typography sx={{ fontSize: 32, fontWeight: 800, color: VALUE, letterSpacing: '-1px', lineHeight: 1.1 }}>$320.00</Typography>
+            <Typography sx={{ fontSize: 12, color: LABEL, mt: 0.25 }}>Due 16 May · in 9 days</Typography>
           </Box>
           <Button
             variant="contained"
             onClick={onPay}
             startIcon={<Icon name="cash" size={18} />}
-            sx={{ height: 48, minWidth: 0, borderRadius: '12px', px: '20px', fontSize: 15, fontWeight: 700, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' } }}
+            sx={{ height: 48, minWidth: 0, borderRadius: '12px', px: '22px', fontSize: 15, fontWeight: 700, bgcolor: ACCENT, '&:hover': { bgcolor: '#2B4F92' }, textTransform: 'none' }}
           >
-            Pay Now
+            Pay now
           </Button>
         </Box>
-        {/* Total to pay — only shown when overdue */}
-        {overdue && (
-          <Box sx={{ borderTop: '1px solid #F0F0F0', pt: 1.25, mt: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography sx={{ fontSize: 13, fontWeight: 600, color: VALUE }}>Total to pay</Typography>
-            <Typography sx={{ fontSize: 20, fontWeight: 800, color: ACCENT, letterSpacing: '-0.5px' }}>$365.00</Typography>
-          </Box>
-        )}
       </Box>
 
       {/* Actual payment table */}
@@ -243,11 +252,9 @@ function PaymentTable() {
                 <Box component="td" sx={{ px: '8px', py: '8px', fontSize: 12, fontWeight: 500, textAlign: 'right', color: dim ? 'rgba(0,0,0,0.2)' : LABEL, whiteSpace: 'nowrap' }}>
                   {row.other}
                 </Box>
-                <Box component="td" sx={{ px: '10px', py: '8px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75, flexWrap: 'nowrap' }}>
-                    <Typography sx={{ fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap', color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>{row.total}</Typography>
-                    {row.badge && <Box sx={{ flexShrink: 0 }}><StatusBadge text={row.badge.text} tone={row.badge.tone} /></Box>}
-                  </Box>
+                <Box component="td" sx={{ px: '10px', py: '8px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.75 }}>
+                  <Typography sx={{ fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap', color: dim ? 'rgba(0,0,0,0.2)' : '#000' }}>{row.total}</Typography>
+                  {row.badge && <StatusBadge text={row.badge.text} tone={row.badge.tone} />}
                 </Box>
               </Box>
             )
@@ -406,6 +413,162 @@ function DocRow({ title, sub, size, last }: { title: string; sub: string; size: 
         </Box>
       </Box>
     </Box>
+  )
+}
+
+// ─── Product features sheet ───────────────────────────────────────────────────
+type FeatureItem = { icon: string; label: string; value: string }
+
+const PRODUCT_FEATURES: Record<string, { title: string; tagline: string; features: FeatureItem[] }> = {
+  'Small Business Loan': {
+    title: 'Small Business Loan',
+    tagline: 'Grow your business with flexible capital',
+    features: [
+      { icon: 'cash',        label: 'Loan Amount',    value: 'Up to $10,000'        },
+      { icon: 'calendar',    label: 'Loan Term',       value: '6 – 36 months'        },
+      { icon: 'gauge',       label: 'Interest Rate',   value: 'From 1.20% / month'   },
+      { icon: 'checkCircle', label: 'Repayment',       value: 'Equal monthly payment'},
+      { icon: 'layers',      label: 'Collateral',      value: 'Not required'         },
+      { icon: 'idCard',      label: 'Eligibility',     value: '18+ · Cambodian ID'   },
+    ],
+  },
+  'Migration Worker Loan': {
+    title: 'Migration Worker Loan',
+    tagline: 'Support your journey abroad with confidence',
+    features: [
+      { icon: 'cash',        label: 'Loan Amount',    value: 'Up to $5,000'               },
+      { icon: 'calendar',    label: 'Loan Term',       value: '12 – 36 months'             },
+      { icon: 'gauge',       label: 'Interest Rate',   value: 'From 1.04% / month'         },
+      { icon: 'plane',       label: 'Purpose',         value: 'Overseas work preparation'  },
+      { icon: 'checkCircle', label: 'Repayment',       value: 'Monthly installment'        },
+      { icon: 'idCard',      label: 'Eligibility',     value: 'Valid work permit required' },
+    ],
+  },
+  'Housing Loan': {
+    title: 'Housing Loan',
+    tagline: 'Own your dream home today',
+    features: [
+      { icon: 'cash',        label: 'Loan Amount',    value: 'Up to $200,000'           },
+      { icon: 'calendar',    label: 'Loan Term',       value: 'Up to 20 years'           },
+      { icon: 'gauge',       label: 'Interest Rate',   value: 'From 0.85% / month'       },
+      { icon: 'home',        label: 'Purpose',         value: 'Purchase · Build · Repair'},
+      { icon: 'checkCircle', label: 'Repayment',       value: 'Equal monthly payment'    },
+      { icon: 'layers',      label: 'Collateral',      value: 'Property title required'  },
+    ],
+  },
+  'Staff Loan': {
+    title: 'Staff Loan',
+    tagline: 'Exclusive financial support for NH staff',
+    features: [
+      { icon: 'cash',        label: 'Loan Amount',    value: 'Up to 24× monthly salary' },
+      { icon: 'calendar',    label: 'Loan Term',       value: '12 – 60 months'           },
+      { icon: 'gauge',       label: 'Interest Rate',   value: '0% (subsidised)'          },
+      { icon: 'checkCircle', label: 'Repayment',       value: 'Salary deduction'         },
+      { icon: 'layers',      label: 'Collateral',      value: 'Not required'             },
+      { icon: 'idCard',      label: 'Eligibility',     value: 'NH full-time employees'   },
+    ],
+  },
+}
+
+const DEFAULT_FEATURES: (typeof PRODUCT_FEATURES)[string] = {
+  title: 'Loan Product',
+  tagline: 'Flexible financial solutions for your needs',
+  features: [
+    { icon: 'cash',        label: 'Loan Amount',   value: 'Subject to assessment'  },
+    { icon: 'calendar',    label: 'Loan Term',      value: 'Subject to assessment'  },
+    { icon: 'gauge',       label: 'Interest Rate',  value: 'Subject to assessment'  },
+    { icon: 'checkCircle', label: 'Repayment',      value: 'Monthly installment'    },
+  ],
+}
+
+function ProductFeaturesSheet({ open, onClose, product }: { open: boolean; onClose: () => void; product: string }) {
+  const info = PRODUCT_FEATURES[product] ?? DEFAULT_FEATURES
+  return (
+    <>
+      {/* Backdrop */}
+      {open && (
+        <Box
+          onClick={onClose}
+          sx={{ position: 'absolute', inset: 0, zIndex: 100, bgcolor: 'rgba(11,15,26,0.4)' }}
+        />
+      )}
+      {/* Sheet */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 101,
+          bgcolor: '#fff',
+          borderRadius: '20px 20px 0 0',
+          boxShadow: '0 -8px 40px rgba(11,15,26,0.16)',
+          transform: open ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1)',
+          pb: '44px',
+        }}
+      >
+        {/* Handle */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.5, pb: 1 }}>
+          <Box sx={{ width: 36, height: 4, borderRadius: '2px', bgcolor: '#E0E4EC' }} />
+        </Box>
+
+        {/* Header */}
+        <Box sx={{ px: 3, pt: 1, pb: 2, borderBottom: '1px solid #F0F2F5' }}>
+          <Typography sx={{ fontSize: 18, fontWeight: 800, color: HEADING, letterSpacing: '-0.3px' }}>
+            {info.title}
+          </Typography>
+          <Typography sx={{ fontSize: 13, color: LABEL, mt: 0.25 }}>{info.tagline}</Typography>
+        </Box>
+
+        {/* Feature rows */}
+        <Box sx={{ px: 3, pt: 2, display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {info.features.map((f, i) => (
+            <Box
+              key={f.label}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                py: '13px',
+                borderBottom: i < info.features.length - 1 ? '1px solid #F0F2F5' : 'none',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '10px',
+                  bgcolor: '#EEF3FC',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Icon name={f.icon as any} size={17} color={ACCENT} />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ fontSize: 12, color: LABEL, lineHeight: 1.3 }}>{f.label}</Typography>
+                <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING, lineHeight: 1.3, mt: 0.15 }}>{f.value}</Typography>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+
+        {/* Close button */}
+        <Box sx={{ px: 3, pt: 2 }}>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={onClose}
+            sx={{ height: 46, borderRadius: '12px', fontSize: 15, fontWeight: 700, color: ACCENT, borderColor: '#C6D8F8', textTransform: 'none', '&:hover': { bgcolor: '#EEF3FC' } }}
+          >
+            Close
+          </Button>
+        </Box>
+      </Box>
+    </>
   )
 }
 

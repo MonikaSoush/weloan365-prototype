@@ -41,7 +41,6 @@ export default function AdvanceAccountScreen() {
   const [method, setMethod] = useState('ppcb')
   const [amount, setAmount] = useState('')
   const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
-  const [displayCur, setDisplayCur] = useState<'USD' | 'KHR'>('USD')
   const switchCur = (next: 'USD' | 'KHR') => {
     if (next === cur) return
     const n = parseFloat(amount.replace(/,/g, '')) || 0
@@ -49,10 +48,6 @@ export default function AdvanceAccountScreen() {
     setCur(next)
   }
   const symbol = cur === 'USD' ? '$' : '៛'
-  const isKHR = displayCur === 'KHR'
-  const balance  = isKHR ? '៛492,000'    : '$120.00'
-  const totalIn  = isKHR ? '៛1,496,000'  : '$364.97'
-  const totalOut = isKHR ? '៛1,455,000'  : '$354.94'
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -63,43 +58,33 @@ export default function AdvanceAccountScreen() {
         </Typography>
 
         <Box sx={{ px: 3, pb: 3, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-          {/* Balance + Top-up + Total IN/OUT — one unified card */}
+          {/* Balance + Total IN/OUT — one unified card */}
           <Box sx={{ bgcolor: '#fff', borderRadius: '16px', border: '1px solid #ECEFF3', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', overflow: 'hidden' }}>
-            {/* Full-width currency toggle */}
-            <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-              <CurrencyToggle value={displayCur} onChange={setDisplayCur} />
+            {/* Balance section label */}
+            <Box sx={{ px: 2.5, pt: 2.5, pb: 1.25 }}>
+              <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#8A94A6', letterSpacing: '0.5px' }}>BALANCE</Typography>
             </Box>
-            {/* Balance row */}
-            <Box sx={{ px: 2.5, py: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5 }}>
-              <Box sx={{ minWidth: 0 }}>
-                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Balance</Typography>
-                <Typography sx={{ fontSize: 32, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.25 }}>{balance}</Typography>
-                <Typography sx={{ fontSize: 11.5, fontWeight: 600, color: '#8A94A6', mt: 0.25 }}>
-                  {displayCur} · {ACCOUNTS[displayCur]}
-                </Typography>
-              </Box>
+            {/* USD row */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2.5, pb: 1 }}>
+              <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', lineHeight: 1.1 }}>$120.00</Typography>
+              <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.2px' }}>USD · {ACCOUNTS['USD']}</Typography>
+            </Box>
+            {/* KHR row */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2.5, pb: 2 }}>
+              <Typography sx={{ fontSize: 26, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', lineHeight: 1.1 }}>៛492,000</Typography>
+              <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.2px' }}>KHR · {ACCOUNTS['KHR']}</Typography>
+            </Box>
+            {/* Top-up button — full width */}
+            <Box sx={{ px: 2.5, pb: 2.5 }}>
               <Button
                 variant="contained"
+                fullWidth
                 onClick={() => setTopUpOpen(true)}
                 startIcon={<Icon name="plus" size={18} />}
-                sx={{ height: 48, borderRadius: '12px', pl: '8px', pr: '8px', fontSize: 15, fontWeight: 700, flexShrink: 0 }}
+                sx={{ height: 48, borderRadius: '12px', fontSize: 15, fontWeight: 700 }}
               >
                 Top-up Advance
               </Button>
-            </Box>
-            {/* Divider */}
-            <Box sx={{ height: '1px', bgcolor: '#ECEFF3', mx: 2.5 }} />
-            {/* Total IN / Total OUT row */}
-            <Box sx={{ display: 'flex' }}>
-              <Box sx={{ flex: 1, px: 2.5, py: 2 }}>
-                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Total IN</Typography>
-                <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#1A9E5C', letterSpacing: '-0.3px', mt: 0.5 }}>{totalIn}</Typography>
-              </Box>
-              <Box sx={{ width: '1px', bgcolor: '#ECEFF3', my: 2 }} />
-              <Box sx={{ flex: 1, px: 2.5, py: 2 }}>
-                <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#8A94A6', letterSpacing: '0.3px' }}>Total OUT</Typography>
-                <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.3px', mt: 0.5 }}>{totalOut}</Typography>
-              </Box>
             </Box>
           </Box>
 
