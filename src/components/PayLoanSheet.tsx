@@ -31,8 +31,10 @@ const KH = `'Noto Sans Khmer', sans-serif`
 
 const KHR_RATE = 4100 // 1 USD ≈ 4,100 ៛
 
-export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const FULL_USD = '320.00'
+export default function PayLoanSheet({ open, onClose, overdue = false }: { open: boolean; onClose: () => void; overdue?: boolean }) {
+  const INSTALLMENT_USD = 320.00
+  const PENALTY_USD = 5.00
+  const FULL_USD = overdue ? (INSTALLMENT_USD + PENALTY_USD).toFixed(2) : INSTALLMENT_USD.toFixed(2)
   const [selected, setSelected] = useState<MethodId | null>(null)
   const [amount, setAmount] = useState('')
   const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
@@ -146,12 +148,19 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
           </Box>
 
           {/* Hint text: changes after Fulfill is tapped */}
-          <Typography sx={{ fontSize: 12, color: fulfilled ? BLUE : MUTED, fontWeight: fulfilled ? 700 : 400, mt: -1.5, mb: 2, px: 0.5 }}>
-            {fulfilled
-              ? `You will pay ${symbol}${cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}`
-              : `Installment due ${cur === 'KHR' ? '៛' : '$'}${cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}`
-            }
-          </Typography>
+          <Box sx={{ mt: -1.5, mb: 2, px: 0.5 }}>
+            <Typography sx={{ fontSize: 12, color: fulfilled ? BLUE : MUTED, fontWeight: fulfilled ? 700 : 400 }}>
+              {fulfilled
+                ? `You will pay ${symbol}${cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}`
+                : `Installment due ${cur === 'KHR' ? '៛' : '$'}${cur === 'KHR' ? Math.round(INSTALLMENT_USD * KHR_RATE).toLocaleString('en-US') : INSTALLMENT_USD.toFixed(2)}`
+              }
+            </Typography>
+            {overdue && (
+              <Typography sx={{ fontSize: 12, color: '#E07A1A', fontWeight: 600, mt: 0.25 }}>
+                + ${PENALTY_USD.toFixed(2)} penalty included
+              </Typography>
+            )}
+          </Box>
 
           <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.7px', color: MUTED, mb: 1 }}>
             PAYMENT METHOD

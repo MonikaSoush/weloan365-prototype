@@ -263,6 +263,21 @@ export default function StaffLoanScreen() {
             </Box>
           </Box>
 
+          {/* Payroll disbursement notice */}
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.25, bgcolor: '#EAF4EE', border: '1px solid #B7DFCA', borderRadius: '12px', p: '14px 16px' }}>
+            <Box sx={{ flexShrink: 0, mt: '1px' }}>
+              <Icon name="info" size={17} color="#1A7A45" strokeWidth={1.8} />
+            </Box>
+            <Box>
+              <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#145C33', lineHeight: 1.4 }}>
+                Disbursed to your payroll account
+              </Typography>
+              <Typography sx={{ fontSize: 12, color: '#2D6A48', mt: 0.4, lineHeight: 1.5 }}>
+                Your approved loan amount will be automatically transferred to your registered NongHyup payroll account.
+              </Typography>
+            </Box>
+          </Box>
+
           {/* Credit bureau consent */}
           <Box>
             <GroupLabel>CREDIT BUREAU CONSENT</GroupLabel>
