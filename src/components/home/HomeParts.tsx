@@ -226,29 +226,45 @@ function DiscoverGrid() {
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
 
-  const items: { icon: IconName; label: string; bg: string; img?: string; onClick: () => void }[] = [
-    { icon: 'calculator', label: 'Calculator',              bg: '#0B1A14', img: DISCOVER.calculator, onClick: () => navigate('/calculator') },
-    { icon: 'findBranch', label: 'Branch Locator',          bg: '#1C3B6E', onClick: () => navigate('/branch-locator') },
-    { icon: 'gauge',      label: 'Credit Score',            bg: '#14432C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/credit-score') : '/credit-score') },
-    { icon: 'feedback',   label: 'Submit a Complaint',      bg: '#3B1C5C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback') },
-    { icon: 'phone',      label: 'Request a Consultation', bg: '#1A3A30', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult') },
-    { icon: 'idCard',     label: 'CBC',                    bg: '#1A2545', onClick: () => navigate('/cbc') },
+  const hero = { icon: 'calculator' as IconName, label: 'Calculator', bg: '#0B1A14', img: DISCOVER.calculator, onClick: () => navigate('/calculator') }
+  const grid4 = [
+    { icon: 'findBranch' as IconName, label: 'Branch Locator',         bg: '#1C3B6E', onClick: () => navigate('/branch-locator') },
+    { icon: 'feedback'   as IconName, label: 'Submit a Complaint',     bg: '#3B1C5C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback') },
+    { icon: 'phone'      as IconName, label: 'Request a Consultation', bg: '#1A3A30', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult') },
   ]
+  const cbc = { icon: 'idCard' as IconName, label: 'CBC', bg: '#1A2545', onClick: () => navigate('/cbc') }
 
   return (
-    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
-      {items.map((item) => (
-        <Box key={item.label} role="button" onClick={item.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 140, bgcolor: item.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-          {item.img && (
-            <AssetImg src={item.img} alt="" sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} fallback={<Box />} />
-          )}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      {/* 2×2 grid — Calculator + 3 items */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+        {/* Calculator hero tile */}
+        <Box role="button" onClick={hero.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 130, bgcolor: hero.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          <AssetImg src={hero.img} alt="" sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} fallback={<Box />} />
           <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)' }} />
           <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end', p: '12px', gap: 0.5 }}>
-            <Icon name={item.icon} size={22} color="rgba(255,255,255,0.9)" />
-            <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{item.label}</Typography>
+            <Icon name={hero.icon} size={22} color="rgba(255,255,255,0.9)" />
+            <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{hero.label}</Typography>
           </Box>
         </Box>
-      ))}
+        {grid4.map((item) => (
+          <Box key={item.label} role="button" onClick={item.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 130, bgcolor: item.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+            <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 100%)' }} />
+            <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end', p: '12px', gap: 0.5 }}>
+              <Icon name={item.icon} size={22} color="rgba(255,255,255,0.9)" />
+              <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{item.label}</Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+      {/* CBC — full width */}
+      <Box role="button" onClick={cbc.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 110, bgcolor: cbc.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 100%)' }} />
+        <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 1.5, px: '16px' }}>
+          <Icon name={cbc.icon} size={22} color="rgba(255,255,255,0.9)" />
+          <Typography sx={{ color: '#fff', fontSize: 15, fontWeight: 800 }}>{cbc.label}</Typography>
+        </Box>
+      </Box>
     </Box>
   )
 }
@@ -557,20 +573,6 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false, 
             </Box>
           </Box>
 
-          {/* Paid / Left legend — aligned under View summary */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
-            {[
-              { dot: BLUE,      label: 'Paid', usd: '≈ $3,860',     khr: '≈ ៛15,826,000' },
-              { dot: '#E7ECF2', label: 'Left', usd: '≈ $4,780',     khr: '≈ ៛19,598,000' },
-            ].map((r) => (
-              <Box key={r.label} sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-                <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: r.dot, border: r.dot === '#E7ECF2' ? '1.5px solid #C9D2DE' : 'none', flexShrink: 0 }} />
-                <Typography sx={{ fontSize: 11.5, color: '#8A94A6' }}>
-                  {r.label} <Box component="span" sx={{ fontWeight: 700, color: '#3A4256' }}>{isKHR ? r.khr : r.usd}</Box>
-                </Typography>
-              </Box>
-            ))}
-          </Box>
         </Box>
       </Box>
 
