@@ -187,24 +187,39 @@ export default function PayLoanSheet({ open, onClose, overdue = false }: { open:
 
         {/* Footer */}
         <Box sx={{ px: 3, pt: 1.5, pb: '34px', bgcolor: '#fff' }}>
-          <Button
-            variant="contained"
-            fullWidth
-            disabled={!selected}
-            onClick={onClose}
-            startIcon={<Icon name="cash" size={18} />}
-            sx={{
-              height: 52,
-              borderRadius: '14px',
-              p: '10px',
-              fontSize: 16,
-              fontWeight: 700,
-              bgcolor: BLUE,
-              '&.Mui-disabled': { bgcolor: '#A9C3EC', color: '#fff' },
-            }}
-          >
-            {amount ? `Pay ${symbol}${amount}` : 'Pay Now'}
-          </Button>
+          {selected === 'khqr' ? (
+            /* KHQR — always show Save */
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={onClose}
+              startIcon={<Icon name="download" size={18} />}
+              sx={{ height: 52, borderRadius: '14px', p: '10px', fontSize: 16, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
+            >
+              Save
+            </Button>
+          ) : (
+            /* Bank — always visible, enabled only after bank selected + fulfilled */
+            <Button
+              variant="contained"
+              fullWidth
+              disabled={!selected || !fulfilled}
+              onClick={onClose}
+              startIcon={<Icon name="cash" size={18} />}
+              sx={{
+                height: 52,
+                borderRadius: '14px',
+                p: '10px',
+                fontSize: 16,
+                fontWeight: 700,
+                bgcolor: BLUE,
+                '&:hover': { bgcolor: '#1F4F9E' },
+                '&.Mui-disabled': { bgcolor: '#A9C3EC', color: '#fff' },
+              }}
+            >
+              {fulfilled && amount ? `Pay ${symbol}${amount}` : 'Pay Now'}
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>

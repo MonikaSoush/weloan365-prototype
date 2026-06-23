@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Icon } from '../components/Icon'
 import { MwlHeader } from './mwl/MwlParts'
+import { Card, StatusChip } from '../components/home/HomeParts'
 
 const BLUE    = '#275CB2'
 const GREEN   = '#76C043'
@@ -40,49 +41,6 @@ function Stat({ label, value, sub, valueColor = HEADING, bg = '#F5F7FA' }: {
   )
 }
 
-// ── Loan breakdown card ──────────────────────────────────────────────────────
-function LoanCard({ icon, title, loanRef, tag, tagColor, tagBg, left, leftLabel, pct, pctLabel, alert, onAlertClick }: {
-  icon: any; title: string; loanRef: string; tag: string; tagColor: string; tagBg: string;
-  left: string; leftLabel: string; pct: string; pctLabel: string; alert?: string; onAlertClick?: () => void
-}) {
-  return (
-    <Box sx={CARD_SX}>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 1.25 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
-          <Box sx={{ width: 38, height: 38, borderRadius: '10px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <Icon name={icon} size={18} color={BLUE} />
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: 14, fontWeight: 800, color: HEADING, lineHeight: 1.2 }}>{title}</Typography>
-          </Box>
-        </Box>
-        <Box sx={{ bgcolor: tagBg, borderRadius: '999px', px: '10px', py: '3px', flexShrink: 0 }}>
-          <Typography sx={{ fontSize: 11, fontWeight: 700, color: tagColor }}>{tag}</Typography>
-        </Box>
-      </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', mb: 0.5 }}>
-        <Typography sx={{ fontSize: 11.5, color: LABEL }}>{leftLabel}</Typography>
-        <Typography sx={{ fontSize: 13, fontWeight: 800, color: BLUE }}>{left}</Typography>
-      </Box>
-      <Box sx={{ height: 5, borderRadius: 3, bgcolor: '#EAECF0', overflow: 'hidden', mb: 0.5 }}>
-        <Box sx={{ height: '100%', width: pct, bgcolor: BLUE, borderRadius: 3 }} />
-      </Box>
-      <Typography sx={{ fontSize: 11, color: LABEL }}>{pctLabel}</Typography>
-
-      {alert && (
-        <Box onClick={onAlertClick} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1.5, pt: 1.25, borderTop: '1px solid #F0F2F5', cursor: onAlertClick ? 'pointer' : 'default' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-            <Icon name="clock" size={13} color="#C2870F" />
-            <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#C2870F' }}>{alert}</Typography>
-          </Box>
-          <Icon name="chevronRight" size={15} color={LABEL} />
-        </Box>
-      )}
-    </Box>
-  )
-}
-
 // ── Upcoming due item ────────────────────────────────────────────────────────
 function DueItem({ day, month, dotColor, title, sub, amount, amountColor }: {
   day: string; month: string; dotColor: string; title: string; sub: string; amount: string; amountColor: string
@@ -99,6 +57,46 @@ function DueItem({ day, month, dotColor, title, sub, amount, amountColor }: {
       </Box>
       <Typography sx={{ fontSize: 14, fontWeight: 800, color: amountColor, flexShrink: 0 }}>{amount}</Typography>
     </Box>
+  )
+}
+
+// ── Active-style loan card (same as My Loans screen) ─────────────────────────
+function ActiveStyleLoanCard({ title, icon, status, restructured }: { title: string; icon: any; status?: 'overdue'; restructured?: boolean }) {
+  const navigate = useNavigate()
+  return (
+    <Card onClick={() => navigate(status === 'overdue' ? '/my-loan-detail?overdue=true' : '/my-loan-detail')} sx={{ cursor: 'pointer', p: '16px' }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Icon name={icon} size={22} color={BLUE} />
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 800, color: HEADING }} noWrap>{title}</Typography>
+            {(restructured || status === 'overdue') && (
+              <Box sx={{ mt: '4px', display: 'inline-flex', gap: 0.5 }}>
+                {restructured && <StatusChip label="1st Restructured" color="#7A4DD6" bg="#EFE7FB" />}
+                {status === 'overdue' && <StatusChip label="Overdue" color="#E8770B" bg="#FFF1E6" />}
+              </Box>
+            )}
+          </Box>
+          <StatusChip label="Active" color="#1FA85C" bg="#DCF5E6" />
+          <Icon name="chevronRight" size={18} color="#C9D2DE" />
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
+            <Typography sx={{ fontSize: 12, color: LABEL }}>8 of 24 paid</Typography>
+            <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#3A4256' }}>33%</Typography>
+          </Box>
+          <Box sx={{ height: 6, borderRadius: 3, bgcolor: '#E7ECF2', overflow: 'hidden' }}>
+            <Box sx={{ height: '100%', width: '33%', bgcolor: BLUE, borderRadius: 3 }} />
+          </Box>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
+          <Typography sx={{ fontSize: 12.5, color: LABEL }}>Next due · 20 May</Typography>
+          <Typography sx={{ fontSize: 15, fontWeight: 800, color: HEADING }}>$4,500.00 left</Typography>
+        </Box>
+      </Box>
+    </Card>
   )
 }
 
@@ -169,26 +167,9 @@ export default function PortfolioSummaryScreen() {
         <Box>
           <SectionHeader icon="layers" label="Loan breakdown" />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-            <LoanCard
-              icon="store" title="Small Biz Loan" loanRef="SBL · 026-01285956"
-              tag="Just paid" tagColor={BLUE} tagBg="#EEF3FC"
-              leftLabel="Paid $2,800 of $4,900" left="$2,100 left"
-              pct="33%" pctLabel="33% · 8 of 24"
-              alert="Restructuring · Under Assessment"
-              onAlertClick={goToRestructure}
-            />
-            <LoanCard
-              icon="plane" title="Migrant Worker Loan" loanRef="MWL · 026-01285959 · KHR"
-              tag="On track" tagColor="#1A8A4C" tagBg="#EAF6EF"
-              leftLabel="Paid ៛5,207,000 of ៛12,874,000" left="៛7,667,000 left"
-              pct="28%" pctLabel="28% · 5 of 18"
-            />
-            <LoanCard
-              icon="home" title="Housing Loan" loanRef="HL · 026-01285963"
-              tag="Just paid" tagColor={BLUE} tagBg="#EEF3FC"
-              leftLabel="Paid $40,000 of $100,000" left="$60,000 left"
-              pct="40%" pctLabel="40% · 48 of 120"
-            />
+            <ActiveStyleLoanCard title="Small Biz Loan" icon="store" restructured />
+            <ActiveStyleLoanCard title="Housing Loan" icon="home" />
+            <ActiveStyleLoanCard title="Micro Loan" icon="sprout" status="overdue" />
           </Box>
         </Box>
 
@@ -211,7 +192,7 @@ export default function PortfolioSummaryScreen() {
                 </Box>
               </Box>
               <Box>
-                <Typography sx={{ fontSize: 17, fontWeight: 800, color: HEADING, lineHeight: 1.2 }}>Excellent</Typography>
+                <Typography sx={{ fontSize: 22, fontWeight: 800, color: HEADING, lineHeight: 1.2 }}>Excellent</Typography>
                 <Typography sx={{ fontSize: 12, fontWeight: 700, color: GREEN, mt: 0.25 }}>Perfect payment record</Typography>
                 <Typography sx={{ fontSize: 11.5, color: LABEL, mt: 0.5, lineHeight: 1.5 }}>
                   All 22 payments on time — strengthens your credit standing.
@@ -230,6 +211,16 @@ export default function PortfolioSummaryScreen() {
                 </Box>
               ))}
             </Box>
+          </Box>
+        </Box>
+
+        {/* ── Loan breakdown ──────────────────────────────────────────────── */}
+        <Box>
+          <SectionHeader icon="layers" label="Loan breakdown" />
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <ActiveStyleLoanCard title="Small Biz Loan" icon="store" restructured />
+            <ActiveStyleLoanCard title="Housing Loan" icon="home" />
+            <ActiveStyleLoanCard title="Micro Loan" icon="sprout" status="overdue" />
           </Box>
         </Box>
 
