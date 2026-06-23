@@ -79,6 +79,7 @@ const SendFeedbackScreen = lazy(() => import('../screens/settings/SendFeedbackSc
 const FeedbackHistoryScreen = lazy(() => import('../screens/settings/FeedbackHistoryScreen'))
 const FaqScreen        = lazy(() => import('../screens/settings/FaqScreen'))
 const CBCScreen        = lazy(() => import('../screens/CBCScreen'))
+const PortfolioSummaryScreen = lazy(() => import('../screens/PortfolioSummaryScreen'))
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Fallback: unknown paths go to the flow's home tab (Visitor → Products,
@@ -115,6 +116,7 @@ export default function AppRouter() {
         <Route path="/my-loan-detail" element={<MyLoanDetailScreen />} />
         <Route path="/my-loan-complete" element={<CompletedLoanDetailScreen />} />
         <Route path="/settlement-certificate" element={<SettlementCertificateScreen />} />
+        <Route path="/portfolio-summary" element={<PortfolioSummaryScreen />} />
         <Route path="/repayment-schedule-detail" element={<RepaymentScheduleDetailScreen />} />
         <Route path="/my-loan-review" element={<MyLoanReviewDetailScreen />} />
         <Route path="/loan-decision" element={<LoanDecisionDetailScreen />} />

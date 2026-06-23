@@ -1,5 +1,5 @@
 ﻿import { ReactNode, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -21,7 +21,9 @@ const OUTSTANDING = '#8CC919'
 
 export default function MyLoanDetailScreen() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [payOpen, setPayOpen] = useState(false)
+  const overdue = searchParams.get('overdue') === 'true'
 
   return (
     <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
@@ -32,7 +34,7 @@ export default function MyLoanDetailScreen() {
         </Typography>
 
         <Box sx={{ px: 3, pt: 2.5, pb: 6, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-          <DetailsTab onPay={() => setPayOpen(true)} />
+          <DetailsTab onPay={() => setPayOpen(true)} overdue={overdue} />
           <OthersTab />
         </Box>
       </Box>
@@ -43,7 +45,7 @@ export default function MyLoanDetailScreen() {
 }
 
 // ─── DETAILS tab ─────────────────────────────────────────────────────────────
-function DetailsTab({ onPay }: { onPay: () => void }) {
+function DetailsTab({ onPay, overdue }: { onPay: () => void; overdue: boolean }) {
   const navigate = useNavigate()
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -52,6 +54,12 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
         <Box sx={{ bgcolor: '#E6EEF8', borderRadius: '999px', px: '9px', py: '3px' }}>
           <Typography sx={{ fontSize: 11, fontWeight: 600, color: '#0C419A' }}>Active</Typography>
         </Box>
+        {overdue && (
+          <Box sx={{ bgcolor: '#FEF3E2', borderRadius: '999px', px: '9px', py: '3px', display: 'flex', alignItems: 'center', gap: 0.4 }}>
+            <Icon name="alert" size={11} color="#C2870F" />
+            <Typography sx={{ fontSize: 11, fontWeight: 600, color: '#C2870F' }}>Overdue</Typography>
+          </Box>
+        )}
         <Typography sx={{ fontSize: 13, fontWeight: 600, color: LABEL, letterSpacing: '0.65px' }}>NH-2026-04821</Typography>
       </Box>
 
@@ -80,8 +88,6 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
         {/* Meta row */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #F0F0F0', pt: 1.5 }}>
           <MetaCol label="Next Due" value="12 Feb 2026" />
-          <MetaCol label="Due Amount" value="$270.00" />
-          <MetaCol label="Rate" value="1.20%/mo" />
         </Box>
       </Box>
 
@@ -94,7 +100,8 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
             <Typography sx={{ fontSize: 22, fontWeight: 700, color: VALUE, lineHeight: 1.2 }}>$320.00</Typography>
-            <Typography sx={{ fontSize: 11, color: LABEL }}>Due 16 May · in 9 days</Typography>
+            {overdue && <Typography sx={{ fontSize: 12, color: '#C2870F', fontWeight: 600, mt: 0.25 }}>+ $45.00 penalty</Typography>}
+            <Typography sx={{ fontSize: 11, color: LABEL, mt: 0.25 }}>Due 16 May · in 9 days</Typography>
           </Box>
           <Button
             variant="contained"
@@ -105,6 +112,13 @@ function DetailsTab({ onPay }: { onPay: () => void }) {
             Pay Now
           </Button>
         </Box>
+        {/* Total to pay — only shown when overdue */}
+        {overdue && (
+          <Box sx={{ borderTop: '1px solid #F0F0F0', pt: 1.25, mt: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography sx={{ fontSize: 13, fontWeight: 600, color: VALUE }}>Total to pay</Typography>
+            <Typography sx={{ fontSize: 20, fontWeight: 800, color: ACCENT, letterSpacing: '-0.5px' }}>$365.00</Typography>
+          </Box>
+        )}
       </Box>
 
       {/* Actual payment table */}

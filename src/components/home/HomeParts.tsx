@@ -503,7 +503,8 @@ const SUMMARY_ROWS = [
   { label: 'Total approved', usd: '$8,640', khr: '៛35,424,000', pct: '100%', color: '#F0F0F0' },
 ]
 
-export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }: { children?: ReactNode; loanCount?: number; defaultExpanded?: boolean }) {
+export function SummaryCard({ children, loanCount = 3, defaultExpanded = false, onPay }: { children?: ReactNode; loanCount?: number; defaultExpanded?: boolean; onPay?: () => void }) {
+  const navigate = useNavigate()
   const [hidden, setHidden] = useState(false)
   const [expanded, setExpanded] = useState(defaultExpanded)
   const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
@@ -513,7 +514,6 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }
 
   return (
     <Card>
-      <CurrencyToggle value={cur} onChange={setCur} />
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 3 }}>
         <OutstandingDonut pct={55} centerText="55%" blurred={hidden} />
         <Box sx={{ flex: 1, ml: '34px' }}>
@@ -547,21 +547,51 @@ export function SummaryCard({ children, loanCount = 3, defaultExpanded = false }
             {isKHR ? '$4,780.00' : '៛19,598,000'}
           </Typography>
           <Box
-            onClick={() => setExpanded((v) => !v)}
+            onClick={() => navigate('/portfolio-summary')}
             role="button"
-            aria-expanded={expanded}
             sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.25, mt: 1.5, cursor: 'pointer' }}
           >
             <Typography sx={{ fontSize: 13, fontWeight: 700, color: BLUE }}>View summary</Typography>
-            <Box
-              component="span"
-              sx={{ display: 'inline-flex', color: BLUE, transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'none' }}
-            >
-              <Icon name="chevronDown" size={18} />
+            <Box component="span" sx={{ display: 'inline-flex', color: BLUE }}>
+              <Icon name="chevronRight" size={18} />
             </Box>
           </Box>
         </Box>
       </Box>
+
+      {/* Paid / Left legend */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1.5 }}>
+        {[
+          { dot: BLUE,     label: 'Paid',  usd: '≈ $3,860',   khr: '≈ ៛15,826,000' },
+          { dot: '#E7ECF2', label: 'Left', usd: '≈ $4,780',   khr: '≈ ៛19,598,000' },
+        ].map((r) => (
+          <Box key={r.label} sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: r.dot, border: r.dot === '#E7ECF2' ? '1.5px solid #C9D2DE' : 'none', flexShrink: 0 }} />
+            <Typography sx={{ fontSize: 11.5, color: '#8A94A6' }}>
+              {r.label} <Box component="span" sx={{ fontWeight: 700, color: '#3A4256' }}>{isKHR ? r.khr : r.usd}</Box>
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Next payment row */}
+      {onPay && (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2, pt: 2, borderTop: '1px solid #F0F2F5' }}>
+          <Box>
+            <Typography sx={{ fontSize: 11, fontWeight: 700, color: '#8A94A6', letterSpacing: '0.4px' }}>NEXT PAYMENT</Typography>
+            <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#0B0F1A', letterSpacing: '-0.5px', mt: 0.25 }}>$320.00</Typography>
+            <Typography sx={{ fontSize: 11, color: '#8A94A6', mt: 0.25 }}>Due 16 May · in 9 days</Typography>
+          </Box>
+          <Button
+            variant="contained"
+            onClick={onPay}
+            startIcon={<Icon name="cash" size={18} />}
+            sx={{ height: 44, borderRadius: '12px', px: '18px', fontSize: 14, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#2B4F92' }, boxShadow: 'none', textTransform: 'none' }}
+          >
+            Pay Now
+          </Button>
+        </Box>
+      )}
 
       {/* Collapsible breakdown */}
       <Collapse in={expanded} timeout={250} unmountOnExit>

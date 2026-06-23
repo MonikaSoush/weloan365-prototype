@@ -84,31 +84,7 @@ export default function MyLoanScreen() {
             />
           ) : (
             <>
-              {!isApplicant && <SummaryCard loanCount={3} />}
-
-              {!isApplicant && (
-                <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', p: 3, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <Icon name="clock" size={16} color="#000" />
-                    <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#000' }}>Next payment due</Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box>
-                      <Typography sx={{ fontSize: 22, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2 }}>$320.00</Typography>
-                      <Typography sx={{ fontSize: 22, fontWeight: 700, color: '#0B0F1A', lineHeight: 1.2 }}>៛1,312,000</Typography>
-                      <Typography sx={{ fontSize: 11, color: '#8A94A6' }}>Due 16 May · in 9 days</Typography>
-                    </Box>
-                    <Button
-                      variant="contained"
-                      onClick={() => setPayOpen(true)}
-                      startIcon={<Icon name="cash" size={18} />}
-                      sx={{ height: 48, minWidth: 0, borderRadius: '12px', px: '20px', fontSize: 15, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#2B4F92' } }}
-                    >
-                      Pay Now
-                    </Button>
-                  </Box>
-                </Box>
-              )}
+              {!isApplicant && <SummaryCard loanCount={3} onPay={() => setPayOpen(true)} />}
 
               {!isApplicant && <AdvanceCard />}
 
@@ -247,7 +223,7 @@ function StatBox({ label, value }: { label: string; value: string }) {
 function ActiveLoanCard({ title, icon, status, restructured }: { title: string; icon: 'store' | 'home' | 'sprout'; status?: 'restructure' | 'overdue'; restructured?: boolean }) {
   const navigate = useNavigate()
   return (
-    <Card onClick={() => navigate('/my-loan-detail')} sx={{ cursor: 'pointer', p: '16px' }}>
+    <Card onClick={() => navigate(status === 'overdue' ? '/my-loan-detail?overdue=true' : '/my-loan-detail')} sx={{ cursor: 'pointer', p: '16px' }}>
       {/* Main content */}
       <Box sx={{ flex: 1, minWidth: 0 }}>
         {/* Header: icon + title/subtitle + status chips + chevron */}
@@ -256,15 +232,15 @@ function ActiveLoanCard({ title, icon, status, restructured }: { title: string; 
             <Icon name={icon} size={22} color={BLUE} />
           </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-              <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
-              <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
+            <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
+            {(restructured || status === 'overdue') && (
+              <Box sx={{ mt: '4px', display: 'inline-flex', gap: 0.5 }}>
                 {restructured && <StatusChip label="1st Restructured" color="#7A4DD6" bg="#EFE7FB" />}
-                <StatusChip label="Active" color="#1FA85C" bg="#DCF5E6" />
+                {status === 'overdue' && <StatusChip label="Overdue" color="#E8770B" bg="#FFF1E6" />}
               </Box>
-            </Box>
-            <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: '2px' }}>USD · 24-month term</Typography>
+            )}
           </Box>
+          <StatusChip label="Active" color="#1FA85C" bg="#DCF5E6" />
           <Icon name="chevronRight" size={18} color="#C9D2DE" />
         </Box>
 
@@ -278,16 +254,6 @@ function ActiveLoanCard({ title, icon, status, restructured }: { title: string; 
             <Box sx={{ height: '100%', width: '33%', bgcolor: BLUE, borderRadius: 3 }} />
           </Box>
         </Box>
-
-        {/* Status banner */}
-        {status && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, px: 1.5, py: 1, borderRadius: 2, bgcolor: status === 'overdue' ? '#FFF1E6' : '#F5F5F5' }}>
-            <Icon name="alert" size={16} color={status === 'overdue' ? '#E8770B' : '#8A94A6'} />
-            <Typography sx={{ fontSize: 12, fontWeight: 600, color: status === 'overdue' ? '#E8770B' : '#8A94A6' }}>
-              {status === 'overdue' ? 'This loan is overdue, penalty may charge' : 'This loan is under review for restructuring'}
-            </Typography>
-          </Box>
-        )}
 
         {/* Footer: next due + amount left */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
@@ -332,7 +298,7 @@ const REQUEST_HISTORY: { title: string; sub: string; status: ReqStatus }[] = [
 
 // A request row — same visual language as the active loan card (icon + title +
 // subtitle + status chip), compact for a list.
-function RequestRow({ icon, title, sub, status, amount, onClick }: { icon: IconName; title: string; sub: string; status: ReqStatus; amount?: string; onClick?: () => void }) {
+function RequestRow({ icon, title, sub, status, amount, onClick, showSub }: { icon: IconName; title: string; sub: string; status: ReqStatus; amount?: string; onClick?: () => void; showSub?: boolean }) {
   return (
     <Card onClick={onClick} sx={{ cursor: onClick ? 'pointer' : 'default', p: '14px 16px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -341,7 +307,7 @@ function RequestRow({ icon, title, sub, status, amount, onClick }: { icon: IconN
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography sx={{ fontSize: 15, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
-          <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: '1px' }} noWrap>{sub}</Typography>
+          {showSub && <Typography sx={{ fontSize: 12, color: '#8A94A6', mt: '2px' }} noWrap>{sub.split(' · ')[0]}</Typography>}
         </Box>
         <StatusChip label={status.label} color={status.color} bg={status.bg} />
         {onClick && <Icon name="chevronRight" size={18} color="#C9D2DE" />}
@@ -386,7 +352,7 @@ function ReviewTab() {
       <SectionHeader>Current ({current.length})</SectionHeader>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {current.map((c, i) => (
-          <RequestRow key={i} icon={c.icon} title={c.title} sub={c.sub} amount={c.amount} status={c.status} onClick={c.onClick} />
+          <RequestRow key={i} icon={c.icon} title={c.title} sub={c.sub} amount={c.amount} status={c.status} onClick={c.onClick} showSub />
         ))}
       </Box>
 
@@ -429,23 +395,18 @@ function CompletedCard({ title, amount, term, rate, lastPaid }: { title: string;
   return (
     <Card onClick={() => navigate('/my-loan-complete')} sx={{ cursor: 'pointer', p: '16px' }}>
       {/* Header: icon + title + status chip */}
-      <Box sx={{ display: 'flex', gap: 1.5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box sx={{ width: 44, height: 44, borderRadius: '12px', bgcolor: '#EEF1FC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <Icon name={icon} size={22} color={BLUE} />
         </Box>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
-            <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A' }} noWrap>{title}</Typography>
-            <StatusChip label="Paid Off" color="#1FA85C" bg="#DCF5E6" />
-          </Box>
-          <Typography sx={{ fontSize: 12.5, color: '#8A94A6', mt: '2px' }}>USD · {term} term</Typography>
-        </Box>
+        <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#0B0F1A', flex: 1, minWidth: 0 }} noWrap>{title}</Typography>
+        <StatusChip label="Paid Off" color="#1FA85C" bg="#DCF5E6" />
       </Box>
 
       {/* Progress — 100% complete */}
       <Box sx={{ mt: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
-          <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>{term} · fully paid</Typography>
+          <Typography sx={{ fontSize: 12, color: '#8A94A6' }}>Fully paid</Typography>
           <Typography sx={{ fontSize: 12, fontWeight: 700, color: '#1FA85C' }}>100%</Typography>
         </Box>
         <Box sx={{ height: 6, borderRadius: 3, bgcolor: '#E7ECF2', overflow: 'hidden' }}>

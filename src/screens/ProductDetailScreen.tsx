@@ -235,8 +235,10 @@ export default function ProductDetailScreen() {
   const onApply = () => {
     if (isMwl) {
       navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
-    } else {
+    } else if (isStaff) {
       setStaffSheetOpen(true)
+    } else {
+      navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent(applyPath) : applyPath)
     }
   }
 

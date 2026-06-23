@@ -25,7 +25,7 @@ export default function CompletedLoanDetailScreen() {
 
   return (
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
-      <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
+      <Box className="scroll-content" sx={{ flex: 1, pb: '16px' }}>
         <MwlHeader onBack={() => navigate(-1)} />
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: HEADING, letterSpacing: '-1px', px: 3, mt: 1 }}>
           Small Business Loan
@@ -65,8 +65,6 @@ export default function CompletedLoanDetailScreen() {
             {/* Meta row */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #F0F0F0', pt: 1.5 }}>
               <MetaCol label="Closed On"   value="08 Feb 2026" />
-              <MetaCol label="Term"        value="24 months" />
-              <MetaCol label="Rate"        value="1.20%/mo" />
             </Box>
           </Box>
 
@@ -80,16 +78,6 @@ export default function CompletedLoanDetailScreen() {
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', bgcolor: '#E7F7EC', px: 2, py: '14px' }}>
                 <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1F8A4C' }}>Total paid</Typography>
                 <Typography sx={{ fontSize: 16, fontWeight: 800, color: '#1F8A4C' }}>$1,800.00</Typography>
-              </Box>
-              <Box
-                onClick={() => navigate('/settlement-certificate')}
-                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: '14px', borderTop: '1px solid #F0F0F0', cursor: 'pointer', '&:active': { opacity: 0.7 } }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Icon name="download" size={16} color={GREEN} />
-                  <Typography sx={{ fontSize: 14, fontWeight: 700, color: GREEN }}>Download Certificate</Typography>
-                </Box>
-                <Icon name="chevronRight" size={16} color={GREEN} />
               </Box>
             </Box>
           </Box>
@@ -159,6 +147,18 @@ export default function CompletedLoanDetailScreen() {
       </Box>
 
 
+      {/* Fixed bottom download button */}
+      <Box sx={{ px: 3, py: 2, bgcolor: '#fff', borderTop: '1px solid #F0F0F0' }}>
+        <Button
+          fullWidth
+          onClick={() => navigate('/settlement-certificate')}
+          startIcon={<Icon name="download" size={18} color="#fff" />}
+          sx={{ height: 52, borderRadius: '14px', fontSize: 15, fontWeight: 700, bgcolor: GREEN, color: '#fff', '&:hover': { bgcolor: '#68AC39' }, textTransform: 'none' }}
+        >
+          Download Certificate
+        </Button>
+      </Box>
+
       <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
@@ -174,8 +174,8 @@ function Donut() {
         <circle cx={46} cy={46} r={r} fill="none" stroke={GREEN} strokeWidth={9} />
       </Box>
       <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography sx={{ fontSize: 16, fontWeight: 700, color: VALUE, lineHeight: 1.1 }}>$0.00</Typography>
-        <Typography sx={{ fontSize: 11, fontWeight: 500, color: LABEL, lineHeight: 1.1 }}>outstanding</Typography>
+        <Typography sx={{ fontSize: 18, fontWeight: 800, color: GREEN, lineHeight: 1.1 }}>100%</Typography>
+        <Typography sx={{ fontSize: 11, fontWeight: 500, color: LABEL, lineHeight: 1.1 }}>completed</Typography>
       </Box>
     </Box>
   )

@@ -38,11 +38,11 @@ export default function SettlementCertificateScreen() {
         {/* Certificate card */}
         <Box sx={{ bgcolor: '#fff', border: `1.5px solid ${NAVY}`, borderRadius: '16px', p: 3 }}>
           {/* Title block */}
-          <Typography sx={{ fontSize: 20, fontWeight: 800, color: HEADING, mb: 0.5 }}>
-            Settlement Certificate
-          </Typography>
-          <Typography sx={{ fontSize: 13, color: LABEL, mb: 3 }}>
+          <Typography sx={{ fontSize: 13, color: LABEL, mb: 0.5, textAlign: 'center' }}>
             NongHyup Finance (Cambodia) Plc
+          </Typography>
+          <Typography sx={{ fontSize: 20, fontWeight: 800, color: HEADING, mb: 3, textAlign: 'center' }}>
+            Settlement Certificate
           </Typography>
 
           {/* Rows */}
@@ -68,7 +68,7 @@ export default function SettlementCertificateScreen() {
               NongHyup Finance (Cambodia) Plc
             </Typography>
             <Typography sx={{ fontSize: 12, color: '#9AA3B2', textAlign: 'center', lineHeight: 1.5 }}>
-              This certificate confirms full settlement of the above loan.
+              This certificate confirms full settlement of the above loan.{'\n'}Issued by NongHyup Finance (Cambodia) Plc in accordance with company policy.
             </Typography>
           </Box>
         </Box>

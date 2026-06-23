@@ -100,27 +100,15 @@ export default function MwlApplyScreen() {
         <Box sx={{ px: 3, pt: 2, pb: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
           {step === 1 && (
             <>
-              {/* Destination — old-style flag tiles */}
-              <Box>
-                <SubLabel>Where are you heading?</SubLabel>
-                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 1.5 }}>
-                  {DESTINATIONS.map((d) => {
-                    const active = dest === d.name
-                    return (
-                      <Box key={d.name} onClick={() => setDest(d.name)} role="button"
-                        sx={{ position: 'relative', bgcolor: '#fff', borderRadius: '14px', border: active ? `2px solid ${BLUE}` : '2px solid #E2E6EC', p: 1.5, cursor: 'pointer', transition: 'border-color 0.15s' }}>
-                        {active && (
-                          <Box sx={{ position: 'absolute', top: 8, right: 8, width: 20, height: 20, borderRadius: '50%', bgcolor: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Icon name="check" size={13} color="#fff" />
-                          </Box>
-                        )}
-                        <Flag code={d.flag} size={32} rect />
-                        <Typography sx={{ fontSize: 14, fontWeight: 800, color: '#0B0F1A', mt: 0.75 }}>{d.name}</Typography>
-                      </Box>
-                    )
-                  })}
-                </Box>
-              </Box>
+              {/* Destination — dropdown with flag */}
+              <SelectField
+                label="Where are you heading?"
+                required
+                options={DESTINATIONS.map((d) => d.name)}
+                value={dest}
+                onChange={setDest}
+                icons={Object.fromEntries(DESTINATIONS.map((d) => [d.name, <Flag key={d.name} code={d.flag} size={22} rect />]))}
+              />
               <SelectField label="Nearest Branch" required options={BRANCHES} value={branch} onChange={setBranch} />
               <SelectField label="Currency" required options={CURRENCIES} value={currency} onChange={setCurrency} />
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>

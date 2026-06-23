@@ -36,12 +36,14 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
   const [selected, setSelected] = useState<MethodId | null>(null)
   const [amount, setAmount] = useState('')
   const [cur, setCur] = useState<'USD' | 'KHR'>('USD')
+  const [fulfilled, setFulfilled] = useState(false)
 
   useEffect(() => {
     if (open) {
       setSelected(null)
       setAmount('')
       setCur('USD')
+      setFulfilled(false)
     }
   }, [open])
 
@@ -133,6 +135,7 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
               onClick={() => {
                 const full = cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD
                 setAmount(full)
+                setFulfilled(true)
               }}
               sx={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px', bgcolor: '#EEF3FC', borderRadius: '8px', px: '10px', py: '6px', cursor: 'pointer', '&:active': { bgcolor: '#DCE9FB' } }}
             >
@@ -141,6 +144,14 @@ export default function PayLoanSheet({ open, onClose }: { open: boolean; onClose
               </Typography>
             </Box>
           </Box>
+
+          {/* Hint text: changes after Fulfill is tapped */}
+          <Typography sx={{ fontSize: 12, color: fulfilled ? BLUE : MUTED, fontWeight: fulfilled ? 700 : 400, mt: -1.5, mb: 2, px: 0.5 }}>
+            {fulfilled
+              ? `You will pay ${symbol}${cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}`
+              : `Installment due ${cur === 'KHR' ? '៛' : '$'}${cur === 'KHR' ? Math.round(parseFloat(FULL_USD) * KHR_RATE).toLocaleString('en-US') : FULL_USD}`
+            }
+          </Typography>
 
           <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.7px', color: MUTED, mb: 1 }}>
             PAYMENT METHOD
