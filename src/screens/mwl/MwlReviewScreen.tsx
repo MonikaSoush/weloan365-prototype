@@ -100,7 +100,7 @@ export default function MwlReviewScreen({ nonMwl = false }: { nonMwl?: boolean }
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => navigate(`${prefix}-success`)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
+        <Button variant="contained" fullWidth onClick={() => navigate(`${prefix}-success?product=${encodeURIComponent(product)}`)} endIcon={<Icon name="arrowRight" size={16} />} sx={{ height: 48, borderRadius: '12px', fontSize: 16, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
           Submit
         </Button>
       </Box>
