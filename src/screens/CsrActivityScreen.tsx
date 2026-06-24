@@ -131,9 +131,7 @@ function ActivityCard({ activity }: { activity: Activity }) {
           <Icon name="findBranch" size={13} color={MUTED} />
           <Typography sx={{ fontSize: 12, color: MUTED, fontWeight: 500 }}>{activity.location}</Typography>
         </Box>
-        <Typography sx={{ fontSize: 12, color: MUTED }}>
-          {activity.date}{activity.meta ? ` · ${activity.meta}` : ''}
-        </Typography>
+        <Typography sx={{ fontSize: 12, color: MUTED }}>{activity.date}</Typography>
         <Typography sx={{ fontSize: 13.5, color: '#3A4255', lineHeight: 1.55, mt: 0.25 }}>{activity.description}</Typography>
       </Box>
     </Box>
