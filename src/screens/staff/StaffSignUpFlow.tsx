@@ -252,7 +252,7 @@ function VerifyFlow({ onStepDone, onDone, onClose }: { onStepDone: (step: 1 | 2)
                 <g key={i} transform={`rotate(${r}, ${x}, ${y})`}>
                   <path d={`M ${x} ${y + 16} L ${x} ${y} L ${x + 16} ${y}`} fill="none"
                     stroke={phase === 'success' ? '#22C55E' : '#60A5FA'} strokeWidth="3" strokeLinecap="round"
-                    style={{ opacity: phase === 'idle' ? 0.5 : 1 }} />
+                    style={{ opacity: phase === 'ready' ? 0.5 : 1 }} />
                 </g>
               ))}
             </Box>
