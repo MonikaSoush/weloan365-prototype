@@ -428,6 +428,12 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {
+    id: 'csr-activity',
+    name: 'CSR Activity',
+    section: 'MORE',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
     id: 'blogs',
     name: 'Blogs & Education',
     section: 'SETTINGS',

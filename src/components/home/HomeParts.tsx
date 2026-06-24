@@ -228,7 +228,7 @@ function DiscoverGrid() {
 
   const items = [
     { icon: 'aboutNhfc'  as IconName, label: 'About Us',       bg: '#1C3B6E', img: DISCOVER.calculator, onClick: () => navigate('/about') },
-    { icon: 'blogs'      as IconName, label: 'CSR Activity',   bg: '#1A3A30', img: '',                  onClick: () => navigate('/blogs') },
+    { icon: 'blogs'      as IconName, label: 'CSR Activity',   bg: '#1A3A30', img: '',                  onClick: () => navigate('/csr-activity') },
     { icon: 'findBranch' as IconName, label: 'Branch Locator', bg: '#3B1C5C', img: '',                  onClick: () => navigate('/branch-locator') },
     { icon: 'calculator' as IconName, label: 'Loan Calculator',bg: '#0B1A14', img: '',                  onClick: () => navigate('/calculator') },
   ]
