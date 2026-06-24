@@ -9,6 +9,7 @@ import { CollapsingHeader, CollapsingTitle, useCollapse } from '../../components
 import { FieldCard, BottomSheet } from '../mwl/MwlParts'
 import { AssetImg, ILLUS } from '../../components/home/media'
 import { AvatarArt } from '../../components/home/illustrations'
+import { useFlow } from '../../workspace/FlowContext'
 
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
@@ -27,7 +28,7 @@ const EMPLOYMENT: { label: string; value: string }[] = [
 ]
 
 // ─── Profile identity card — photo, name, NID + blue detail panel ────────────
-function IdentityCard() {
+function IdentityCard({ isStaff }: { isStaff?: boolean }) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [photo, setPhoto] = useState<string | null>(null)
 
@@ -38,7 +39,7 @@ function IdentityCard() {
 
   return (
     <Box sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '16px', p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
         <Box sx={{ position: 'relative', flexShrink: 0 }}>
           <Box sx={{ width: 126, height: 126, borderRadius: '14px', overflow: 'hidden', bgcolor: '#EDF1F6' }}>
             {photo ? (
@@ -90,6 +91,12 @@ function IdentityCard() {
             <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: 1.3 }}>National ID</Typography>
             <Typography sx={{ fontSize: 15, fontWeight: 700, color: HEADING }}>28012026001</Typography>
           </Box>
+          {isStaff && (
+            <Box>
+              <Typography sx={{ fontSize: 12, color: MUTED, lineHeight: 1.3 }}>Staff ID</Typography>
+              <Typography sx={{ fontSize: 15, fontWeight: 700, color: HEADING }}>NH-000123456</Typography>
+            </Box>
+          )}
         </Box>
       </Box>
 
@@ -118,6 +125,8 @@ function IdentityCard() {
 
 export default function ProfileScreen() {
   const navigate = useNavigate()
+  const { flow } = useFlow()
+  const isStaff = flow === 'Staff'
   const { collapse, onScroll } = useCollapse()
   const [staffOpen, setStaffOpen] = useState(false)
   const [staffId, setStaffId] = useState('')
@@ -158,7 +167,7 @@ export default function ProfileScreen() {
                 PERSONAL PROFILE
               </Typography>
             </Box>
-            <IdentityCard />
+            <IdentityCard isStaff={isStaff} />
           </Box>
 
           {/* Employment details — always visible */}
@@ -175,57 +184,6 @@ export default function ProfileScreen() {
             </Box>
           </Box>
 
-          {/* Staff Information — collapsible with Staff ID input */}
-          <Box>
-            <Box
-              role="button"
-              onClick={() => setStaffOpen((v) => !v)}
-              sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer', py: 0.5 }}
-            >
-              <Box sx={{ display: 'flex', transform: staffOpen ? 'none' : 'rotate(180deg)', transition: 'transform 0.2s' }}>
-                <Icon name="chevronUp" size={18} color={MUTED} />
-              </Box>
-              <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.6px', color: MUTED }}>
-                STAFF INFORMATION
-              </Typography>
-            </Box>
-            {staffOpen && (
-              <Box sx={{ mt: 1 }}>
-                {staffSave === 'saved' ? (
-                  <FieldCard
-                    label="Staff ID"
-                    value={staffId}
-                    onClick={() => setStaffConfirmOpen(true)}
-                    trailing={
-                      <Box sx={{ display: 'flex' }}>
-                        <Icon name="arrowRight" size={20} color={MUTED} />
-                      </Box>
-                    }
-                  />
-                ) : (
-                  <FieldCard
-                    label="Staff ID"
-                    value={staffId}
-                    onChange={(v) => setStaffId(v)}
-                    placeholder="NH-000000000"
-                    trailing={
-                      staffSave === 'loading' ? (
-                        <CircularProgress size={16} sx={{ color: BLUE, flexShrink: 0 }} />
-                      ) : staffSave === 'match' ? (
-                        <Box role="button" onClick={() => setStaffConfirmOpen(true)} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
-                          <Icon name="checkCircle" size={20} color="#22C55E" />
-                        </Box>
-                      ) : staffSave === 'nomatch' ? (
-                        <Box role="button" onClick={() => setStaffNoMatchOpen(true)} sx={{ display: 'flex', cursor: 'pointer', '&:active': { opacity: 0.6 } }}>
-                          <Icon name="alert" size={20} color="#EF4444" />
-                        </Box>
-                      ) : null
-                    }
-                  />
-                )}
-              </Box>
-            )}
-          </Box>
 
           {/* Delete account */}
           <Box sx={{ pt: '60px', pb: '8px', display: 'flex', justifyContent: 'center' }}>

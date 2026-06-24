@@ -2,8 +2,7 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { Icon } from '../components/Icon'
-import { AssetImg, asset } from '../components/home/media'
+import { asset } from '../components/home/media'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Welcome — the Visitor's landing after the splash screen. A friendly "no loans
@@ -19,16 +18,7 @@ export default function WelcomeScreen() {
     <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5', px: 3 }}>
       {/* Illustration + copy, vertically centered */}
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-        <AssetImg
-          src={asset('illustrations/welcome-mascot.png')}
-          alt=""
-          sx={{ width: 240, height: 'auto', display: 'block' }}
-          fallback={
-            <Box sx={{ width: 132, height: 132, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name="myLoan" size={60} color="#B4BCC9" />
-            </Box>
-          }
-        />
+        <Box component="img" src={asset('illustrations/mascot_apply.png')} alt="" sx={{ width: 336, height: 'auto', display: 'block' }} />
         <Typography sx={{ fontSize: 22, fontWeight: 800, color: '#0B0F1A', mt: 3 }}>
           No loans yet
         </Typography>

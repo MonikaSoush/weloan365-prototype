@@ -31,11 +31,16 @@ const POPULAR_PRODUCTS: Product[] = [
   { name: 'Housing Loan', amount: 'USD ≤ 3,000', rate: '1.2%', img: BANNERS.housingS1, pin: 'Special Offer', icon: 'globe' },
 ]
 
+const STAFF_LOAN_PRODUCT: Product = {
+  name: 'Staff Loan', amount: 'USD ≤ 10,000', rate: '1.0%', img: BANNERS.staffLoan, pin: 'Staff', icon: 'idCard',
+}
+
 const PIN_COLORS: Record<string, string> = {
   'Recommended': '#F59E0B',
   'Popular':     '#275CB2',
   'Growth':      '#16A34A',
   'Special Offer': '#EA580C',
+  'Staff':       '#1A7A45',
 }
 
 function ProductCard({ p, height, showRate = false }: { p: Product; height: number; showRate?: boolean }) {
@@ -398,7 +403,7 @@ export default function ProductsScreen() {
             </Box>
 
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
-              {POPULAR_PRODUCTS.map((p) => (
+              {(flow === 'Staff' ? [STAFF_LOAN_PRODUCT, ...POPULAR_PRODUCTS].slice(0, 4) : POPULAR_PRODUCTS).map((p) => (
                 <ProductCard key={p.name} p={p} height={152} />
               ))}
             </Box>

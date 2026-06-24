@@ -2,6 +2,7 @@ import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } 
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import { Icon } from '../components/Icon'
+import { usePinGate } from './PinGateContext'
 
 interface PhoneCanvasProps {
   children: ReactNode
@@ -17,6 +18,7 @@ const DRAG_THRESHOLD = 4 // px of movement before a press counts as a drag (not 
 
 export default function PhoneCanvas({ children }: PhoneCanvasProps) {
   const navigate = useNavigate()
+  const { lock } = usePinGate()
   const canvasRef = useRef<HTMLDivElement>(null)
   const fabRef = useRef<HTMLDivElement>(null)
 
@@ -91,8 +93,12 @@ export default function PhoneCanvas({ children }: PhoneCanvasProps) {
     drag.current.active = false
     fabRef.current?.releasePointerCapture(e.pointerId)
     setDragging(false)
-    // A press with no real movement is a tap → trigger the reset navigation.
-    if (!drag.current.moved) navigate('/flow-select')
+    // A press with no real movement is a tap → reset to first-time state and go to flow select.
+    if (!drag.current.moved) {
+      localStorage.removeItem('weloan-staff-registered')
+      lock()
+      navigate('/flow-select')
+    }
   }
 
   return (

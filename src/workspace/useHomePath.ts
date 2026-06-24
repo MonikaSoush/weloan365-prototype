@@ -7,7 +7,8 @@ import { useFlow, type UserFlow } from './FlowContext'
 // Keep this in sync with SplashScreen's auto-advance logic.
 // ─────────────────────────────────────────────────────────────────────────────
 export function homePath(flow: UserFlow): string {
-  return flow === 'Visitor' ? '/welcome' : '/products'
+  if (flow === 'Visitor' || flow === 'Staff') return '/welcome'
+  return '/products'
 }
 
 export function useHomePath(): string {

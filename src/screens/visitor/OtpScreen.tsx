@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Icon } from '../../components/Icon'
 import { Flag } from '../../components/Flag'
+import { useFlow } from '../../workspace/FlowContext'
 
 const BLUE = '#275CB2'
 const MUTED = '#8A94A6'
@@ -15,6 +16,7 @@ const COUNTDOWN_SECONDS = 42
 export default function OtpScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
+  const { flow } = useFlow()
   const nextSuffix = params.get('next') ? '?next=' + encodeURIComponent(params.get('next')!) : ''
   const [code, setCode] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -94,7 +96,7 @@ export default function OtpScreen() {
       </Box>
 
       <Box sx={{ flexShrink: 0, px: 3, pt: 2.5, pb: '44px', bgcolor: '#F5F5F5' }}>
-        <Button variant="contained" fullWidth onClick={() => navigate('/create-pin' + nextSuffix)} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
+        <Button variant="contained" fullWidth onClick={() => navigate((flow === 'Staff' ? '/staff-signup-info' : '/create-pin') + nextSuffix)} sx={{ height: 56, borderRadius: '14px', fontSize: 16, fontWeight: 700 }}>
           Confirm
         </Button>
       </Box>
