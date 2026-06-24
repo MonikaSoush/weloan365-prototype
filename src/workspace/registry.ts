@@ -428,6 +428,12 @@ export const SCREENS: FlowScreen[] = [
     samples: [{ v: '1', label: 'Sample 1' }],
   },
   {
+    id: 'csr-activity',
+    name: 'CSR Activity',
+    section: 'MORE',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
     id: 'blogs',
     name: 'Blogs & Education',
     section: 'SETTINGS',
@@ -442,6 +448,12 @@ export const SCREENS: FlowScreen[] = [
   {
     id: 'feedback-history',
     name: 'Feedback history',
+    section: 'SETTINGS',
+    samples: [{ v: '1', label: 'Sample 1' }],
+  },
+  {
+    id: 'contact-us',
+    name: 'Contact Us',
     section: 'SETTINGS',
     samples: [{ v: '1', label: 'Sample 1' }],
   },
