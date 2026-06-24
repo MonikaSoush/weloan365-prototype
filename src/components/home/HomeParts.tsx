@@ -261,9 +261,9 @@ const BLOG_POSTS = [
 function BlogGrid() {
   const navigate = useNavigate()
   return (
-    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+    <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', pb: 0.5, mx: -3, px: 3, scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
       {BLOG_POSTS.map((p) => (
-        <Box key={p.title} role="button" onClick={() => navigate('/blogs')} sx={{ bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+        <Box key={p.title} role="button" onClick={() => navigate('/blogs')} sx={{ flexShrink: 0, width: 'calc(50% - 18px)', bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '14px', overflow: 'hidden', cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
           <Box sx={{ height: 96, background: `linear-gradient(135deg, ${p.tint}26, ${p.tint}0D)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Icon name="blogs" size={32} color={p.tint} />
           </Box>
