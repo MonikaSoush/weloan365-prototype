@@ -177,16 +177,16 @@ export default function CsrActivityScreen() {
               <Typography sx={{ fontSize: 13.5, color: '#3A4255', lineHeight: 1.55, mt: 0.25 }}>
                 {FEATURED.description}
               </Typography>
-
-              {/* Highlight callout */}
-              {FEATURED.highlight && (
-                <Box sx={{ mt: 1, p: '12px 14px', bgcolor: '#F0F5FF', borderRadius: '10px', borderLeft: '3px solid #275CB2' }}>
-                  <Typography sx={{ fontSize: 12, fontWeight: 700, color: HEADING, mb: 0.5 }}>A continued commitment</Typography>
-                  <Typography sx={{ fontSize: 12.5, color: '#275CB2', lineHeight: 1.55 }}>{FEATURED.highlight}</Typography>
-                </Box>
-              )}
             </Box>
           </Box>
+
+          {/* Highlight callout — outside the card */}
+          {FEATURED.highlight && (
+            <Box sx={{ p: '12px 14px', bgcolor: '#F0F5FF', borderRadius: '10px', borderLeft: '3px solid #275CB2', mb: 3 }}>
+              <Typography sx={{ fontSize: 12, fontWeight: 700, color: HEADING, mb: 0.5 }}>A continued commitment</Typography>
+              <Typography sx={{ fontSize: 12.5, color: '#275CB2', lineHeight: 1.55 }}>{FEATURED.highlight}</Typography>
+            </Box>
+          )}
 
           {/* More activities */}
           <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.7px', color: '#9AA3B2', mb: 1.5 }}>
