@@ -10,6 +10,7 @@ import { AssetImg, ILLUS } from '../components/home/media'
 import { AvatarArt } from '../components/home/illustrations'
 import { useFlow } from '../workspace/FlowContext'
 import { BottomSheet } from './mwl/MwlParts'
+import CallSheet from '../components/CallSheet'
 
 const HEADING = '#0B0F1A'
 const MUTED = '#8A94A6'
@@ -135,11 +136,44 @@ export function SettingsSections() {
   const [language, setLanguage] = useState<LangId>('en')
   const [theme, setTheme] = useState<ThemeId>('System')
   const [picker, setPicker] = useState<'language' | 'theme' | null>(null)
+  const [callOpen, setCallOpen] = useState(false)
   const activeLang = LANGUAGES.find((l) => l.id === language) ?? LANGUAGES[0]
 
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {!isVisitor && (
+          <Box>
+            <SectionLabel>MY OFFICER</SectionLabel>
+            <Card>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: '14px', py: '12px' }}>
+                <Box sx={{ width: 44, height: 44, borderRadius: '50%', flexShrink: 0, background: 'radial-gradient(circle at 30% 30%, #9BD0FF 0%, #4C8BE0 45%, #2B4F92 100%)', boxShadow: '0 6px 24px rgba(0,0,0,0.08)' }} />
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>Mr. Pisey Sok</Typography>
+                  <Typography sx={{ fontSize: 12, color: MUTED, mt: 0.25 }}>Riverside Branch</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Box role="button" aria-label="Chat with officer" onClick={() => navigate('/chat')} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', '&:active': { bgcolor: 'rgba(0,0,0,0.06)' } }}>
+                    <Icon name="message" size={22} color="#0B0F1A" />
+                  </Box>
+                  <Box role="button" aria-label="Call officer" onClick={() => setCallOpen(true)} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', '&:active': { bgcolor: 'rgba(0,0,0,0.06)' } }}>
+                    <Icon name="phone" size={22} color="#0B0F1A" />
+                  </Box>
+                </Box>
+              </Box>
+            </Card>
+          </Box>
+        )}
+
+        {!isVisitor && (
+          <Box>
+            <SectionLabel>PROFILE</SectionLabel>
+            <Card>
+              <NavRow icon="idCard" label="My Profile" onClick={() => navigate('/profile')} />
+            </Card>
+          </Box>
+        )}
+
         <Box>
           <SectionLabel>ACCOUNT SETTINGS</SectionLabel>
           <Card>
@@ -167,6 +201,7 @@ export function SettingsSections() {
         <Box>
           <SectionLabel>ABOUT</SectionLabel>
           <Card>
+            <NavRow icon="phone" label="NHFC Hotline" divider onClick={() => navigate('/contact-us')} />
             <NavRow icon="faq" label="FAQ" divider onClick={() => navigate('/faq')} />
             <NavRow icon="appPolicy" label="App policy & terms" divider onClick={() => navigate('/terms-privacy')} />
             <NavRow icon="aboutNhfc" label="About NHFC" onClick={() => navigate('/about')} />
@@ -195,6 +230,8 @@ export function SettingsSections() {
         onSelect={(v) => setLanguage(v as LangId)}
         onClose={() => setPicker(null)}
       />
+
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
 
       {/* Theme picker */}
       <PickerSheet

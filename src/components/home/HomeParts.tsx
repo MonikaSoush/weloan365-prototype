@@ -81,11 +81,11 @@ export function HomeTopBar({ secondIcon = 'bell', middle }: { secondIcon?: IconN
           sx={{ height: 26, width: 'auto', display: 'block', flex: 1, minWidth: 0, objectFit: 'contain', objectPosition: 'left', cursor: 'pointer', '&:active': { opacity: 0.6 } }}
         />
       ) : (
-        /* Tap the profile (avatar + name) to open the Profile screen. */
+        /* Tap the profile (avatar + name) to open the Settings screen. */
         <Box
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/settings')}
           role="button"
-          aria-label="Open profile"
+          aria-label="Open settings"
           sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0, cursor: 'pointer', '&:active': { opacity: 0.6 } }}
         >
           <Box sx={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
@@ -226,45 +226,27 @@ function DiscoverGrid() {
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
 
-  const hero = { icon: 'calculator' as IconName, label: 'Calculator', bg: '#0B1A14', img: DISCOVER.calculator, onClick: () => navigate('/calculator') }
-  const grid4 = [
-    { icon: 'findBranch' as IconName, label: 'Branch Locator',         bg: '#1C3B6E', onClick: () => navigate('/branch-locator') },
-    { icon: 'feedback'   as IconName, label: 'Submit a Complaint',     bg: '#3B1C5C', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback') },
-    { icon: 'phone'      as IconName, label: 'Request a Consultation', bg: '#1A3A30', onClick: () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/request-consult') : '/request-consult') },
+  const items = [
+    { icon: 'aboutNhfc'  as IconName, label: 'About Us',       bg: '#1C3B6E', img: DISCOVER.calculator, onClick: () => navigate('/about') },
+    { icon: 'blogs'      as IconName, label: 'CSR Activity',   bg: '#1A3A30', img: '',                  onClick: () => navigate('/blogs') },
+    { icon: 'findBranch' as IconName, label: 'Branch Locator', bg: '#3B1C5C', img: '',                  onClick: () => navigate('/branch-locator') },
+    { icon: 'calculator' as IconName, label: 'Loan Calculator',bg: '#0B1A14', img: '',                  onClick: () => navigate('/calculator') },
   ]
-  const cbc = { icon: 'idCard' as IconName, label: 'CBC', bg: '#1A2545', onClick: () => navigate('/cbc') }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-      {/* 2×2 grid — Calculator + 3 items */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
-        {/* Calculator hero tile */}
-        <Box role="button" onClick={hero.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 130, bgcolor: hero.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-          <AssetImg src={hero.img} alt="" sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} fallback={<Box />} />
+    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+      {items.map((item) => (
+        <Box key={item.label} role="button" onClick={item.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 130, bgcolor: item.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
+          {item.img ? (
+            <AssetImg src={item.img} alt="" sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} fallback={<Box />} />
+          ) : null}
           <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)' }} />
           <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end', p: '12px', gap: 0.5 }}>
-            <Icon name={hero.icon} size={22} color="rgba(255,255,255,0.9)" />
-            <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{hero.label}</Typography>
+            <Icon name={item.icon} size={22} color="rgba(255,255,255,0.9)" />
+            <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{item.label}</Typography>
           </Box>
         </Box>
-        {grid4.map((item) => (
-          <Box key={item.label} role="button" onClick={item.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 130, bgcolor: item.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-            <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 100%)' }} />
-            <Box sx={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end', p: '12px', gap: 0.5 }}>
-              <Icon name={item.icon} size={22} color="rgba(255,255,255,0.9)" />
-              <Typography sx={{ color: '#fff', fontSize: 13.5, fontWeight: 800, lineHeight: 1.1 }}>{item.label}</Typography>
-            </Box>
-          </Box>
-        ))}
-      </Box>
-      {/* CBC — full width */}
-      <Box role="button" onClick={cbc.onClick} sx={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', height: 110, bgcolor: cbc.bg, cursor: 'pointer', '&:active': { opacity: 0.85 } }}>
-        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 100%)' }} />
-        <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 1.5, px: '16px' }}>
-          <Icon name={cbc.icon} size={22} color="rgba(255,255,255,0.9)" />
-          <Typography sx={{ color: '#fff', fontSize: 15, fontWeight: 800 }}>{cbc.label}</Typography>
-        </Box>
-      </Box>
+      ))}
     </Box>
   )
 }
@@ -313,6 +295,7 @@ export function MoreMenuBody({
   const navigate = useNavigate()
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
+  const [callOpen, setCallOpen] = useState(false)
   return (
     <Box className="scroll-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#F5F5F5' }}>
       {greeting ? (
@@ -405,6 +388,30 @@ export function MoreMenuBody({
           <DiscoverGrid />
         </Box>
 
+        {/* Support */}
+        <Box>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1.5 }}>SUPPORT</Typography>
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+            {[
+              { icon: 'phone' as IconName, label: 'Contact Us', sub: 'Hotline & email', onClick: () => navigate('/contact-us') },
+              { icon: 'feedback' as IconName, label: 'Complaint', sub: 'We reply in 2 days', onClick: () => navigate(flow === 'Visitor' ? '/sign-up?next=' + encodeURIComponent('/send-feedback') : '/send-feedback') },
+            ].map((item) => (
+              <Box
+                key={item.label}
+                role="button"
+                onClick={item.onClick}
+                sx={{ display: 'flex', alignItems: 'center', gap: 1.5, bgcolor: '#fff', border: '1px solid #E8EAEE', borderRadius: '12px', px: '14px', py: '12px', cursor: 'pointer', '&:hover': { bgcolor: '#F8FAFC' }, '&:active': { bgcolor: '#EAF1FB' } }}
+              >
+                <Icon name={item.icon} size={24} color="#1A1A1A" />
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography sx={{ fontSize: 13.5, fontWeight: 600, color: '#0B0F1A', lineHeight: 1.3 }}>{item.label}</Typography>
+                  <Typography sx={{ fontSize: 11.5, color: '#8A94A6', mt: 0.25 }}>{item.sub}</Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
         {/* Blog Posts */}
         <Box>
           <Typography sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.6px', color: '#8A94A6', mb: 1.5 }}>BLOG POST</Typography>
@@ -417,6 +424,7 @@ export function MoreMenuBody({
           NongHyup v1.0.0 · build 2026
         </Typography>
       </Box>
+      <CallSheet open={callOpen} onClose={() => setCallOpen(false)} />
     </Box>
   )
 }
