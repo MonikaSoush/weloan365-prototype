@@ -52,10 +52,10 @@ export function SectionLabel({ label, action, onAction }: { label: string; actio
 export function HomeTopBar({ secondIcon = 'bell', middle }: { secondIcon?: IconName; middle?: React.ReactNode } = {}) {
   const navigate = useNavigate()
   const { flow } = useFlow()
-  // Visitors aren't signed in, so there's no profile to show — display the
-  // NongHyup brand logo instead (matching the visitor Home tab). Chat is
-  // gated behind sign-up for visitors.
-  const isVisitor = flow === 'Visitor'
+  // Visitors and unregistered Staff show the brand logo.
+  // Registered Staff (completed sign-up) show the profile avatar like signed-in flows.
+  const staffRegistered = flow === 'Staff' && localStorage.getItem('weloan-staff-registered') === 'true'
+  const isVisitor = flow === 'Visitor' || (flow === 'Staff' && !staffRegistered)
   return (
     <Box
       sx={{

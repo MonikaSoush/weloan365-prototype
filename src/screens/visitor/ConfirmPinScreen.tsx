@@ -16,6 +16,12 @@ export default function ConfirmPinScreen() {
   const done = homePath(signedInFlow)
   const complete = () => {
     if (flow === 'Visitor') setFlow('Applicant')
+    if (flow === 'Staff') {
+      // Mark Staff as having completed registration so Apply goes to PIN gate next time
+      localStorage.setItem('weloan-staff-registered', 'true')
+      navigate('/products')
+      return
+    }
     navigate(next ?? done)
   }
   return (

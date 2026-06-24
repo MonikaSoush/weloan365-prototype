@@ -7,6 +7,7 @@ import BottomNav from '../components/BottomNav'
 import PayLoanSheet from '../components/PayLoanSheet'
 import { Icon, type IconName } from '../components/Icon'
 import { SummaryCard, Card, StatusChip, SectionLabel, AdvanceCard, HomeTopBar } from '../components/home/HomeParts'
+import { AssetImg, asset } from '../components/home/media'
 import { useFlow } from '../workspace/FlowContext'
 import { getApplications, reviewQuery } from '../workspace/applications'
 import { activeStage, STAGE_CHIP } from '../workspace/tracking'
@@ -55,8 +56,8 @@ export default function MyLoanScreen() {
   const { flow } = useFlow()
   // Applicants have only an in-review application: no summary card, no active/complete loans.
   const isApplicant = flow === 'Applicant'
-  // Visitors have no loans or applications at all — fully empty state.
-  const isEmpty = flow === 'Visitor'
+  // Visitors and Staff have no loans — fully empty state.
+  const isEmpty = flow === 'Visitor' || flow === 'Staff'
   // ?tab=review (e.g. straight after submitting an application) opens In Review.
   const [params] = useSearchParams()
   const tabParam = params.get('tab')
@@ -66,7 +67,7 @@ export default function MyLoanScreen() {
   const [creditOpen, setCreditOpen] = useState(false)
 
   return (
-    <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+    <Box className="screen-enter" sx={{ position: 'relative', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: isEmpty ? '#fff' : '#F5F5F5' }}>
       <Box className="scroll-content" sx={{ flex: 1 }}>
         {/* Header */}
         <HomeTopBar />
@@ -140,8 +141,22 @@ function EmptyState({ label, hint, showApplyButtons }: { label: string; hint: st
   const navigate = useNavigate()
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
-  const goNonMwl = () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/nonmwl-about') : '/nonmwl-about')
-  const goMwl = () => navigate(isVisitor ? '/sign-up?next=' + encodeURIComponent('/mwl-about') : '/mwl-about')
+  if (showApplyButtons) {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', pt: 4, px: 0 }}>
+        <Typography sx={{ fontSize: 22, fontWeight: 800, color: '#0B0F1A', mt: 3 }}>{label}</Typography>
+        <Typography sx={{ fontSize: 14, color: '#8A94A6', mt: 1, maxWidth: 280, lineHeight: 1.6 }}>{hint}</Typography>
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => navigate('/products')}
+          sx={{ mt: 4, height: 52, borderRadius: '14px', fontSize: 15, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' }, textTransform: 'none' }}
+        >
+          Visit &amp; Apply Loans
+        </Button>
+      </Box>
+    )
+  }
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', py: 6, px: 2 }}>
       <Box sx={{ width: 64, height: 64, borderRadius: '50%', bgcolor: '#EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
@@ -149,16 +164,6 @@ function EmptyState({ label, hint, showApplyButtons }: { label: string; hint: st
       </Box>
       <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#0B0F1A' }}>{label}</Typography>
       <Typography sx={{ fontSize: 13, color: '#8A94A6', mt: 0.75, maxWidth: 240, lineHeight: 1.5 }}>{hint}</Typography>
-      {showApplyButtons && (
-        <Button
-          variant="contained"
-          onClick={() => navigate('/all-loan')}
-          endIcon={<Icon name="arrowRight" size={18} />}
-          sx={{ mt: 3, height: 48, px: 4, borderRadius: '12px', fontSize: 15, fontWeight: 700, bgcolor: BLUE, '&:hover': { bgcolor: '#1F4F9E' } }}
-        >
-          Explore
-        </Button>
-      )}
     </Box>
   )
 }

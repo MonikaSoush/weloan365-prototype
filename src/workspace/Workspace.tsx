@@ -15,6 +15,7 @@ const FLOW_LABELS: Record<UserFlow, string> = {
   Visitor: 'Visitor',
   Applicant: 'Applicant',
   Borrower: 'Borrower',
+  Staff: 'Staff',
 }
 
 // ─── User-flow selector — defines which user context the prototype represents ─

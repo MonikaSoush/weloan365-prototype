@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import { Icon } from '../components/Icon'
 import { Flag, type FlagCode } from '../components/Flag'
+import { useFlow } from '../workspace/FlowContext'
 
 const BLUE = '#275CB2'
 const MUTED = '#8A94A6'
@@ -47,6 +48,8 @@ export default function SignUpScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const next = params.get('next')
+  const { flow } = useFlow()
+  const isStaff = flow === 'Staff'
   const [language, setLanguage] = useState<LangId>('en')
   const [langOpen, setLangOpen] = useState(false)
   const [countrySheetOpen, setCountrySheetOpen] = useState(false)

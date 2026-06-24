@@ -80,6 +80,9 @@ const FeedbackHistoryScreen = lazy(() => import('../screens/settings/FeedbackHis
 const FaqScreen        = lazy(() => import('../screens/settings/FaqScreen'))
 const CBCScreen        = lazy(() => import('../screens/CBCScreen'))
 const PortfolioSummaryScreen = lazy(() => import('../screens/PortfolioSummaryScreen'))
+const StaffInfoScreen  = lazy(() => import('../screens/staff/StaffSignUpFlow').then(m => ({ default: m.StaffInfoScreen })))
+const StaffFaceVerifyScreen = lazy(() => import('../screens/staff/StaffSignUpFlow').then(m => ({ default: m.StaffFaceVerifyScreen })))
+const StaffSignUpSuccessScreen = lazy(() => import('../screens/staff/StaffSignUpFlow').then(m => ({ default: m.StaffSignUpSuccessScreen })))
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Fallback: unknown paths go to the flow's home tab (Visitor → Products,
@@ -153,6 +156,9 @@ export default function AppRouter() {
         <Route path="/otp" element={<OtpScreen />} />
         <Route path="/create-pin" element={<CreatePinScreen />} />
         <Route path="/confirm-pin" element={<ConfirmPinScreen />} />
+        <Route path="/staff-signup-info" element={<StaffInfoScreen />} />
+        <Route path="/staff-face-verify" element={<StaffFaceVerifyScreen />} />
+        <Route path="/staff-signup-success" element={<StaffSignUpSuccessScreen />} />
         <Route path="/advance" element={<AdvanceAccountScreen />} />
         <Route path="/advance-history-preview" element={<AdvanceHistoryPreviewScreen />} />
         <Route path="/calculator" element={<CalculatorScreen />} />
