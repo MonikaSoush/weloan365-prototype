@@ -1214,6 +1214,7 @@ export function StatusChip({ label, color, bg, outlined = false }: { label: stri
   return (
     <Box
       sx={{
+        display: 'inline-block',
         fontSize: 11,
         fontWeight: 700,
         px: 1.25,
