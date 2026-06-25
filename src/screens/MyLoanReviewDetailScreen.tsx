@@ -34,11 +34,130 @@ function MetaCol({ label, value }: { label: string; value: string }) {
   )
 }
 
+// ─── Terminal-state detail pages (not eligible / rejected / cancelled) ────────
+type TerminalDef = {
+  chipLabel: string; chipColor: string; chipBg: string
+  alertBg: string; alertBorder: string; alertTitleColor: string
+  alertTitle: string; alertBody: string
+  reasonLabel: string; reason: string
+  bullets: string[]
+  ctaLabel: string; ctaColor: string
+}
+const TERMINAL: Record<string, TerminalDef> = {
+  notEligible: {
+    chipLabel: 'Not eligible', chipColor: '#E11D48', chipBg: '#FDE7EC',
+    alertBg: '#FEF2F2', alertBorder: '#FECACA', alertTitleColor: '#B91C1C',
+    alertTitle: 'This request didn\'t meet eligibility',
+    alertBody: 'NH reviewed this request on 16 Apr 2026 and it did not meet the basic eligibility criteria for the SME Loan, so it did not move to full assessment.',
+    reasonLabel: 'WHY IT WASN\'T ELIGIBLE',
+    reason: 'The business had been operating for less than the 1 year minimum required for an SME Loan at the time of applying.',
+    bullets: [
+      'Reapply once your business reaches 12 months of operating history.',
+      'Apply for a Micro Loan, which has a shorter operating-history requirement.',
+      'Add an eligible guarantor to strengthen a future request.',
+    ],
+    ctaLabel: 'Explore eligible loans', ctaColor: '#275CB2',
+  },
+  rejected: {
+    chipLabel: 'Rejected', chipColor: '#E11D48', chipBg: '#FDE7EC',
+    alertBg: '#FEF2F2', alertBorder: '#FECACA', alertTitleColor: '#B91C1C',
+    alertTitle: 'Application not approved',
+    alertBody: 'After assessment — including the CBC credit report — NH was unable to approve this request on 25 Apr 2026.',
+    reasonLabel: 'MAIN REASON',
+    reason: 'Your current total debt-to-income ratio is above NH\'s lending limit. This was the primary factor in the decision.',
+    bullets: [
+      'Reapply after 3 months, or sooner with an eligible guarantor.',
+      'Lower existing monthly obligations to improve your ratio.',
+      'Ask your officer about a smaller amount or a longer tenure.',
+    ],
+    ctaLabel: 'Reapply for this loan', ctaColor: '#275CB2',
+  },
+  cancelled: {
+    chipLabel: 'Cancelled', chipColor: '#6B7280', chipBg: '#EDEFF2',
+    alertBg: '#F9FAFB', alertBorder: '#D1D5DB', alertTitleColor: '#374151',
+    alertTitle: 'Approved loan cancelled',
+    alertBody: 'This loan was approved on 12 Mar 2026 but later cancelled before disbursement. Nothing was disbursed and there is no impact on your credit record.',
+    reasonLabel: 'WHY IT WAS CANCELLED',
+    reason: 'The conditions of the conditional approval were not met within the validity period, so the approved loan was not disbursed.',
+    bullets: [
+      'Start a new request once you can meet the approval conditions.',
+      'Ask your branch officer which condition was outstanding.',
+      'Documents already on file can be reused for a new application.',
+    ],
+    ctaLabel: 'Start a new request', ctaColor: '#275CB2',
+  },
+}
+
+function TerminalDetail({ statusKey, title, refStr }: { statusKey: string; title: string; refStr: string }) {
+  const navigate = useNavigate()
+  const def = TERMINAL[statusKey]
+  if (!def) return null
+  const [ref, date] = refStr.split(' · ')
+  return (
+    <Box className="screen-enter" sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#F5F5F5' }}>
+      <Box className="scroll-content" sx={{ flex: 1, pb: '44px' }}>
+        <Box sx={{ px: 1, pt: 1 }}>
+          <IconButton onClick={() => navigate('/my-loan?tab=review')} aria-label="Back" sx={{ color: HEADING }}>
+            <Icon name="chevronLeft" size={26} color={HEADING} />
+          </IconButton>
+        </Box>
+        <Box sx={{ px: 3, pt: 1, pb: 5, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Title row */}
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+            <Typography sx={{ fontSize: 24, fontWeight: 800, color: HEADING, letterSpacing: '-0.5px', lineHeight: 1.2 }}>{title}</Typography>
+            <Box sx={{ bgcolor: def.chipBg, borderRadius: '999px', px: '10px', py: '4px', flexShrink: 0, mt: '4px' }}>
+              <Typography sx={{ fontSize: 11.5, fontWeight: 700, color: def.chipColor }}>{def.chipLabel}</Typography>
+            </Box>
+          </Box>
+          {/* Ref + date */}
+          <Typography sx={{ fontSize: 12.5, color: MUTED, mt: -1 }}>Ref: {ref}{date ? ` · Applied ${date}` : ''}</Typography>
+          {/* Alert box */}
+          <Box sx={{ bgcolor: def.alertBg, border: `1px solid ${def.alertBorder}`, borderRadius: '12px', px: 2, py: 1.75 }}>
+            <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: def.alertTitleColor, mb: 0.5 }}>{def.alertTitle}</Typography>
+            <Typography sx={{ fontSize: 13, color: def.alertTitleColor, lineHeight: 1.55, opacity: 0.85 }}>{def.alertBody}</Typography>
+          </Box>
+          {/* Reason box */}
+          <Box sx={{ bgcolor: '#F3F4F6', borderRadius: '12px', px: 2, py: 1.75 }}>
+            <Typography sx={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.6px', color: MUTED, mb: 0.75 }}>{def.reasonLabel}</Typography>
+            <Typography sx={{ fontSize: 13.5, fontWeight: 700, color: HEADING, lineHeight: 1.55 }}>{def.reason}</Typography>
+          </Box>
+          {/* What you can do */}
+          <Box>
+            <Typography sx={{ fontSize: 15, fontWeight: 800, color: HEADING, mb: 1.25 }}>What you can do</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {def.bullets.map((b, i) => (
+                <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.25 }}>
+                  <Icon name="checkCircle" size={16} color="#16A34A" />
+                  <Typography sx={{ fontSize: 13.5, color: HEADING, lineHeight: 1.55, flex: 1 }}>{b}</Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      {/* CTAs */}
+      <Box sx={{ flexShrink: 0, px: 3, pt: 2, pb: '44px', bgcolor: '#F5F5F5', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <Button variant="contained" fullWidth onClick={() => navigate('/products')} sx={{ height: 52, borderRadius: '14px', fontSize: 15, fontWeight: 700, bgcolor: def.ctaColor, '&:hover': { bgcolor: '#1F4F9E' } }}>
+          {def.ctaLabel}
+        </Button>
+        <Button variant="outlined" fullWidth onClick={() => navigate('/my-loan?tab=review')} sx={{ height: 52, borderRadius: '14px', fontSize: 15, fontWeight: 700, color: HEADING, borderColor: '#D1D5DB', '&:hover': { bgcolor: '#F3F4F6', borderColor: '#9CA3AF' } }}>
+          Back to Requests
+        </Button>
+      </Box>
+    </Box>
+  )
+}
+
 export default function MyLoanReviewDetailScreen() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const [callOpen, setCallOpen] = useState(false)
   const [disbursed, setDisbursed] = useState(false)
+
+  const statusKey = params.get('status') ?? ''
+  if (statusKey && TERMINAL[statusKey]) {
+    return <TerminalDetail statusKey={statusKey} title={params.get('title') ?? ''} refStr={params.get('ref') ?? ''} />
+  }
 
   const isRestructure = params.get('type') === 'restructure'
   const isPayoff = params.get('type') === 'payoff'
