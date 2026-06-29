@@ -203,7 +203,7 @@ export default function MyLoanScreen() {
 }
 
 // ─── Empty state — shown for Applicants on the Active / Complete tabs ─────────
-function EmptyState({ label, hint, showApplyButtons }: { label: string; hint: string; showApplyButtons?: boolean }) {
+function EmptyState({ label, hint, showApplyButtons }: { label: string; hint?: string; showApplyButtons?: boolean }) {
   const navigate = useNavigate()
   const { flow } = useFlow()
   const isVisitor = flow === 'Visitor'
